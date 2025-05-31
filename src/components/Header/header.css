@@ -1,0 +1,8 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  background-color: var(--mui-palette-primary-light);
+  box-shadow: var(--mui-shadows-7);
+}
