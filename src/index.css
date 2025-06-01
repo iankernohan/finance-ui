@@ -18,6 +18,14 @@
   transition: all 0.3s;
 }
 
+body {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
 a {
   color: inherit;
 }
@@ -26,4 +34,9 @@ a {
   display: grid;
   grid-template-rows: 10% 1fr 10%;
   height: 100dvh;
+  overflow: hidden;
+}
+.page-layout .outlet {
+  padding: 1rem;
+  overflow: auto;
 }
