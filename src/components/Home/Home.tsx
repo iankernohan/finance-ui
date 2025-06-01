@@ -4,11 +4,25 @@ import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import CarRepairIcon from "@mui/icons-material/CarRepair";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import "./home.css";
+import { useStore } from "../../store/store";
+
+const iconMap = {
+  Transportation: <CarRepairIcon />,
+  Food: <RestaurantMenuIcon />,
+  Salary: <AddCardIcon />,
+};
 
 export default function Home() {
   const theme = useTheme();
-
-  const amount = 2352;
+  const transactions = useStore((state) => state.transactions);
+  const expenses = transactions.filter(
+    (t) => t.category.transactionType === "Expense"
+  );
+  const income = transactions.filter(
+    (t) => t.category.transactionType === "Income"
+  );
+  const expenseTotal = expenses.reduce((acc, curr) => acc + curr.amount, 0);
+  const incomeTotal = income.reduce((acc, curr) => acc + curr.amount, 0);
 
   function amountColor(amount: number) {
     if (amount === 0) return theme.palette.grey[700];
@@ -32,8 +46,8 @@ export default function Home() {
         alignItems: "center",
       }}
     >
-      <Typography color={amountColor(amount)} variant="h2">
-        {formatMoney(amount)}
+      <Typography color={amountColor(incomeTotal - expenseTotal)} variant="h2">
+        {formatMoney(incomeTotal - expenseTotal)}
       </Typography>
       <Box sx={{ marginTop: "2rem" }}>
         <Typography textAlign={"center"} variant="h5">
@@ -44,7 +58,7 @@ export default function Home() {
           color={theme.palette.grey[800]}
           variant="h5"
         >
-          {formatMoney(468)}
+          {formatMoney(expenseTotal)}
         </Typography>
         <Box
           sx={{
@@ -54,18 +68,15 @@ export default function Home() {
             justifyContent: "center",
           }}
         >
-          <CategoryCard
-            title="Food"
-            amount={formatMoney(274)}
-            color="lightblue"
-            icon={<RestaurantMenuIcon />}
-          />
-          <CategoryCard
-            title="Vehicle"
-            amount={formatMoney(274)}
-            color="hotpink"
-            icon={<CarRepairIcon />}
-          />
+          {expenses.map((transaction) => (
+            <CategoryCard
+              key={transaction.id}
+              title={transaction.category.name}
+              amount={formatMoney(transaction.amount)}
+              icon={iconMap[transaction.category.name]} // MAYBE STORE IMAGE IN BACKEND
+              color={theme.palette.grey[200]}
+            />
+          ))}
         </Box>
       </Box>
       <Box sx={{ marginTop: "3rem" }}>
@@ -77,7 +88,7 @@ export default function Home() {
           color={theme.palette.grey[800]}
           variant="h5"
         >
-          {formatMoney(468)}
+          {formatMoney(incomeTotal)}
         </Typography>
         <Box
           sx={{
@@ -87,12 +98,15 @@ export default function Home() {
             justifyContent: "center",
           }}
         >
-          <CategoryCard
-            title="Salary"
-            amount={formatMoney(824.46)}
-            color="lightgreen"
-            icon={<AddCardIcon />}
-          />
+          {income.map((transaction) => (
+            <CategoryCard
+              key={transaction.id}
+              title={transaction.category.name}
+              amount={formatMoney(transaction.amount)}
+              icon={iconMap[transaction.category.name]}
+              color={theme.palette.grey[200]}
+            />
+          ))}
         </Box>
       </Box>
     </Box>

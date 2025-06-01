@@ -4,20 +4,21 @@ import { Box, useTheme } from "@mui/material";
 import NavbarMobile from "../NavbarMobile/NavbarMobile";
 import Header from "../Header/Header";
 import { useEffect, useState } from "react";
+import { useStore } from "../../store/store";
 
 export default function PageLayout() {
   const theme = useTheme();
-  const [stuff, setStuff] = useState();
+  const setTransactions = useStore((state) => state.setTransactions);
 
   useEffect(() => {
     async function getStuff() {
-      const res = await fetch("http://localhost:5155");
-      console.log(res);
+      const res = await fetch("http://localhost:5028/getAllData");
       const data = await res.json();
-      setStuff(data);
+      console.log(data);
+      setTransactions(data);
     }
     getStuff();
-  }, []);
+  }, [setTransactions]);
 
   return (
     <Box
