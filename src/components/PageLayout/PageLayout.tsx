@@ -12,7 +12,7 @@ export default function PageLayout() {
 
   useEffect(() => {
     async function getStuff() {
-      const res = await fetch("http://localhost:5028/getAllData");
+      const res = await fetch("http://localhost:5028/getTransactions");
       const data = await res.json();
       console.log(data);
       setTransactions(data);
