@@ -3,18 +3,30 @@ import CategoryCard from "../CategoryCard/CategoryCard";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import CarRepairIcon from "@mui/icons-material/CarRepair";
 import AddCardIcon from "@mui/icons-material/AddCard";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ShowChartIcon from "@mui/icons-material/ShowChart";
 import "./home.css";
 import { useStore } from "../../store/store";
+import type { JSX } from "react";
 
-const iconMap = {
+const iconMap: Record<string, JSX.Element> = {
+  Bills: <ReceiptIcon />,
   Transportation: <CarRepairIcon />,
+  Pleasure: <EmojiEmotionsIcon />,
   Food: <RestaurantMenuIcon />,
+  Shopping: <ShoppingCartIcon />,
   Salary: <AddCardIcon />,
+  Investment: <ShowChartIcon />,
 };
 
 export default function Home() {
   const theme = useTheme();
   const transactions = useStore((state) => state.transactions);
+  const categories = useStore((state) => state.categories);
+
   const expenses = transactions.filter(
     (t) => t.category.transactionType === "Expense"
   );
@@ -36,6 +48,15 @@ export default function Home() {
     }).format(amount);
   }
 
+  let message: string;
+  if (incomeTotal - expenseTotal > 0) {
+    message = "Way to go!";
+  } else if (incomeTotal - expenseTotal < 0) {
+    message = "Maybe spend less next month?";
+  } else {
+    message = "You are breaking even, maybe save some money?";
+  }
+
   return (
     <Box
       className="home"
@@ -46,19 +67,25 @@ export default function Home() {
         alignItems: "center",
       }}
     >
-      <Typography color={amountColor(incomeTotal - expenseTotal)} variant="h2">
+      <Typography
+        color={amountColor(incomeTotal - expenseTotal)}
+        variant="h2"
+        style={{ marginTop: "2rem 0" }}
+      >
         {formatMoney(incomeTotal - expenseTotal)}
       </Typography>
-      <Box sx={{ marginTop: "2rem" }}>
+      {message}
+      <hr />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "1rem",
+        }}
+      >
         <Typography textAlign={"center"} variant="h5">
-          Expenses
-        </Typography>
-        <Typography
-          textAlign={"center"}
-          color={theme.palette.grey[800]}
-          variant="h5"
-        >
-          {formatMoney(expenseTotal)}
+          Expenses <small>({formatMoney(expenseTotal)})</small>
         </Typography>
         <Box
           sx={{
@@ -68,27 +95,39 @@ export default function Home() {
             justifyContent: "center",
           }}
         >
-          {expenses.map((transaction) => (
-            <CategoryCard
-              key={transaction.id}
-              title={transaction.category.name}
-              amount={formatMoney(transaction.amount)}
-              icon={iconMap[transaction.category.name]} // MAYBE STORE IMAGE IN BACKEND
-              color={theme.palette.grey[200]}
-            />
-          ))}
+          {categories
+            .filter((c) => c.transactionType === "Expense")
+            .map((category) => {
+              const categoryTransactions = expenses.filter(
+                (t) => t.category.id === category.id
+              );
+              const totalAmount = categoryTransactions.reduce(
+                (acc, curr) => acc + curr.amount,
+                0
+              );
+              return (
+                <CategoryCard
+                  key={category.id}
+                  title={category.name}
+                  amount={formatMoney(totalAmount)}
+                  icon={iconMap[category.name] ?? <AttachMoneyIcon />}
+                  color={theme.palette.background.paper}
+                />
+              );
+            })}
         </Box>
       </Box>
-      <Box sx={{ marginTop: "3rem" }}>
+      <hr style={{ margin: "2rem 0" }} />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "1rem",
+        }}
+      >
         <Typography textAlign={"center"} variant="h5">
-          Income
-        </Typography>
-        <Typography
-          textAlign={"center"}
-          color={theme.palette.grey[800]}
-          variant="h5"
-        >
-          {formatMoney(incomeTotal)}
+          Income <small>({formatMoney(incomeTotal)})</small>
         </Typography>
         <Box
           sx={{
@@ -98,15 +137,26 @@ export default function Home() {
             justifyContent: "center",
           }}
         >
-          {income.map((transaction) => (
-            <CategoryCard
-              key={transaction.id}
-              title={transaction.category.name}
-              amount={formatMoney(transaction.amount)}
-              icon={iconMap[transaction.category.name]}
-              color={theme.palette.grey[200]}
-            />
-          ))}
+          {categories
+            .filter((c) => c.transactionType === "Income")
+            .map((category) => {
+              const categoryTransactions = income.filter(
+                (t) => t.category.id === category.id
+              );
+              const totalAmount = categoryTransactions.reduce(
+                (acc, curr) => acc + curr.amount,
+                0
+              );
+              return (
+                <CategoryCard
+                  key={category.id}
+                  title={category.name}
+                  amount={formatMoney(totalAmount)}
+                  icon={iconMap[category.name]}
+                  color={theme.palette.background.paper}
+                />
+              );
+            })}
         </Box>
       </Box>
     </Box>

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Transaction } from "../Types/Transaction";
+import type { Category, Transaction } from "../Types/Transaction";
 
 type Store = {
   darkMode: boolean;
@@ -7,6 +7,8 @@ type Store = {
   transactions: Transaction[];
   setTransactions: (transactions: Transaction[]) => void;
   addTransaction: (transactions: Transaction) => void;
+  categories: Category[];
+  setCategories: (categories: Category[]) => void;
 };
 
 export const useStore = create<Store>((set) => ({
@@ -16,4 +18,6 @@ export const useStore = create<Store>((set) => ({
   setTransactions: (transactions: Transaction[]) => set({ transactions }),
   addTransaction: (transaction: Transaction) =>
     set((state) => ({ transactions: [...state.transactions, transaction] })),
+  categories: [],
+  setCategories: (categories: Category[]) => set({ categories }),
 }));

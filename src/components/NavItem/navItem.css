@@ -12,5 +12,6 @@
 }
 
 .nav-item.active {
-  background-color: var(--mui-palette-secondary-dark);
+  background-color: var(--mui-palette-primary-main);
+  color: var(--mui-palette-background-default);
 }

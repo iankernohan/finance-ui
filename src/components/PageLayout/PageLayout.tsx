@@ -3,22 +3,24 @@ import { Outlet } from "react-router";
 import { Box, useTheme } from "@mui/material";
 import NavbarMobile from "../NavbarMobile/NavbarMobile";
 import Header from "../Header/Header";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useStore } from "../../store/store";
+import { getCategories, getTransactions } from "../Data/data";
 
 export default function PageLayout() {
   const theme = useTheme();
   const setTransactions = useStore((state) => state.setTransactions);
+  const setCategories = useStore((state) => state.setCategories);
 
   useEffect(() => {
     async function getStuff() {
-      const res = await fetch("http://localhost:5028/getTransactions");
-      const data = await res.json();
-      console.log(data);
-      setTransactions(data);
+      const transactions = await getTransactions();
+      const categories = await getCategories();
+      setTransactions(transactions);
+      setCategories(categories);
     }
     getStuff();
-  }, [setTransactions]);
+  }, [setTransactions, setCategories]);
 
   return (
     <Box
