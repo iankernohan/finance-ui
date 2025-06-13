@@ -47,7 +47,6 @@ export default function TotalAmount({ difference }: TotalAmountProps) {
             placeItems: "center",
             padding: "1rem 0.5rem",
             background: theme.palette.background.paper,
-            width: "fit-content",
             textAlign: "center",
             borderRadius: "10px",
             width: "200px",
