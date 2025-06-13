@@ -11,6 +11,8 @@ import ShowChartIcon from "@mui/icons-material/ShowChart";
 import "./home.css";
 import { useStore } from "../../store/store";
 import type { JSX } from "react";
+import { amountColor, formatMoney, getLittleGuy } from "../../utils/helpers";
+import TotalAmount from "./TotalAmount";
 
 const iconMap: Record<string, JSX.Element> = {
   Bills: <ReceiptIcon />,
@@ -35,27 +37,7 @@ export default function Home() {
   );
   const expenseTotal = expenses.reduce((acc, curr) => acc + curr.amount, 0);
   const incomeTotal = income.reduce((acc, curr) => acc + curr.amount, 0);
-
-  function amountColor(amount: number) {
-    if (amount === 0) return theme.palette.grey[700];
-    return amount > 0 ? theme.palette.success.main : theme.palette.error.main;
-  }
-
-  function formatMoney(amount: number) {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(amount);
-  }
-
-  let message: string;
-  if (incomeTotal - expenseTotal > 0) {
-    message = "Way to go!";
-  } else if (incomeTotal - expenseTotal < 0) {
-    message = "Maybe spend less next month?";
-  } else {
-    message = "You are breaking even, maybe save some money?";
-  }
+  const difference = incomeTotal - expenseTotal;
 
   return (
     <Box
@@ -67,14 +49,7 @@ export default function Home() {
         alignItems: "center",
       }}
     >
-      <Typography
-        color={amountColor(incomeTotal - expenseTotal)}
-        variant="h2"
-        style={{ marginTop: "2rem 0" }}
-      >
-        {formatMoney(incomeTotal - expenseTotal)}
-      </Typography>
-      {message}
+      <TotalAmount difference={difference} />
       <hr />
       <Box
         sx={{
