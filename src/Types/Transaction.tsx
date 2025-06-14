@@ -3,6 +3,7 @@ export type Transaction = {
   amount: number;
   category: Category;
   subCategory?: SubCategory;
+  dateCreated: Date;
 };
 
 export type Category = {

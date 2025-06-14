@@ -15,6 +15,7 @@ export default function PageLayout() {
   useEffect(() => {
     async function getStuff() {
       const transactions = await getTransactions();
+      console.log(transactions);
       const categories = await getCategories();
       setTransactions(transactions);
       setCategories(categories);

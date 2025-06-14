@@ -19,7 +19,7 @@ export default function Home() {
 
   return (
     <Box
-      className="home"
+      className="home page"
       sx={{
         display: "flex",
         justifyContent: "center",

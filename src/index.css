@@ -24,9 +24,12 @@ a {
   overflow: hidden;
 }
 .page-layout .outlet {
-  padding: 1rem;
-  padding-bottom: 0;
+  padding: 0;
   overflow: auto;
+}
+
+.page {
+  padding: 1rem;
 }
 hr {
   margin: 1rem 0;
