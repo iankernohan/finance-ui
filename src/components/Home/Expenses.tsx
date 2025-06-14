@@ -46,6 +46,7 @@ export default function Expenses({ expenses, expenseTotal }: IncomeProps) {
             );
             return (
               <CategoryCard
+                categoryId={category.id}
                 key={category.id}
                 title={category.name}
                 amount={formatMoney(totalAmount)}

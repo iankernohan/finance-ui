@@ -46,6 +46,7 @@ export default function Income({ income, incomeTotal }: IncomeProps) {
             return (
               <CategoryCard
                 key={category.id}
+                categoryId={category.id}
                 title={category.name}
                 amount={formatMoney(totalAmount)}
                 icon={iconMap[category.name]}

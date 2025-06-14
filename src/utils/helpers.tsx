@@ -20,7 +20,23 @@ export function formatMoney(amount: number) {
   }).format(amount);
 }
 
-export function getLittleGuy(amount: number = 0) {
+export function getLittleGuy(
+  amount: number = 0,
+  withMoney?: "sm" | "md" | "lg"
+) {
+  if (withMoney) {
+    switch (withMoney) {
+      case "sm":
+        return "little-guy-little-money.png";
+      case "md":
+        return "little-guy-money.png";
+      case "lg":
+        return "little-guy-big-money.png";
+      default:
+        return "little-guy-money.png";
+    }
+  }
+
   if (amount > 0) return "happy-little-guy.png";
   if (amount < 0) return "sad-little-guy.png";
   return "little-guy.png";

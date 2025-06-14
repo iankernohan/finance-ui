@@ -1,6 +1,8 @@
 import { Box, Typography, useTheme } from "@mui/material";
+import { useNavigate } from "react-router";
 
 type CategoryCardProps = {
+  categoryId: number;
   title: string;
   amount: string | number;
   color: string;
@@ -8,6 +10,7 @@ type CategoryCardProps = {
 };
 
 export default function CategoryCard({
+  categoryId,
   title,
   amount,
   color,
@@ -15,8 +18,11 @@ export default function CategoryCard({
 }: CategoryCardProps) {
   const theme = useTheme();
 
+  const navigate = useNavigate();
+
   return (
     <Box
+      onClick={() => navigate(`/addTransaction/${categoryId}`)}
       sx={{
         display: "flex",
         flexDirection: "column",

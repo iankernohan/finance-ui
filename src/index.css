@@ -25,6 +25,7 @@ a {
 }
 .page-layout .outlet {
   padding: 1rem;
+  padding-bottom: 0;
   overflow: auto;
 }
 hr {
