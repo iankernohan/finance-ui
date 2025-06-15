@@ -10,6 +10,8 @@ type Store = {
   updateTransaction: (transaction: Transaction) => void;
   categories: Category[];
   setCategories: (categories: Category[]) => void;
+  loading: boolean;
+  setLoading: (val: boolean) => void;
 };
 
 export const useStore = create<Store>((set) => ({
@@ -27,4 +29,6 @@ export const useStore = create<Store>((set) => ({
       ),
     })),
   setCategories: (categories: Category[]) => set({ categories }),
+  loading: false,
+  setLoading: (val) => set({ loading: val }),
 }));

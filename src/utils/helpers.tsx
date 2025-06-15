@@ -7,6 +7,7 @@ import ReceiptIcon from "@mui/icons-material/Receipt";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
+import type { Transaction } from "../Types/Transaction";
 
 export function amountColor(amount: number, theme: Theme) {
   if (amount === 0) return theme.palette.grey[700];
@@ -43,13 +44,13 @@ export function getLittleGuy(
 }
 
 export const iconMap: Record<string, JSX.Element> = {
-  Bills: <ReceiptIcon />,
-  Transportation: <CarRepairIcon />,
-  Pleasure: <EmojiEmotionsIcon />,
-  Food: <RestaurantMenuIcon />,
-  Shopping: <ShoppingCartIcon />,
-  Salary: <AddCardIcon />,
-  Investment: <ShowChartIcon />,
+  Bills: <ReceiptIcon color="primary" />,
+  Transport: <CarRepairIcon color="primary" />,
+  Pleasure: <EmojiEmotionsIcon color="primary" />,
+  Food: <RestaurantMenuIcon color="primary" />,
+  Shopping: <ShoppingCartIcon color="primary" />,
+  Salary: <AddCardIcon color="primary" />,
+  Investment: <ShowChartIcon color="primary" />,
 };
 
 export function getDay(day: number) {
@@ -93,3 +94,16 @@ export function getSuffix(day: number) {
   }
   return "th";
 }
+
+export const defaultTransaction: Transaction = {
+  amount: 0,
+  category: {
+    id: 0,
+    name: "",
+    transactionType: "Expense",
+    subCategories: [],
+  },
+  description: "",
+  dateCreated: new Date(),
+  id: 0,
+};

@@ -11,17 +11,20 @@ export default function PageLayout() {
   const theme = useTheme();
   const setTransactions = useStore((state) => state.setTransactions);
   const setCategories = useStore((state) => state.setCategories);
+  const setLoading = useStore((state) => state.setLoading);
 
   useEffect(() => {
     async function getStuff() {
+      setLoading(true);
       const transactions = await getTransactions();
       console.log(transactions);
       const categories = await getCategories();
       setTransactions(transactions);
       setCategories(categories);
+      setLoading(false);
     }
     getStuff();
-  }, [setTransactions, setCategories]);
+  }, [setTransactions, setCategories, setLoading]);
 
   return (
     <Box
