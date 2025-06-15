@@ -1,42 +1,42 @@
-import { Box, Chip, Typography } from "@mui/material";
+import { Box, Chip, Typography, useTheme } from "@mui/material";
 import type { Transaction } from "../../Types/Transaction";
 import { useState } from "react";
 import TransactionDetails from "./TransactionDetails";
-import { getDay } from "../../utils/helpers";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 interface TransactionProps {
   transaction: Transaction;
 }
 
 export default function Transaction({ transaction }: TransactionProps) {
+  const theme = useTheme();
   const [openDetails, setOpenDetails] = useState(false);
-  function handleClose() {
-    setOpenDetails(false);
-  }
 
   function handleClick() {
-    console.log("click");
-    setOpenDetails((prev) => !prev);
+    setOpenDetails(true);
+  }
+
+  function handleClose() {
+    setOpenDetails(false);
   }
 
   return (
     <Box
       key={transaction.id}
-      onClick={handleClick}
       sx={{
         display: "grid",
-        gridTemplateColumns: "25% 1fr 1fr",
-        justifyContent: "space-evenly",
+        gridTemplateColumns: "15% 25% 45% 15%",
         borderBottom: "1px solid gray",
-        padding: "1.5rem 2rem",
+        padding: "1.5rem 1rem",
         alignItems: "center",
       }}
     >
       <Box>
-        <Typography fontSize={"0.75rem"} color="text.primary">
-          {getDay(new Date(transaction.dateCreated).getDay())}
-        </Typography>
-        <Typography fontSize={"0.75rem"} color="text.primary">
-          {new Date(transaction.dateCreated).getMonth()}/
+        <Typography
+          sx={{ textDecoration: "underline" }}
+          fontSize={"0.75rem"}
+          color="text.primary"
+        >
+          {new Date(transaction.dateCreated).getMonth() + 1}/
           {new Date(transaction.dateCreated).getDate()}
         </Typography>
       </Box>
@@ -54,7 +54,7 @@ export default function Transaction({ transaction }: TransactionProps) {
         sx={{
           display: "flex",
           gap: "0.5rem",
-          justifyContent: "flex-end",
+          // justifyContent: "flex-start",
           width: "100%",
         }}
       >
@@ -63,7 +63,19 @@ export default function Transaction({ transaction }: TransactionProps) {
           <Chip label={transaction.subCategory.name} />
         )}
       </Box>
-      {/* {new Date(t.dateCreated).toLocaleDateString()} */}
+      <Box
+        onClick={handleClick}
+        sx={{
+          display: "grid",
+          placeItems: "center",
+          borderRadius: "5px",
+          justifySelf: "end",
+          background: theme.palette.background.paper,
+          padding: "0.25rem",
+        }}
+      >
+        <MoreVertIcon />
+      </Box>
       {openDetails && (
         <TransactionDetails
           transaction={transaction}

@@ -26,6 +26,7 @@ export default function AddTransaction() {
   const [subCategory, setSubCategory] = useState<number | null>(
     category.subCategories?.length ? null : -1
   );
+  const [description, setDescription] = useState<string>("");
   const navigate = useNavigate();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -46,6 +47,7 @@ export default function AddTransaction() {
     if (parseFloat(amount) > 0 && subCategory !== null) {
       const data = {
         amount: parseFloat(amount),
+        description,
         categoryId: parseInt(params.categoryId as string),
         subCategoryId: subCategory === -1 ? null : subCategory,
       };
@@ -53,7 +55,7 @@ export default function AddTransaction() {
       const res = await addTransaction(data);
 
       if (res) {
-        updateTransactions(res.transaction);
+        updateTransactions(res);
         navigate("/");
       } else {
         alert("Error adding transaction");
@@ -62,7 +64,7 @@ export default function AddTransaction() {
   }
 
   return (
-    <Box sx={{ height: "100%", overflow: "hidden" }}>
+    <Box sx={{ height: "100%", overflow: "hidden", padding: "0 2rem" }}>
       <Box
         sx={{
           display: "flex",
@@ -76,7 +78,7 @@ export default function AddTransaction() {
         <Box
           sx={{
             display: "grid",
-            gap: "3rem",
+            gap: "2rem",
           }}
         >
           <Typography variant="h4" fontWeight={700}>
@@ -104,7 +106,12 @@ export default function AddTransaction() {
           <Box sx={{ display: "grid", gap: "0.5rem" }}>
             <Typography variant="h5">Subcategory</Typography>
             <Box
-              sx={{ display: "flex", justifyContent: "center", gap: "1rem" }}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "1rem",
+                flexWrap: "wrap",
+              }}
             >
               {category.subCategories?.length ? (
                 category.subCategories?.map((sc) => (
@@ -119,6 +126,16 @@ export default function AddTransaction() {
               )}
             </Box>
           </Box>
+          <TextField
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            label="Description"
+            variant="filled"
+            placeholder="Description"
+            fullWidth
+            multiline
+            rows={3}
+          />
         </Box>
         <Button onClick={handleSumbit} variant="contained" color="primary">
           Add Transaction

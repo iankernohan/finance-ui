@@ -6,7 +6,8 @@ type Store = {
   toggleDarkMode: () => void;
   transactions: Transaction[];
   setTransactions: (transactions: Transaction[]) => void;
-  addTransaction: (transactions: Transaction) => void;
+  addTransaction: (transaction: Transaction) => void;
+  updateTransaction: (transaction: Transaction) => void;
   categories: Category[];
   setCategories: (categories: Category[]) => void;
 };
@@ -19,5 +20,11 @@ export const useStore = create<Store>((set) => ({
   addTransaction: (transaction: Transaction) =>
     set((state) => ({ transactions: [...state.transactions, transaction] })),
   categories: [],
+  updateTransaction: (transaction: Transaction) =>
+    set((state) => ({
+      transactions: state.transactions.map((t) =>
+        t.id === transaction.id ? transaction : t
+      ),
+    })),
   setCategories: (categories: Category[]) => set({ categories }),
 }));

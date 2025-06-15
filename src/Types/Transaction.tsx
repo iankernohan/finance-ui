@@ -1,6 +1,7 @@
 export type Transaction = {
   id: number;
   amount: number;
+  description: string;
   category: Category;
   subCategory?: SubCategory;
   dateCreated: Date;
