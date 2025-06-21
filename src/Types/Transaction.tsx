@@ -19,3 +19,10 @@ export type SubCategory = {
   name: string;
   categoryId: number;
 };
+
+export type DataSet = {
+  month: string;
+  expenses: number;
+  income: number;
+  count: number;
+};

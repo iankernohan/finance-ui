@@ -7,7 +7,7 @@ import ReceiptIcon from "@mui/icons-material/Receipt";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
-import type { Transaction } from "../Types/Transaction";
+import type { DataSet, Transaction } from "../Types/Transaction";
 
 export function amountColor(amount: number, theme: Theme) {
   if (amount === 0) return theme.palette.grey[700];
@@ -107,3 +107,176 @@ export const defaultTransaction: Transaction = {
   dateCreated: new Date(),
   id: 0,
 };
+
+export function getTransactionsForMonth(
+  transactions: Transaction[],
+  month: number,
+  year: number = 2025
+): Transaction[] {
+  return transactions.filter((t) => {
+    const date = new Date(t.dateCreated);
+    return date.getFullYear() === year && date.getMonth() === month;
+  });
+}
+
+export function getTotalForMonth(
+  transactions: Transaction[],
+  month: number,
+  year: number = 2025
+) {
+  const monthlyTransactions = getTransactionsForMonth(
+    transactions,
+    month,
+    year
+  );
+  return monthlyTransactions.reduce((sum, t) => {
+    if (t.category.transactionType === "Expense") return sum - t.amount;
+    else return sum + t.amount;
+  }, 0);
+}
+
+export function getMontlyTotalsForYear(
+  transactions: Transaction[],
+  year: number
+) {
+  const totals = [];
+  for (let i = 0; i < 12; i++) {
+    const total = getTotalForMonth(transactions, i, year);
+    totals.push(total);
+  }
+  return totals;
+}
+
+export function getStatsForMonth(
+  transactions: Transaction[],
+  month: number = new Date().getMonth(),
+  year: number = new Date().getFullYear()
+) {
+  const stats = {
+    expenses: 0,
+    income: 0,
+    expensesCount: 0,
+    incomeCount: 0,
+  };
+  for (const t of transactions) {
+    const date = new Date(t.dateCreated);
+    if (date.getFullYear() === year && date.getMonth() === month) {
+      if (t.category.transactionType === "Expense") {
+        stats.expenses += t.amount;
+        stats.expensesCount += 1;
+      } else {
+        stats.income += t.amount;
+        stats.incomeCount += 1;
+      }
+    }
+  }
+  return stats;
+}
+
+export function getMonthlyStatsForYear(
+  transactions: Transaction[],
+  year: number = new Date().getFullYear()
+) {
+  const yearlyStats: DataSet[] = [
+    {
+      month: "Jan",
+      expenses: 0,
+      income: 0,
+      count: 0,
+    },
+    {
+      month: "Feb",
+      expenses: 0,
+      income: 0,
+      count: 0,
+    },
+    {
+      month: "Mar",
+      expenses: 0,
+      income: 0,
+      count: 0,
+    },
+    {
+      month: "Apr",
+      expenses: 0,
+      income: 0,
+      count: 0,
+    },
+    {
+      month: "May",
+      expenses: 0,
+      income: 0,
+      count: 0,
+    },
+    {
+      month: "June",
+      expenses: 0,
+      income: 0,
+      count: 0,
+    },
+    {
+      month: "July",
+      expenses: 0,
+      income: 0,
+      count: 0,
+    },
+    {
+      month: "Aug",
+      expenses: 0,
+      income: 0,
+      count: 0,
+    },
+    {
+      month: "Sept",
+      expenses: 0,
+      income: 0,
+      count: 0,
+    },
+    {
+      month: "Oct",
+      expenses: 0,
+      income: 0,
+      count: 0,
+    },
+    {
+      month: "Nov",
+      expenses: 0,
+      income: 0,
+      count: 0,
+    },
+    {
+      month: "Dec",
+      expenses: 0,
+      income: 0,
+      count: 0,
+    },
+  ];
+  function updateMonth(index: number, transaction: Transaction) {
+    yearlyStats[index].count += 1;
+    if (transaction.category.transactionType == "Expense") {
+      yearlyStats[index].expenses += transaction.amount;
+    } else {
+      yearlyStats[index].income += transaction.amount;
+    }
+  }
+  for (const t of transactions) {
+    const date = new Date(t.dateCreated);
+    if (date.getFullYear() === year) {
+      updateMonth(date.getMonth(), t);
+    }
+  }
+  return yearlyStats;
+}
+
+export function getOldestTransaction(transactions: Transaction[]) {
+  let oldest = transactions[0];
+  let oldestDate = new Date();
+  for (const t of transactions) {
+    const tDate = new Date(t.dateCreated);
+    if (tDate < oldestDate) {
+      oldest = t;
+      oldestDate = tDate;
+    }
+  }
+  return oldest;
+}
