@@ -5,14 +5,16 @@ import {
   Dialog,
   InputAdornment,
   TextField,
+  useTheme,
 } from "@mui/material";
 import type { Transaction } from "../../Types/Transaction";
 import { useState } from "react";
 import { useStore } from "../../store/store";
 import Alert from "./Alert";
 import { MobileDatePicker } from "@mui/x-date-pickers";
+import { deleteTransaction, updateTransaction } from "../Data/data";
 import dayjs from "dayjs";
-import { updateTransaction } from "../Data/data";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 interface TransactionDetailsProps {
   transaction: Transaction;
@@ -25,8 +27,12 @@ export default function TransactionDetails({
   open,
   handleClose,
 }: TransactionDetailsProps) {
+  const theme = useTheme();
   const [alertOpen, setAlertOpen] = useState(false);
+  const [deleteAlertOpen, setDeleteAlertOpen] = useState(false);
   const updateTransactionStore = useStore((state) => state.updateTransaction);
+  const transactions = useStore((state) => state.transactions);
+  const setTransactions = useStore((state) => state.setTransactions);
   const categories = useStore((state) => state.categories);
   const subCategories = categories.find(
     (c) => c.id === transaction.category.id
@@ -86,16 +92,55 @@ export default function TransactionDetails({
     setAlertOpen(false);
   }
 
+  async function handleDelete() {
+    const deleted = await deleteTransaction(transaction.id);
+    if (deleted === null) {
+      console.log("failed");
+    } else {
+      const updatedTransactions = transactions.filter(
+        (t) => t.id !== deleted.id
+      );
+      setTransactions(updatedTransactions);
+      handleDeleteAlertClose();
+    }
+  }
+
+  function handleDeleteAlertClose() {
+    setDeleteAlertOpen(false);
+  }
+
   return (
     <Dialog open={open} onClose={onClose}>
       <Box
         sx={{
-          padding: "2rem",
+          padding: "3rem 2rem",
           display: "grid",
           gap: "1rem",
           placeItems: "center",
+          position: "relative",
         }}
       >
+        <Box
+          onClick={() => setDeleteAlertOpen(true)}
+          sx={{
+            position: "absolute",
+            top: "8px",
+            left: "5px",
+            padding: "0.25rem",
+            display: "grid",
+            placeItems: "center",
+            borderRadius: "5px",
+            "&:hover, &:active": {
+              background: theme.palette.background.default,
+
+              ".MuiSvgIcon-root": {
+                color: theme.palette.text.primary,
+              },
+            },
+          }}
+        >
+          <DeleteOutlineIcon color="action" />
+        </Box>
         <MobileDatePicker
           onChange={(value) => setDate(value?.toDate() as Date)}
           defaultValue={dayjs(date)}
@@ -119,16 +164,18 @@ export default function TransactionDetails({
           }}
         />
         <Chip label={transaction.category.name} />
-        <Box sx={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-          {subCategories?.map((sc) => (
-            <Chip
-              key={sc.id}
-              onClick={() => setSubCategory(sc)}
-              label={sc.name.charAt(0).toUpperCase() + sc.name.slice(1)}
-              variant={sc.id === subCategory?.id ? "filled" : "outlined"}
-            />
-          ))}
-        </Box>
+        {subCategories && subCategories.length > 0 && (
+          <Box sx={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+            {subCategories?.map((sc) => (
+              <Chip
+                key={sc.id}
+                onClick={() => setSubCategory(sc)}
+                label={sc.name.charAt(0).toUpperCase() + sc.name.slice(1)}
+                variant={sc.id === subCategory?.id ? "filled" : "outlined"}
+              />
+            ))}
+          </Box>
+        )}
         <TextField
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -172,9 +219,18 @@ export default function TransactionDetails({
         )}
       </Box>
       <Alert
-        handleClose={handleAlertClose}
-        confirmedClose={confirmedClose}
+        deny={handleAlertClose}
+        confirm={confirmedClose}
         open={alertOpen}
+        title="Are you sure you want to close?"
+        caption="You have unsaved changes."
+      />
+      <Alert
+        deny={handleDeleteAlertClose}
+        confirm={handleDelete}
+        open={deleteAlertOpen}
+        title="Are you sure you want to delete this transaction?"
+        caption="This action cannot be undone."
       />
     </Dialog>
   );

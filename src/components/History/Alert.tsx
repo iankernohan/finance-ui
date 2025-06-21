@@ -9,20 +9,24 @@ import {
 
 interface AlertProps {
   open: boolean;
-  confirmedClose: () => void;
-  handleClose: () => void;
+  confirm: () => void;
+  deny: () => void;
+  title: string;
+  caption: string;
 }
 
 export default function Alert({
   open,
-  confirmedClose,
-  handleClose,
+  confirm,
+  deny,
+  title,
+  caption,
 }: AlertProps) {
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={deny}>
       <MuiAlert severity="info">
-        <AlertTitle>You have unsaved changes.</AlertTitle>
-        <Typography>Are you sure you want to close?</Typography>
+        <AlertTitle>{title}</AlertTitle>
+        <Typography>{caption}</Typography>
         <Box
           sx={{
             justifyContent: "space-between",
@@ -30,10 +34,10 @@ export default function Alert({
             marginTop: "1rem",
           }}
         >
-          <Button variant="contained" color="secondary" onClick={handleClose}>
+          <Button variant="contained" color="secondary" onClick={deny}>
             No
           </Button>
-          <Button variant="outlined" color="secondary" onClick={confirmedClose}>
+          <Button variant="outlined" color="secondary" onClick={confirm}>
             Yes
           </Button>
         </Box>

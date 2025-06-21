@@ -55,3 +55,17 @@ export async function updateTransaction(
   const result: Transaction = await res.json();
   return result;
 }
+
+export async function deleteTransaction(id: number) {
+  const res = await fetch(`http://localhost:5028/DeleteTransaction/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) {
+    return null;
+  }
+  const result: Transaction = await res.json();
+  return result;
+}

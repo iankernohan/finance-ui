@@ -8,6 +8,35 @@ export default function History() {
   const reversedTransactions = [...transactions].reverse();
   const loading = useStore((state) => state.loading);
 
+  function RenderTransaction() {
+    return transactions.length ? (
+      <>
+        {reversedTransactions.map((t) => (
+          <Transaction key={t.id} transaction={t} />
+        ))}
+      </>
+    ) : (
+      <Box
+        sx={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "2rem",
+          textAlign: "center",
+        }}
+      >
+        <Box>
+          <Typography variant="h4">No Transactions</Typography>
+        </Box>
+        <img style={{ width: 200 }} src="/sad-little-guy.png" />
+        <Typography variant="body1">Go ahead and add some!</Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ height: "100%", overflow: "hidden" }}>
       <Box sx={{ height: "100%", overflowY: "scroll", paddingBottom: "2rem" }}>
@@ -16,11 +45,7 @@ export default function History() {
             <Transaction key={i} transaction={defaultTransaction} />
           ))
         ) : (
-          <>
-            {reversedTransactions.map((t) => (
-              <Transaction key={t.id} transaction={t} />
-            ))}
-          </>
+          <RenderTransaction />
         )}
       </Box>
     </Box>
