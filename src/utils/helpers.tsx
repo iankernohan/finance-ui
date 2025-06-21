@@ -7,7 +7,11 @@ import ReceiptIcon from "@mui/icons-material/Receipt";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
-import type { DataSet, Transaction } from "../Types/Transaction";
+import type {
+  DataSet,
+  FilterConditions,
+  Transaction,
+} from "../Types/Transaction";
 
 export function amountColor(amount: number, theme: Theme) {
   if (amount === 0) return theme.palette.grey[700];
@@ -279,4 +283,59 @@ export function getOldestTransaction(transactions: Transaction[]) {
     }
   }
   return oldest;
+}
+
+export function getAllTimeStats(transactions: Transaction[]) {
+  const stats = {
+    income: 0,
+    expenses: 0,
+    incomeCount: 0,
+    expenseCount: 0,
+  };
+
+  for (const t of transactions) {
+    if (t.category.transactionType === "Expense") {
+      stats.expenses += t.amount;
+      stats.expenseCount += 1;
+    } else {
+      stats.income += t.amount;
+      stats.incomeCount += 1;
+    }
+  }
+
+  return stats;
+}
+
+export function filterTransactions(
+  transactions: Transaction[],
+  conditions: FilterConditions
+): Transaction[] {
+  return transactions.filter((t) => {
+    const {
+      category,
+      description,
+      endDate,
+      maxAmount,
+      minAmount,
+      startDate,
+      subCategory,
+      transactionType,
+    } = conditions;
+    const date = new Date(t.dateCreated);
+    if (category && !category.includes(t.category.name)) return false;
+    if (description && !t.description.includes(description)) return false;
+    if (endDate && endDate < date) return false;
+    if (maxAmount && maxAmount < t.amount) return false;
+    if (minAmount && minAmount > t.amount) return false;
+    if (startDate && startDate > date) return false;
+    if (
+      subCategory &&
+      t.subCategory &&
+      subCategory.includes(t.subCategory.name)
+    )
+      return false;
+    if (transactionType && transactionType !== t.category.transactionType)
+      return false;
+    return true;
+  });
 }

@@ -26,3 +26,14 @@ export type DataSet = {
   income: number;
   count: number;
 };
+
+export type FilterConditions = {
+  startDate?: Date;
+  endDate?: Date;
+  category?: string[];
+  subCategory?: string[];
+  minAmount?: number;
+  maxAmount?: number;
+  transactionType?: "Income" | "Expense";
+  description?: string;
+};

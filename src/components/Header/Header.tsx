@@ -7,7 +7,9 @@ export default function Header() {
 
   return (
     <Box className="header">
-      <Typography variant="h3">Finance</Typography>
+      <h1 style={{ marginLeft: "1rem", fontWeight: "200", fontSize: "2.5rem" }}>
+        Finance
+      </h1>
       <Switch onChange={toggleDarkMode} />
     </Box>
   );

@@ -4,19 +4,32 @@ import { useStore } from "../../store/store";
 
 interface TotalAmountProps {
   difference: number;
+  month: number;
+  year: number;
 }
 
-export default function TotalAmount({ difference }: TotalAmountProps) {
+export default function TotalAmount({
+  difference,
+  month,
+  year,
+}: TotalAmountProps) {
   const theme = useTheme();
   const loading = useStore((state) => state.loading);
 
+  const today = new Date();
+  const isOldMonth = month < today.getMonth() || year < today.getFullYear();
   let message: string;
+
   if (difference > 0) {
-    message = "Way to go!";
+    message = isOldMonth ? "Way to go!" : "Keep it up!";
   } else if (difference < 0) {
-    message = "Maybe spend less next month?";
+    message = isOldMonth
+      ? "Shit happens I guess."
+      : "Maybe spend less next month?";
   } else {
-    message = "You are breaking even, maybe save some money?";
+    message = isOldMonth
+      ? "At least you didn't lose money!"
+      : "You are breaking even, maybe save some money?";
   }
 
   return (

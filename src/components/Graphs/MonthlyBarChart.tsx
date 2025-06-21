@@ -36,7 +36,7 @@ export default function MonthlyBarChart() {
   }
 
   return (
-    <Box sx={{ display: "grid", placeItems: "center", padding: "1rem 0" }}>
+    <Box sx={{ display: "grid", placeItems: "center" }}>
       <MonthPicker
         month={month}
         year={year}
@@ -52,10 +52,10 @@ export default function MonthlyBarChart() {
         height={300}
         sx={{
           "& .MuiBarElement-series-auto-generated-id-0:first-child": {
-            fill: theme.palette.success.main,
+            fill: theme.palette.error.main,
           },
           "& .MuiBarElement-series-auto-generated-id-0:last-child": {
-            fill: theme.palette.error.main,
+            fill: theme.palette.success.main,
           },
         }}
       />

@@ -33,6 +33,7 @@ export const CustomThemeProvider = ({
         text: {
           primary: mode === "dark" ? "#EDE9FE" : "#1E293B", // lavender white → slate
           secondary: mode === "dark" ? "#C4B5FD" : "#475569", // light purple-gray → muted slate
+          disabled: mode === "dark" ? "#1E293B" : "#EDE9FE",
         },
         divider: mode === "dark" ? "#312E81" : "#E2E8F0", // purple-gray border → cool gray border
       },

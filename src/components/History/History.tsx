@@ -1,12 +1,40 @@
-import { Box, Chip, Skeleton, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  Skeleton,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import Transaction from "./Transaction";
 import { useStore } from "../../store/store";
-import { defaultTransaction } from "../../utils/helpers";
+import { defaultTransaction, filterTransactions } from "../../utils/helpers";
+import TuneIcon from "@mui/icons-material/Tune";
+import Filter from "./Filter";
+import { useState } from "react";
+import type { FilterConditions } from "../../Types/Transaction";
 
 export default function History() {
-  const transactions = useStore((state) => state.transactions);
+  const theme = useTheme();
+
+  const [openFilter, setOpenFilter] = useState(false);
+  const [filterConitions, setFilterConditions] =
+    useState<FilterConditions | null>(null);
+
+  const allTransactions = useStore((state) => state.transactions);
+  const transactions = filterConitions
+    ? filterTransactions(allTransactions, filterConitions)
+    : allTransactions;
   const reversedTransactions = [...transactions].reverse();
   const loading = useStore((state) => state.loading);
+
+  function handleCloseFilter() {
+    setOpenFilter(false);
+  }
+
+  function updateFilterConditions(conditions: FilterConditions) {
+    setFilterConditions(conditions);
+  }
 
   function RenderTransaction() {
     return transactions.length ? (
@@ -38,7 +66,7 @@ export default function History() {
   }
 
   return (
-    <Box sx={{ height: "100%", overflow: "hidden" }}>
+    <Box sx={{ height: "100%", overflow: "hidden", position: "relative" }}>
       <Box sx={{ height: "100%", overflowY: "scroll", paddingBottom: "2rem" }}>
         {loading ? (
           Array.from({ length: 10 }).map((x, i) => (
@@ -48,6 +76,28 @@ export default function History() {
           <RenderTransaction />
         )}
       </Box>
+      <Button
+        onClick={() => setOpenFilter(true)}
+        sx={{
+          position: "absolute",
+          bottom: "1rem",
+          left: "1rem",
+          boxShadow: theme.shadows[10],
+          borderRadius: "50%",
+          width: "50px",
+          minWidth: 0,
+          height: "50px",
+          padding: 0,
+          background: theme.palette.background.paper,
+        }}
+      >
+        <TuneIcon style={{ color: theme.palette.primary.main }} />
+      </Button>
+      <Filter
+        open={openFilter}
+        handleClose={handleCloseFilter}
+        updateFilterConditions={updateFilterConditions}
+      />
     </Box>
   );
 }
