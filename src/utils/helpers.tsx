@@ -323,7 +323,12 @@ export function filterTransactions(
     } = conditions;
     const date = new Date(t.dateCreated);
     if (category && !category.includes(t.category.name)) return false;
-    if (description && !t.description.includes(description)) return false;
+    if (description && !t.description) return false;
+    if (
+      description &&
+      !t.description.toLowerCase().includes(description.toLowerCase())
+    )
+      return false;
     if (endDate && endDate < date) return false;
     if (maxAmount && maxAmount < t.amount) return false;
     if (minAmount && minAmount > t.amount) return false;
@@ -331,7 +336,7 @@ export function filterTransactions(
     if (
       subCategory &&
       t.subCategory &&
-      subCategory.includes(t.subCategory.name)
+      !subCategory.includes(t.subCategory.name)
     )
       return false;
     if (transactionType && transactionType !== t.category.transactionType)

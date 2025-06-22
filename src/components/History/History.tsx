@@ -13,6 +13,7 @@ import TuneIcon from "@mui/icons-material/Tune";
 import Filter from "./Filter";
 import { useState } from "react";
 import type { FilterConditions } from "../../Types/Transaction";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export default function History() {
   const theme = useTheme();
@@ -34,6 +35,10 @@ export default function History() {
 
   function updateFilterConditions(conditions: FilterConditions) {
     setFilterConditions(conditions);
+  }
+
+  function clearFilters() {
+    setFilterConditions(null);
   }
 
   function RenderTransaction() {
@@ -76,6 +81,25 @@ export default function History() {
           <RenderTransaction />
         )}
       </Box>
+      {filterConitions && (
+        <Button
+          onClick={() => clearFilters()}
+          sx={{
+            position: "absolute",
+            bottom: "5rem",
+            left: "1rem",
+            boxShadow: theme.shadows[10],
+            borderRadius: "50%",
+            width: "50px",
+            minWidth: 0,
+            height: "50px",
+            padding: 0,
+            background: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <ClearIcon style={{ color: theme.palette.primary.main }} />
+        </Button>
+      )}
       <Button
         onClick={() => setOpenFilter(true)}
         sx={{
@@ -96,6 +120,7 @@ export default function History() {
       <Filter
         open={openFilter}
         handleClose={handleCloseFilter}
+        filterConitions={filterConitions}
         updateFilterConditions={updateFilterConditions}
       />
     </Box>
