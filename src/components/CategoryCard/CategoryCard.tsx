@@ -1,12 +1,14 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router";
+import { formatMoney } from "../../utils/helpers";
 
 type CategoryCardProps = {
   categoryId: number;
   title: string;
-  amount: string | number;
+  amount: number;
   color: string;
   icon: React.ReactNode;
+  budgetLimit?: number;
 };
 
 export default function CategoryCard({
@@ -15,10 +17,20 @@ export default function CategoryCard({
   amount,
   color,
   icon,
+  budgetLimit,
 }: CategoryCardProps) {
   const theme = useTheme();
 
   const navigate = useNavigate();
+
+  const budgetColor = budgetLimit
+    ? {
+        color:
+          amount > budgetLimit
+            ? theme.palette.error.main
+            : theme.palette.success.main,
+      }
+    : {};
 
   return (
     <Box
@@ -36,11 +48,12 @@ export default function CategoryCard({
         boxShadow: theme.shadows[5],
       }}
     >
-      <Typography variant="h6">{title}</Typography>
+      <p style={{ fontSize: "1.25rem" }}>{title}</p>
       {icon}
-      <Typography sx={{ fontWeight: "600" }} variant="h5">
-        {amount}
-      </Typography>
+      {budgetLimit && (
+        <p style={{ ...budgetColor }}>Limit: {formatMoney(budgetLimit)}</p>
+      )}
+      <h2 style={{ fontWeight: "600" }}>{formatMoney(amount)}</h2>
     </Box>
   );
 }

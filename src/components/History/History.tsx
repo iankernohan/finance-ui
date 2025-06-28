@@ -14,6 +14,7 @@ import Filter from "./Filter";
 import { useState } from "react";
 import type { FilterConditions } from "../../Types/Transaction";
 import ClearIcon from "@mui/icons-material/Clear";
+import FadeIn from "../UI/FadeIn";
 
 export default function History() {
   const theme = useTheme();
@@ -44,8 +45,10 @@ export default function History() {
   function RenderTransaction() {
     return transactions.length ? (
       <>
-        {reversedTransactions.map((t) => (
-          <Transaction key={t.id} transaction={t} />
+        {reversedTransactions.map((t, i) => (
+          <FadeIn transitionDelay={`${i / 20}`}>
+            <Transaction key={t.id} transaction={t} />
+          </FadeIn>
         ))}
       </>
     ) : (

@@ -1,19 +1,5 @@
-import {
-  Box,
-  Button,
-  Chip,
-  Dialog,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Popover,
-  Radio,
-  RadioGroup,
-  TextField,
-  useTheme,
-} from "@mui/material";
+import { Box, Button, Chip, Dialog, TextField, useTheme } from "@mui/material";
 import type { FilterConditions } from "../../Types/Transaction";
-import { useState } from "react";
 import { useStore } from "../../store/store";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -35,7 +21,6 @@ export default function Filter({
   const theme = useTheme();
 
   const allCategories = useStore((state) => state.categories);
-  // const [conditions, setConditions] = useState<FilterConditions>({});
 
   let categories;
   if (filterConitions?.transactionType === "Expense") {

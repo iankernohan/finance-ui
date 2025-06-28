@@ -4,6 +4,7 @@ import Home from "./components/Home/Home";
 import History from "./components/History/History";
 import AddTransaction from "./components/AddTransaction/AddTransaction";
 import Profile from "./components/Profile/Profile";
+import BudgetBuilder from "./components/Budget/BudgetBuilder";
 
 export const router = createBrowserRouter([
   {
@@ -15,16 +16,25 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/history",
+        path: "history",
         element: <History />,
       },
       {
-        path: "/addTransaction/:categoryId",
+        path: "addTransaction/:categoryId",
         element: <AddTransaction />,
       },
       {
-        path: "/profile",
+        path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "budget",
+        children: [
+          {
+            path: "budgetBuilder",
+            element: <BudgetBuilder />,
+          },
+        ],
       },
     ],
   },

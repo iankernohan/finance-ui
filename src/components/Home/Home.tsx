@@ -7,6 +7,7 @@ import Expenses from "./Expenses";
 import MonthPicker from "../Graphs/MonthPicker";
 import { useState } from "react";
 import { getTransactionsForMonth } from "../../utils/helpers";
+import FadeIn from "../UI/FadeIn";
 
 export default function Home() {
   const [month, setMonth] = useState(new Date().getMonth());
@@ -52,16 +53,24 @@ export default function Home() {
         alignItems: "center",
       }}
     >
-      <MonthPicker
-        month={month}
-        year={year}
-        increment={handleIncrementMonth}
-        decrement={handleDecrementMonth}
-      />
-      <TotalAmount month={month} year={year} difference={difference} />
-      <hr />
+      <FadeIn>
+        <MonthPicker
+          month={month}
+          year={year}
+          increment={handleIncrementMonth}
+          decrement={handleDecrementMonth}
+        />
+      </FadeIn>
+      <FadeIn transitionDelay="0.05">
+        <TotalAmount month={month} year={year} difference={difference} />
+      </FadeIn>
+      <FadeIn transitionDelay="0.1">
+        <hr />
+      </FadeIn>
       <Income income={income} incomeTotal={incomeTotal} />
-      <hr style={{ margin: "2rem 0" }} />
+      <FadeIn transitionDelay="0.35">
+        <hr style={{ margin: "2rem 0" }} />
+      </FadeIn>
       <Expenses expenses={expenses} expenseTotal={expenseTotal} />
     </Box>
   );

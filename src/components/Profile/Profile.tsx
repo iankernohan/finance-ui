@@ -1,14 +1,19 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import MonthlyBarChart from "../Graphs/MonthlyBarChart";
 import { useStore } from "../../store/store";
 import { formatMoney, getAllTimeStats } from "../../utils/helpers";
+import { useNavigate } from "react-router";
 
 export default function Profile() {
   const transactions = useStore((state) => state.transactions);
   const allTimeStats = getAllTimeStats(transactions);
+  const navigate = useNavigate();
 
   return (
     <Box sx={{ display: "grid", placeItems: "center", padding: "1rem 0" }}>
+      <Button onClick={() => navigate("/budget/budgetBuilder")}>
+        Build Budget
+      </Button>
       <Box>
         <h1
           style={{

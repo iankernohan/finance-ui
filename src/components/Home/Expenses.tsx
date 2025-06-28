@@ -4,6 +4,7 @@ import { formatMoney, iconMap } from "../../utils/helpers";
 import { useStore } from "../../store/store";
 import type { Transaction } from "../../Types/Transaction";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import FadeIn from "../UI/FadeIn";
 
 interface IncomeProps {
   expenses: Transaction[];
@@ -27,9 +28,11 @@ export default function Expenses({ expenses, expenseTotal }: IncomeProps) {
       {loading ? (
         <Skeleton width={220} height={50} />
       ) : (
-        <Typography textAlign={"center"} variant="h5">
-          Expenses <small>({formatMoney(expenseTotal)})</small>
-        </Typography>
+        <FadeIn transitionDelay="0.40">
+          <Typography textAlign={"center"} variant="h5">
+            Expenses <small>({formatMoney(expenseTotal)})</small>
+          </Typography>
+        </FadeIn>
       )}
       <Box
         sx={{
@@ -48,7 +51,7 @@ export default function Expenses({ expenses, expenseTotal }: IncomeProps) {
           <>
             {categories
               .filter((c) => c.transactionType === "Expense")
-              .map((category) => {
+              .map((category, i) => {
                 const categoryTransactions = expenses.filter(
                   (t) => t.category.id === category.id
                 );
@@ -57,14 +60,17 @@ export default function Expenses({ expenses, expenseTotal }: IncomeProps) {
                   0
                 );
                 return (
-                  <CategoryCard
-                    categoryId={category.id}
-                    key={category.id}
-                    title={category.name}
-                    amount={formatMoney(totalAmount)}
-                    icon={iconMap[category.name] ?? <AttachMoneyIcon />}
-                    color={theme.palette.background.paper}
-                  />
+                  <FadeIn transitionDelay={`${i / 20 + 0.4}`}>
+                    <CategoryCard
+                      categoryId={category.id}
+                      key={category.id}
+                      title={category.name}
+                      budgetLimit={100}
+                      amount={totalAmount}
+                      icon={iconMap[category.name] ?? <AttachMoneyIcon />}
+                      color={theme.palette.background.paper}
+                    />
+                  </FadeIn>
                 );
               })}
           </>

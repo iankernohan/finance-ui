@@ -29,7 +29,7 @@ export default function MonthPicker({
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "1rem 2rem",
+        padding: "0 2rem",
       }}
     >
       <Button disabled={disableDecrement} onClick={decrement}>
