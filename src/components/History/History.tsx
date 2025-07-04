@@ -11,7 +11,7 @@ import { useStore } from "../../store/store";
 import { defaultTransaction, filterTransactions } from "../../utils/helpers";
 import TuneIcon from "@mui/icons-material/Tune";
 import Filter from "./Filter";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { FilterConditions } from "../../Types/Transaction";
 import ClearIcon from "@mui/icons-material/Clear";
 import FadeIn from "../UI/FadeIn";
@@ -22,6 +22,7 @@ export default function History() {
   const [openFilter, setOpenFilter] = useState(false);
   const [filterConitions, setFilterConditions] =
     useState<FilterConditions | null>(null);
+  const [numToDelay, setNumToDelay] = useState(0);
 
   const allTransactions = useStore((state) => state.transactions);
   const transactions = filterConitions
@@ -42,11 +43,18 @@ export default function History() {
     setFilterConditions(null);
   }
 
+  useEffect(() => {
+    const navHeight = 84.4;
+    const windowHeight = window.innerHeight - navHeight * 2;
+    const transactionItemHeight = 82;
+    setNumToDelay(windowHeight / transactionItemHeight);
+  }, []);
+
   function RenderTransaction() {
     return transactions.length ? (
       <>
         {reversedTransactions.map((t, i) => (
-          <FadeIn transitionDelay={`${i / 20}`}>
+          <FadeIn transitionDelay={`${i < numToDelay ? i / 20 : 0}`}>
             <Transaction key={t.id} transaction={t} />
           </FadeIn>
         ))}

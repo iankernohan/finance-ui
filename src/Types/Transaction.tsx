@@ -37,3 +37,9 @@ export type FilterConditions = {
   transactionType?: "Income" | "Expense";
   description?: string;
 };
+
+export type Budget = {
+  id: number;
+  limit: number;
+  category: Category;
+};

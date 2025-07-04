@@ -1,13 +1,15 @@
 import type { Transaction } from "../../Types/Transaction";
 
+const base = "http://localhost:5028";
+
 export async function getTransactions() {
-  const res = await fetch("http://localhost:5028/getTransactions");
+  const res = await fetch(`${base}/getTransactions`);
   const data = await res.json();
   return data;
 }
 
 export async function getCategories() {
-  const res = await fetch("http://localhost:5028/getAllCategories");
+  const res = await fetch(`${base}/getAllCategories`);
   const data = await res.json();
   return data;
 }
@@ -18,7 +20,7 @@ export async function addTransaction(data: {
   categoryId: number;
   subCategoryId: number | null;
 }) {
-  const res = await fetch("http://localhost:5028/addTransaction", {
+  const res = await fetch(`${base}/addTransaction`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -42,7 +44,7 @@ export async function updateTransaction(
     subCategoryId: number | null;
   }
 ) {
-  const res = await fetch(`http://localhost:5028/updateTransaction/${id}`, {
+  const res = await fetch(`${base}/updateTransaction/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -57,7 +59,7 @@ export async function updateTransaction(
 }
 
 export async function deleteTransaction(id: number) {
-  const res = await fetch(`http://localhost:5028/DeleteTransaction/${id}`, {
+  const res = await fetch(`${base}/DeleteTransaction/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -68,4 +70,10 @@ export async function deleteTransaction(id: number) {
   }
   const result: Transaction = await res.json();
   return result;
+}
+
+export async function getBudgets() {
+  const res = await fetch(`${base}/GetAllBudgets`);
+  const data = await res.json();
+  return data;
 }

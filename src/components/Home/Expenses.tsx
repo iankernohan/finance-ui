@@ -15,6 +15,7 @@ export default function Expenses({ expenses, expenseTotal }: IncomeProps) {
   const theme = useTheme();
   const categories = useStore((state) => state.categories);
   const loading = useStore((state) => state.loading);
+  const budgets = useStore((state) => state.budgets);
 
   return (
     <Box
@@ -59,16 +60,20 @@ export default function Expenses({ expenses, expenseTotal }: IncomeProps) {
                   (acc, curr) => acc + curr.amount,
                   0
                 );
+                const budgetLimit = budgets.find(
+                  (b) => b.category.id === category.id
+                )?.limit;
                 return (
                   <FadeIn transitionDelay={`${i / 20 + 0.4}`}>
                     <CategoryCard
                       categoryId={category.id}
                       key={category.id}
                       title={category.name}
-                      budgetLimit={100}
+                      budgetLimit={budgetLimit}
                       amount={totalAmount}
                       icon={iconMap[category.name] ?? <AttachMoneyIcon />}
                       color={theme.palette.background.paper}
+                      type="expense"
                     />
                   </FadeIn>
                 );

@@ -9,6 +9,7 @@ type CategoryCardProps = {
   color: string;
   icon: React.ReactNode;
   budgetLimit?: number;
+  type?: "income" | "expense";
 };
 
 export default function CategoryCard({
@@ -18,6 +19,7 @@ export default function CategoryCard({
   color,
   icon,
   budgetLimit,
+  type,
 }: CategoryCardProps) {
   const theme = useTheme();
 
@@ -50,9 +52,12 @@ export default function CategoryCard({
     >
       <p style={{ fontSize: "1.25rem" }}>{title}</p>
       {icon}
-      {budgetLimit && (
-        <p style={{ ...budgetColor }}>Limit: {formatMoney(budgetLimit)}</p>
-      )}
+      {type === "expense" &&
+        (budgetLimit ? (
+          <p style={{ ...budgetColor }}>Limit: {formatMoney(budgetLimit)}</p>
+        ) : (
+          <p style={{ fontWeight: "200" }}>No Limit Set</p>
+        ))}
       <h2 style={{ fontWeight: "600" }}>{formatMoney(amount)}</h2>
     </Box>
   );
