@@ -61,14 +61,14 @@ export default function Home() {
           decrement={handleDecrementMonth}
         />
       </FadeIn>
-      <FadeIn transitionDelay="0.05">
+      <FadeIn>
         <TotalAmount month={month} year={year} difference={difference} />
       </FadeIn>
-      <FadeIn transitionDelay="0.1">
+      <FadeIn>
         <hr />
       </FadeIn>
       <Income income={income} incomeTotal={incomeTotal} />
-      <FadeIn transitionDelay="0.35">
+      <FadeIn>
         <hr style={{ margin: "2rem 0" }} />
       </FadeIn>
       <Expenses expenses={expenses} expenseTotal={expenseTotal} />

@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { useNavigate } from "react-router";
 import { formatMoney } from "../../utils/helpers";
 

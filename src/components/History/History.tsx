@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Chip,
-  Skeleton,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import Transaction from "./Transaction";
 import { useStore } from "../../store/store";
 import { defaultTransaction, filterTransactions } from "../../utils/helpers";
@@ -85,7 +78,7 @@ export default function History() {
     <Box sx={{ height: "100%", overflow: "hidden", position: "relative" }}>
       <Box sx={{ height: "100%", overflowY: "scroll", paddingBottom: "2rem" }}>
         {loading ? (
-          Array.from({ length: 10 }).map((x, i) => (
+          Array.from({ length: 10 }).map((_x, i) => (
             <Transaction key={i} transaction={defaultTransaction} />
           ))
         ) : (

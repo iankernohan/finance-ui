@@ -1,7 +1,6 @@
 import { Box, Button } from "@mui/material";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import type { Dispatch, SetStateAction } from "react";
 import { getMonth } from "../../utils/helpers";
 
 type MonthPicketProps = {

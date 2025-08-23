@@ -12,7 +12,7 @@ type FadeInProps = {
 export default function FadeIn({
   children,
   threshold = 0.05,
-  rootMargin = "100px 0px 1100px 0px",
+  rootMargin = "0px 0px 0px 0px",
   transitionDelay = "0",
   sx,
   className,

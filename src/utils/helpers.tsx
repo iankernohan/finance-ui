@@ -7,6 +7,7 @@ import ReceiptIcon from "@mui/icons-material/Receipt";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
+import PetsIcon from "@mui/icons-material/Pets";
 import type {
   DataSet,
   FilterConditions,
@@ -55,6 +56,7 @@ export const iconMap: Record<string, JSX.Element> = {
   Shopping: <ShoppingCartIcon color="primary" />,
   Salary: <AddCardIcon color="primary" />,
   Investment: <ShowChartIcon color="primary" />,
+  Pets: <PetsIcon color="primary" />,
 };
 
 export function getDay(day: number) {

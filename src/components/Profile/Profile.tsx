@@ -1,4 +1,4 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import MonthlyBarChart from "../Graphs/MonthlyBarChart";
 import { useStore } from "../../store/store";
 import { formatMoney, getAllTimeStats } from "../../utils/helpers";

@@ -1,4 +1,4 @@
-import { Box, Switch, Typography } from "@mui/material";
+import { Box, Switch } from "@mui/material";
 import { useStore } from "../../store/store";
 import "./header.css";
 
