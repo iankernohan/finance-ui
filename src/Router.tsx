@@ -6,36 +6,39 @@ import AddTransaction from "./components/AddTransaction/AddTransaction";
 import Profile from "./components/Profile/Profile";
 import BudgetBuilder from "./components/Budget/BudgetBuilder";
 
-export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <PageLayout />,
-    children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: "history",
-        element: <History />,
-      },
-      {
-        path: "addTransaction/:categoryId",
-        element: <AddTransaction />,
-      },
-      {
-        path: "profile",
-        element: <Profile />,
-      },
-      {
-        path: "budget",
-        children: [
-          {
-            path: "budgetBuilder",
-            element: <BudgetBuilder />,
-          },
-        ],
-      },
-    ],
-  },
-]);
+export const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <PageLayout />,
+      children: [
+        {
+          index: true,
+          element: <Home />,
+        },
+        {
+          path: "history",
+          element: <History />,
+        },
+        {
+          path: "addTransaction/:categoryId",
+          element: <AddTransaction />,
+        },
+        {
+          path: "profile",
+          element: <Profile />,
+        },
+        {
+          path: "budget",
+          children: [
+            {
+              path: "budgetBuilder",
+              element: <BudgetBuilder />,
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  { basename: "/finance-ui" }
+);
