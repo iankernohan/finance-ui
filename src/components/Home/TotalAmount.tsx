@@ -60,7 +60,7 @@ export default function TotalAmount({
           <>
             <img
               style={{ width: "80px", height: "80px" }}
-              src={`./${getLittleGuy(difference)}`}
+              src={getLittleGuy(difference)}
             />
             <Typography
               sx={{

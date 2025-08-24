@@ -5,7 +5,7 @@ import { useStore } from "../../store/store";
 
 export const ThemeContext = createContext({
   toggleTheme: () => {},
-  mode: "light" as "light" | "dark",
+  mode: "dark" as "light" | "dark",
 });
 
 export const CustomThemeProvider = ({

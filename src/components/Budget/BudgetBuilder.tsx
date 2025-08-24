@@ -1,6 +1,6 @@
-import { Box, Chip } from "@mui/material";
+import { Box, Chip, InputAdornment, TextField } from "@mui/material";
 import { useStore } from "../../store/store";
-import { formatMoney } from "../../utils/helpers";
+import { formatMoney, iconMap } from "../../utils/helpers";
 
 export default function BudgetBuilder() {
   const categories = useStore((state) => state.categories);
@@ -8,26 +8,66 @@ export default function BudgetBuilder() {
   const total = budgets.reduce((acc, curr) => acc + curr.limit, 0);
 
   return (
-    <Box sx={{ padding: "1rem" }}>
-      <Box>
-        {budgets.map((budget) => (
-          <Box>
-            {budget.category.name}: {formatMoney(budget.limit)}
-            <hr />
-          </Box>
-        ))}
-        <p>Total: {formatMoney(total)}</p>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          gap: "0.5rem",
-        }}
-      >
+    <Box
+      sx={{
+        padding: "1rem",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+      }}
+    >
+      <Box sx={{ width: "80%" }}>
+        <Box
+          sx={{
+            display: "grid",
+            justifyItems: "center",
+            gridTemplateColumns: "repeat(2, 1fr)",
+          }}
+        >
+          <p></p>
+          <p>Limit</p>
+        </Box>
         {categories.map((c) => (
-          <Chip label={c.name} />
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              padding: "1rem",
+            }}
+          >
+            <Box
+              sx={{
+                display: "grid",
+                placeItems: "center",
+                width: "fit-content",
+              }}
+            >
+              {iconMap[c.name]}
+              <p>{c.name}</p>
+            </Box>
+            <TextField
+              name="amount"
+              value={0}
+              type="number"
+              // onChange={(e) => setAmount(e.target.value)}
+              variant="standard"
+              placeholder="0.00"
+              fullWidth
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">$</InputAdornment>
+                  ),
+                  inputMode: "decimal",
+                },
+              }}
+            />
+            {/* <p>
+              {formatMoney(
+                budgets.find((b) => b.category.id === c.id)?.limit ?? 0
+              )}
+            </p> */}
+          </Box>
         ))}
       </Box>
     </Box>

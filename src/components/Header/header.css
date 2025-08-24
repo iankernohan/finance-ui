@@ -1,9 +1,21 @@
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   padding: 0 1rem;
   background-color: var(--mui-palette-primary-light);
   z-index: 1000;
   box-shadow: var(--mui-shadows-7);
+
+  .link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .link.active {
+    text-decoration: underline;
+  }
 }

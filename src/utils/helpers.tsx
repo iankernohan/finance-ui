@@ -13,6 +13,12 @@ import type {
   FilterConditions,
   Transaction,
 } from "../Types/Transaction";
+import HappyLittleGuy from "../assets/happy-little-guy.png";
+import LittleGuyBigMoney from "../assets/little-guy-big-money.png";
+import LittleGuyLittleMoney from "../assets/little-guy-little-money.png";
+import LittleGuyMoney from "../assets/little-guy-money.png";
+import LittleGuy from "../assets/little-guy.png";
+import SadLittleGuy from "../assets/sad-little-guy.png";
 
 export function amountColor(amount: number, theme: Theme) {
   if (amount === 0) return theme.palette.grey[700];
@@ -33,19 +39,19 @@ export function getLittleGuy(
   if (withMoney) {
     switch (withMoney) {
       case "sm":
-        return "little-guy-little-money.png";
+        return LittleGuyLittleMoney;
       case "md":
-        return "little-guy-money.png";
+        return LittleGuyMoney;
       case "lg":
-        return "little-guy-big-money.png";
+        return LittleGuyBigMoney;
       default:
-        return "little-guy-money.png";
+        return LittleGuyMoney;
     }
   }
 
-  if (amount > 0) return "happy-little-guy.png";
-  if (amount < 0) return "sad-little-guy.png";
-  return "little-guy.png";
+  if (amount > 0) return HappyLittleGuy;
+  if (amount < 0) return SadLittleGuy;
+  return LittleGuy;
 }
 
 export const iconMap: Record<string, JSX.Element> = {

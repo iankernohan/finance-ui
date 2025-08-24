@@ -147,7 +147,7 @@ export default function AddTransaction() {
             width: "150px",
             translate: "0 -10px",
           }}
-          src={`/${getLittleGuy(0, littleGuySize())}`}
+          src={getLittleGuy(0, littleGuySize())}
         />
       </Box>
     </Box>

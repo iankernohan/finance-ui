@@ -41,7 +41,7 @@ export default function PageLayout() {
       <Box className="outlet">
         <Outlet />
       </Box>
-      <NavbarMobile />
+      {/* <NavbarMobile /> */}
     </Box>
   );
 }

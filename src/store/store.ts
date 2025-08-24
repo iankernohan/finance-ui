@@ -17,7 +17,7 @@ type Store = {
 };
 
 export const useStore = create<Store>((set) => ({
-  darkMode: false,
+  darkMode: true,
   toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
   transactions: [],
   setTransactions: (transactions: Transaction[]) => set({ transactions }),

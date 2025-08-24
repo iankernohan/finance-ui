@@ -25,6 +25,7 @@ a {
   overflow: hidden;
 }
 .page-layout .outlet {
+  height: 100dvh;
   padding: 0;
   overflow: auto;
 }

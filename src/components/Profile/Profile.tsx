@@ -3,6 +3,7 @@ import MonthlyBarChart from "../Graphs/MonthlyBarChart";
 import { useStore } from "../../store/store";
 import { formatMoney, getAllTimeStats } from "../../utils/helpers";
 import { useNavigate } from "react-router";
+import LittleGuy from "../../assets/little-guy.png";
 
 export default function Profile() {
   const transactions = useStore((state) => state.transactions);
@@ -42,7 +43,7 @@ export default function Profile() {
             <p style={{ marginLeft: "1rem" }}>Count</p>
             <p>{allTimeStats.expenseCount}</p>
           </Box>
-          <img src="little-guy.png" style={{ width: 100, height: 100 }} />
+          <img src={LittleGuy} style={{ width: 100, height: 100 }} />
         </Box>
       </Box>
       <hr />
