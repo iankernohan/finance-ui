@@ -2,7 +2,12 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: var(--mui-palette-primary-light);
+  background: var(--mui-palette-primary-light);
+  background: linear-gradient(
+    0deg,
+    var(--mui-palette-primary-light) 0%,
+    rgba(122, 13, 224, 1) 50%
+  );
   z-index: 1000;
   box-shadow: var(--mui-shadows-7);
   height: var(--navbar-height);
@@ -19,6 +24,11 @@
   }
 
   .link.active {
-    background-color: var(--mui-palette-primary-main);
+    background: var(--mui-palette-primary-main);
+    background: linear-gradient(
+      0deg,
+      var(--mui-palette-primary-main) 0%,
+      rgba(93, 0, 168, 1) 50%
+    );
   }
 }

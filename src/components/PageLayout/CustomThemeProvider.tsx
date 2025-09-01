@@ -21,21 +21,21 @@ export const CustomThemeProvider = ({
       palette: {
         mode,
         primary: {
-          main: mode === "dark" ? "#6B21A8" : "#2563EB", // deep royal purple → modern blue
+          main: mode === "dark" ? "#6B21A8" : "#2563EB",
         },
         secondary: {
-          main: mode === "dark" ? "#9333EA" : "#60A5FA", // vibrant purple → soft sky blue
+          main: mode === "dark" ? "#9333EA" : "#60A5FA",
         },
         background: {
-          default: mode === "dark" ? "#0D0B1D" : "#F9FAFB", // dark violet-black → light gray
-          paper: mode === "dark" ? "#1A132F" : "#FFFFFF", // soft dark purple → pure white
+          default: mode === "dark" ? "#0D0B1D" : "#F9FAFB",
+          paper: mode === "dark" ? "#1A132F" : "#FFFFFF",
         },
         text: {
-          primary: mode === "dark" ? "#EDE9FE" : "#1E293B", // lavender white → slate
-          secondary: mode === "dark" ? "#C4B5FD" : "#475569", // light purple-gray → muted slate
+          primary: mode === "dark" ? "#EDE9FE" : "#1E293B",
+          secondary: mode === "dark" ? "#C4B5FD" : "#475569",
           disabled: mode === "dark" ? "#1E293B" : "#EDE9FE",
         },
-        divider: mode === "dark" ? "#312E81" : "#E2E8F0", // purple-gray border → cool gray border
+        divider: mode === "dark" ? "#312E81" : "#E2E8F0",
       },
       typography: {
         fontFamily: `'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif`,
