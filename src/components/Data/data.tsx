@@ -4,6 +4,7 @@ import type {
 } from "../../Types/Transaction";
 
 const base = "https://finance-api-0eu8.onrender.com";
+// const base = "http://localhost:5028";
 
 export async function getTransactions() {
   const res = await fetch(`${base}/getTransactions`);

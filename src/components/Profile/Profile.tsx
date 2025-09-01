@@ -1,29 +1,23 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 import MonthlyBarChart from "../Graphs/MonthlyBarChart";
 import { useStore } from "../../store/store";
 import { formatMoney, getAllTimeStats } from "../../utils/helpers";
 import { useNavigate } from "react-router";
 import LittleGuy from "../../assets/little-guy.png";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function Profile() {
   const transactions = useStore((state) => state.transactions);
   const allTimeStats = getAllTimeStats(transactions);
   const navigate = useNavigate();
+  const theme = useTheme();
 
   return (
     <Box sx={{ display: "grid", placeItems: "center", padding: "1rem 0" }}>
-      <Button onClick={() => navigate("/settings")}>Settings</Button>
+      <Button sx={{ marginLeft: "auto" }} onClick={() => navigate("/settings")}>
+        <SettingsIcon />
+      </Button>
       <Box>
-        <h1
-          style={{
-            // textDecoration: "underline",
-            fontWeight: "300",
-            textAlign: "center",
-            marginBottom: "1rem",
-          }}
-        >
-          Your All Time Stats
-        </h1>
         <Box sx={{ display: "grid", gridTemplateColumns: "2fr 1fr" }}>
           <Box
             sx={{
@@ -33,11 +27,15 @@ export default function Profile() {
             }}
           >
             <p>Income</p>
-            <p>{formatMoney(allTimeStats.income)}</p>
+            <p style={{ color: theme.palette.success.main }}>
+              {formatMoney(allTimeStats.income)}
+            </p>
             <p style={{ marginLeft: "1rem", marginBottom: "0.5rem" }}>Count</p>
             <p>{allTimeStats.incomeCount}</p>
             <p>Expenses</p>
-            <p>{formatMoney(allTimeStats.expenses)}</p>
+            <p style={{ color: theme.palette.error.main }}>
+              {formatMoney(allTimeStats.expenses)}
+            </p>
             <p style={{ marginLeft: "1rem" }}>Count</p>
             <p>{allTimeStats.expenseCount}</p>
           </Box>

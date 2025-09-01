@@ -5,6 +5,8 @@ import {
   getRecurringTransactions,
 } from "../Data/data";
 import { useStore } from "../../store/store";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { formatMoney } from "../../utils/helpers";
 
 export default function RecurringTransactions() {
   const recurringTransactions = useStore(
@@ -13,6 +15,7 @@ export default function RecurringTransactions() {
   const setRecurringTransactions = useStore(
     (state) => state.setRecurringTransactions
   );
+  const categories = useStore((state) => state.categories);
 
   async function handleDelete(id: number) {
     const res = await deleteRecurringTransaction(id);
@@ -30,19 +33,42 @@ export default function RecurringTransactions() {
       console.log(res);
       setRecurringTransactions(res);
     }
-    fetchRecurringTransactions();
+    if (recurringTransactions.length === 0) fetchRecurringTransactions();
   }, [setRecurringTransactions, recurringTransactions.length]);
 
   return (
-    <Box>
-      {recurringTransactions.map((rt) => (
-        <Box key={rt.id}>
-          <Box>
-            {rt.description} - {rt.intervalDays}Days
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "2rem",
+        padding: "1rem",
+      }}
+    >
+      {recurringTransactions.map((rt) => {
+        const category = categories.find((c) => c.id === rt.categoryId);
+        return (
+          <Box
+            key={rt.id}
+            sx={{
+              display: "grid",
+              alignItems: "center",
+              gridTemplateColumns: "25% 20% 20% auto",
+              gap: "1rem",
+            }}
+          >
+            <p>{category?.name}</p>
+            <p>{formatMoney(rt.amount)}</p>
+            <p>{rt.intervalDays} days</p>
+            <Button
+              variant="contained"
+              onClick={() => handleDelete(rt.id as number)}
+            >
+              <DeleteOutlineIcon />
+            </Button>
           </Box>
-          <Button onClick={() => handleDelete(rt.id as number)}>Delete</Button>
-        </Box>
-      ))}
+        );
+      })}
     </Box>
   );
 }
