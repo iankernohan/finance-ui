@@ -95,3 +95,23 @@ export async function addRecurringTransaction(data: RecurringTransaction) {
   const result = await res.json();
   return result;
 }
+
+export async function getRecurringTransactions() {
+  const res = await fetch(`${base}/GetAllRecurringTransactions`);
+  const data = await res.json();
+  return data;
+}
+
+export async function deleteRecurringTransaction(id: number) {
+  const res = await fetch(`${base}/DeleteRecurringTransaction/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) {
+    return null;
+  }
+  const result: RecurringTransaction = await res.json();
+  return result;
+}
