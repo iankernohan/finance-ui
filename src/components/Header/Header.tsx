@@ -20,7 +20,7 @@ export default function Header() {
         <HistoryIcon />
         <Typography>History</Typography>
       </NavLink>
-      <NavLink className="link" to="/budget">
+      <NavLink className="link" to="/budget/budgetBuilder">
         <SavingsIcon />
         <Typography>Budget</Typography>
       </NavLink>

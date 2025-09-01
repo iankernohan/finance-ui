@@ -1,5 +1,10 @@
 import { create } from "zustand";
-import type { Budget, Category, Transaction } from "../Types/Transaction";
+import type {
+  Budget,
+  Category,
+  RecurringTransaction,
+  Transaction,
+} from "../Types/Transaction";
 
 type Store = {
   darkMode: boolean;
@@ -12,6 +17,10 @@ type Store = {
   setCategories: (categories: Category[]) => void;
   budgets: Budget[];
   setBudgets: (budgets: Budget[]) => void;
+  recurringTransactions: RecurringTransaction[];
+  setRecurringTransactions: (
+    RecurringTransactions: RecurringTransaction[]
+  ) => void;
   loading: boolean;
   setLoading: (val: boolean) => void;
 };
@@ -33,6 +42,9 @@ export const useStore = create<Store>((set) => ({
   setCategories: (categories: Category[]) => set({ categories }),
   budgets: [],
   setBudgets: (budgets: Budget[]) => set({ budgets }),
+  recurringTransactions: [],
+  setRecurringTransactions: (recurringTransactions) =>
+    set({ recurringTransactions }),
   loading: false,
   setLoading: (val) => set({ loading: val }),
 }));

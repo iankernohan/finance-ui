@@ -39,7 +39,8 @@ export default function BudgetBuilder() {
               sx={{
                 display: "grid",
                 placeItems: "center",
-                width: "fit-content",
+                width: "100px",
+                textAlign: "center",
               }}
             >
               {iconMap[c.name]}

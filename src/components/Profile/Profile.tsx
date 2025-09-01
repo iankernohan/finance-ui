@@ -12,9 +12,7 @@ export default function Profile() {
 
   return (
     <Box sx={{ display: "grid", placeItems: "center", padding: "1rem 0" }}>
-      <Button onClick={() => navigate("/budget/budgetBuilder")}>
-        Build Budget
-      </Button>
+      <Button onClick={() => navigate("/settings")}>Settings</Button>
       <Box>
         <h1
           style={{

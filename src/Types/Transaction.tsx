@@ -46,6 +46,7 @@ export type Budget = {
 };
 
 export type RecurringTransaction = {
+  id?: number;
   amount: number;
   startDate: Date;
   endDate?: Date | null;

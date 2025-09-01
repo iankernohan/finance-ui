@@ -5,6 +5,8 @@ import History from "./components/History/History";
 import AddTransaction from "./components/AddTransaction/AddTransaction";
 import Profile from "./components/Profile/Profile";
 import BudgetBuilder from "./components/Budget/BudgetBuilder";
+import Settings from "./components/Settings/Settings";
+import RecurringTransactions from "./components/Settings/RecurringTransactions";
 
 export const router = createBrowserRouter(
   [
@@ -27,6 +29,16 @@ export const router = createBrowserRouter(
         {
           path: "profile",
           element: <Profile />,
+        },
+        {
+          path: "settings",
+          element: <Settings />,
+          children: [
+            {
+              path: "recurring-transactions",
+              element: <RecurringTransactions />,
+            },
+          ],
         },
         {
           path: "budget",
