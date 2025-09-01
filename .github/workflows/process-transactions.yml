@@ -1,0 +1,14 @@
+name: Process Recurring Transactions
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Runs daily at midnight
+  workflow_dispatch:
+
+jobs:
+  run-cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call API
+        run: |
+          curl -v -X POST "https://finance-api-0eu8.onrender.com/ProcessRecurringTransactions"
