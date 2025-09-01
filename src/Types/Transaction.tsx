@@ -3,6 +3,7 @@ export type Transaction = {
   amount: number;
   description: string;
   category: Category;
+  isRecurring?: boolean;
   subCategory?: SubCategory;
   dateCreated: Date;
 };
@@ -42,4 +43,15 @@ export type Budget = {
   id: number;
   limit: number;
   category: Category;
+};
+
+export type RecurringTransaction = {
+  amount: number;
+  startDate: Date;
+  endDate?: Date | null;
+  dateCreated?: Date;
+  description?: string;
+  intervalDays: number;
+  categoryId: number;
+  subCategoryId?: number | null;
 };

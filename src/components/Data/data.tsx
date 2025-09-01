@@ -1,6 +1,10 @@
-import type { Transaction } from "../../Types/Transaction";
+import type {
+  RecurringTransaction,
+  Transaction,
+} from "../../Types/Transaction";
 
-const base = "https://finance-api-0eu8.onrender.com";
+// const base = "https://finance-api-0eu8.onrender.com";
+const base = "http://localhost:5028";
 
 export async function getTransactions() {
   const res = await fetch(`${base}/getTransactions`);
@@ -76,4 +80,19 @@ export async function getBudgets() {
   const res = await fetch(`${base}/GetAllBudgets`);
   const data = await res.json();
   return data;
+}
+
+export async function addRecurringTransaction(data: RecurringTransaction) {
+  const res = await fetch(`${base}/AddRecurringTransaction`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    return null;
+  }
+  const result = await res.json();
+  return result;
 }

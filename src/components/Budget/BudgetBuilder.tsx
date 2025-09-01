@@ -1,11 +1,11 @@
-import { Box, Chip, InputAdornment, TextField } from "@mui/material";
+import { Box, InputAdornment, TextField } from "@mui/material";
 import { useStore } from "../../store/store";
-import { formatMoney, iconMap } from "../../utils/helpers";
+import { iconMap } from "../../utils/helpers";
 
 export default function BudgetBuilder() {
   const categories = useStore((state) => state.categories);
-  const budgets = useStore((state) => state.budgets);
-  const total = budgets.reduce((acc, curr) => acc + curr.limit, 0);
+  // const budgets = useStore((state) => state.budgets);
+  // const total = budgets.reduce((acc, curr) => acc + curr.limit, 0);
 
   return (
     <Box

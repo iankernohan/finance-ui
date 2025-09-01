@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 
 import { Box, useTheme } from "@mui/material";
-import NavbarMobile from "../NavbarMobile/NavbarMobile";
+// import NavbarMobile from "../NavbarMobile/NavbarMobile";
 import Header from "../Header/Header";
 import { useEffect } from "react";
 import { useStore } from "../../store/store";

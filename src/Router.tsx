@@ -40,5 +40,5 @@ export const router = createBrowserRouter(
       ],
     },
   ],
-  { basename: "/finance-ui" }
+  { basename: "/finance-ui/" }
 );

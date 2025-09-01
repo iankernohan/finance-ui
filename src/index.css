@@ -12,6 +12,7 @@ body,
   padding: 0;
   height: 100dvh;
   overflow: hidden;
+  --navbar-height: 85px;
 }
 
 a {
@@ -25,7 +26,7 @@ a {
   overflow: hidden;
 }
 .page-layout .outlet {
-  height: 100dvh;
+  height: calc(100dvh - var(--navbar-height));
   padding: 0;
   overflow: auto;
 }

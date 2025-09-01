@@ -34,7 +34,7 @@ export default function MonthPicker({
       <Button disabled={disableDecrement} onClick={decrement}>
         <KeyboardArrowLeftIcon />
       </Button>
-      <Box>
+      <Box sx={{ textAlign: "center" }}>
         {getMonth(month)}, {year}
       </Box>
       <Button disabled={disableIncrement} onClick={increment}>

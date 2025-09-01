@@ -3,6 +3,7 @@ import type { Transaction } from "../../Types/Transaction";
 import { useState } from "react";
 import TransactionDetails from "./TransactionDetails";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import LoopIcon from "@mui/icons-material/Loop";
 import { useStore } from "../../store/store";
 interface TransactionProps {
   transaction: Transaction;
@@ -93,6 +94,20 @@ export default function Transaction({ transaction }: TransactionProps) {
               open={openDetails}
               handleClose={handleClose}
             />
+          )}
+          {transaction.isRecurring && (
+            <Box
+              sx={{
+                position: "absolute",
+                left: "45px",
+                display: "grid",
+                placeItems: "center",
+              }}
+            >
+              <LoopIcon
+                sx={{ width: "1rem", color: theme.palette.grey[500] }}
+              />
+            </Box>
           )}
         </>
       )}
