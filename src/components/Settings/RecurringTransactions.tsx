@@ -7,6 +7,7 @@ import {
 import { useStore } from "../../store/store";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { formatMoney } from "../../utils/helpers";
+import FadeIn from "../UI/FadeIn";
 
 export default function RecurringTransactions() {
   const recurringTransactions = useStore(
@@ -48,7 +49,7 @@ export default function RecurringTransactions() {
       {recurringTransactions.map((rt) => {
         const category = categories.find((c) => c.id === rt.categoryId);
         return (
-          <Box
+          <FadeIn
             key={rt.id}
             sx={{
               display: "grid",
@@ -66,7 +67,7 @@ export default function RecurringTransactions() {
             >
               <DeleteOutlineIcon />
             </Button>
-          </Box>
+          </FadeIn>
         );
       })}
     </Box>

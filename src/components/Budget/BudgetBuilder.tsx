@@ -1,6 +1,7 @@
 import { Box, InputAdornment, TextField } from "@mui/material";
 import { useStore } from "../../store/store";
 import { iconMap } from "../../utils/helpers";
+import FadeIn from "../UI/FadeIn";
 
 export default function BudgetBuilder() {
   const categories = useStore((state) => state.categories);
@@ -27,8 +28,10 @@ export default function BudgetBuilder() {
           <p></p>
           <p>Limit</p>
         </Box>
-        {categories.map((c) => (
-          <Box
+        {categories.map((c, i) => (
+          <FadeIn
+            transitionDelay={`0.${i + 1}`}
+            key={c.id}
             sx={{
               display: "grid",
               gridTemplateColumns: "repeat(2, 1fr)",
@@ -68,7 +71,7 @@ export default function BudgetBuilder() {
                 budgets.find((b) => b.category.id === c.id)?.limit ?? 0
               )}
             </p> */}
-          </Box>
+          </FadeIn>
         ))}
       </Box>
     </Box>
