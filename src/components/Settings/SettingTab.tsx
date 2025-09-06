@@ -21,6 +21,7 @@ export default function SettingTab({ setting }: SettingTabProps) {
         flex: 1,
         padding: "1rem",
         width: "100%",
+        cursor: "pointer",
       }}
       onClick={() => navigate(setting.path)}
     >

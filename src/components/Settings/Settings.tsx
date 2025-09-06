@@ -1,16 +1,20 @@
-import { Box } from "@mui/material";
+import { Box, Switch } from "@mui/material";
 import FadeIn from "../UI/FadeIn";
-import SettingTab from "./SettingTab";
+// import SettingTab from "./SettingTab";
 import type { SettingOption } from "../../Types/Settings";
 import BackButton from "../UI/BackButton";
+import { useStore } from "../../store/store";
 
 export default function Settings() {
-  const settingsOptions: SettingOption[] = [
-    {
-      name: "View Recurring Transactions",
-      path: "recurring-transactions",
-    },
-  ];
+  // const settingsOptions: SettingOption[] = [
+  //   {
+  //     name: "View Recurring Transactions",
+  //     path: "recurring-transactions",
+  //   },
+  // ];
+
+  const darkMode = useStore((state) => state.darkMode);
+  const toggleDarkMode = useStore((state) => state.toggleDarkMode);
 
   return (
     <Box sx={{ position: "relative" }}>
@@ -29,7 +33,17 @@ export default function Settings() {
           margin: "2rem auto",
         }}
       >
-        {settingsOptions.map((setting, i) => (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <p>{`Toggle ${darkMode ? "Light" : "Dark"} Mode`}</p>
+          <Switch onChange={toggleDarkMode} />
+        </Box>
+        {/* {settingsOptions.map((setting, i) => (
           <FadeIn
             transitionDelay={`0.${i + 1}`}
             sx={{
@@ -39,7 +53,7 @@ export default function Settings() {
           >
             <SettingTab setting={setting} />
           </FadeIn>
-        ))}
+        ))} */}
       </Box>
     </Box>
   );

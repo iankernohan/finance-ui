@@ -1,11 +1,12 @@
 import { Box } from "@mui/material";
 import { useStore } from "../../store/store";
 import { getLittleGuy } from "../../utils/helpers";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import FadeIn from "../UI/FadeIn";
 import SettingTab from "../Settings/SettingTab";
 
 export default function Profile() {
+  const location = useLocation();
   function getGreeting() {
     const now = new Date();
     const hour = now.getHours();
@@ -15,7 +16,6 @@ export default function Profile() {
   }
 
   const options = useStore((state) => state.profileOptions);
-  console.log(options);
 
   return (
     <Box
