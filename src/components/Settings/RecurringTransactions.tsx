@@ -16,7 +16,6 @@ export default function RecurringTransactions() {
   const setRecurringTransactions = useStore(
     (state) => state.setRecurringTransactions
   );
-  const categories = useStore((state) => state.categories);
   const [openDetails, setOpenDetails] = useState(false);
 
   function handleClick() {
@@ -55,7 +54,6 @@ export default function RecurringTransactions() {
         </h2>
       </FadeIn>
       {recurringTransactions.map((rt, i) => {
-        const category = categories.find((c) => c.id === rt.categoryId);
         return (
           <FadeIn
             key={rt.id}

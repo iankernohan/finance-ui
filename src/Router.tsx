@@ -7,6 +7,7 @@ import Profile from "./components/Profile/Profile";
 import BudgetBuilder from "./components/Budget/BudgetBuilder";
 import Settings from "./components/Settings/Settings";
 import RecurringTransactions from "./components/Settings/RecurringTransactions";
+import Statistics from "./components/Settings/Statistics";
 
 export const router = createBrowserRouter(
   [
@@ -37,6 +38,10 @@ export const router = createBrowserRouter(
             {
               path: "recurring-transactions",
               element: <RecurringTransactions />,
+            },
+            {
+              path: "statistics",
+              element: <Statistics />,
             },
           ],
         },

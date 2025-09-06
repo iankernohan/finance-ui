@@ -53,6 +53,7 @@ export const useStore = create<Store>((set) => ({
       name: "Recurring Transactions",
       path: "recurring-transactions",
     },
+    { name: "Statistics", path: "statistics" },
   ],
   loading: false,
   setLoading: (val) => set({ loading: val }),

@@ -75,8 +75,10 @@ export default function RecurringTransactionDetails({
       intervalDays: interval,
     };
     if (hasChanged()) {
-      const updated = await updateRecurringTransaction(transaction.id, data);
-      handleClose();
+      if (transaction.id) {
+        await updateRecurringTransaction(transaction.id, data);
+        handleClose();
+      }
     }
   }
 
@@ -96,12 +98,12 @@ export default function RecurringTransactionDetails({
     setAlertOpen(false);
   }
 
-  async function handleDelete(id: number) {
-    const res = await deleteRecurringTransaction(id);
+  async function handleDelete() {
+    const res = await deleteRecurringTransaction(transaction.id as number);
     console.log(res);
     if (res) {
       setRecurringTransactions(
-        recurringTransactions.filter((rt) => rt.id !== id)
+        recurringTransactions.filter((rt) => rt.id !== transaction.id)
       );
     }
   }
@@ -216,7 +218,7 @@ export default function RecurringTransactionDetails({
       />
       <Alert
         deny={handleDeleteAlertClose}
-        confirm={() => handleDelete(transaction.id)}
+        confirm={handleDelete}
         open={deleteAlertOpen}
         title="Are you sure you want to delete this transaction?"
         caption="This action cannot be undone."
