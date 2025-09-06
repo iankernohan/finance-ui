@@ -1,15 +1,15 @@
-import { Box, Button } from "@mui/material";
-import { useEffect } from "react";
-import {
-  deleteRecurringTransaction,
-  getRecurringTransactions,
-} from "../Data/data";
+import { Box, useTheme } from "@mui/material";
+import { useEffect, useState } from "react";
+import { getRecurringTransactions } from "../Data/data";
 import { useStore } from "../../store/store";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { formatMoney } from "../../utils/helpers";
 import FadeIn from "../UI/FadeIn";
+import BackButton from "../UI/BackButton";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import RecurringTransactionDetails from "../Profile/RecurringTransactionsDetails";
 
 export default function RecurringTransactions() {
+  const theme = useTheme();
   const recurringTransactions = useStore(
     (state) => state.recurringTransactions
   );
@@ -17,15 +17,14 @@ export default function RecurringTransactions() {
     (state) => state.setRecurringTransactions
   );
   const categories = useStore((state) => state.categories);
+  const [openDetails, setOpenDetails] = useState(false);
 
-  async function handleDelete(id: number) {
-    const res = await deleteRecurringTransaction(id);
-    console.log(res);
-    if (res) {
-      setRecurringTransactions(
-        recurringTransactions.filter((rt) => rt.id !== id)
-      );
-    }
+  function handleClick() {
+    setOpenDetails(true);
+  }
+
+  function handleClose() {
+    setOpenDetails(false);
   }
 
   useEffect(() => {
@@ -44,9 +43,18 @@ export default function RecurringTransactions() {
         flexDirection: "column",
         gap: "2rem",
         padding: "1rem",
+        width: "90%",
+        margin: "0 auto",
+        position: "relative",
       }}
     >
-      {recurringTransactions.map((rt) => {
+      <FadeIn>
+        <BackButton top={22} />
+        <h2 style={{ textAlign: "center", fontWeight: 300, fontSize: "2rem" }}>
+          Recurring Transactions
+        </h2>
+      </FadeIn>
+      {recurringTransactions.map((rt, i) => {
         const category = categories.find((c) => c.id === rt.categoryId);
         return (
           <FadeIn
@@ -54,19 +62,33 @@ export default function RecurringTransactions() {
             sx={{
               display: "grid",
               alignItems: "center",
-              gridTemplateColumns: "25% 20% 20% auto",
+              gridTemplateColumns: "30% 30% auto",
               gap: "1rem",
+              transitionDelay: `0.${i + 1}s`,
             }}
           >
-            <p>{category?.name}</p>
             <p>{formatMoney(rt.amount)}</p>
             <p>{rt.intervalDays} days</p>
-            <Button
-              variant="contained"
-              onClick={() => handleDelete(rt.id as number)}
+            <Box
+              onClick={handleClick}
+              sx={{
+                display: "grid",
+                placeItems: "center",
+                borderRadius: "5px",
+                justifySelf: "end",
+                background: theme.palette.background.paper,
+                padding: "0.25rem",
+              }}
             >
-              <DeleteOutlineIcon />
-            </Button>
+              <MoreVertIcon />
+            </Box>
+            {openDetails && (
+              <RecurringTransactionDetails
+                transaction={rt}
+                handleClose={handleClose}
+                open={openDetails}
+              />
+            )}
           </FadeIn>
         );
       })}

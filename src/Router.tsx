@@ -29,17 +29,18 @@ export const router = createBrowserRouter(
         {
           path: "profile",
           element: <Profile />,
-        },
-        {
-          path: "settings",
-          element: <Settings />,
           children: [
+            {
+              path: "settings",
+              element: <Settings />,
+            },
             {
               path: "recurring-transactions",
               element: <RecurringTransactions />,
             },
           ],
         },
+
         {
           path: "budget",
           children: [

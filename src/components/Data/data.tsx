@@ -3,8 +3,8 @@ import type {
   Transaction,
 } from "../../Types/Transaction";
 
-const base = "https://finance-api-0eu8.onrender.com";
-// const base = "http://localhost:5028";
+// const base = "https://finance-api-0eu8.onrender.com";
+const base = "http://localhost:5028";
 
 export async function getTransactions() {
   const res = await fetch(`${base}/getTransactions`);
@@ -109,6 +109,24 @@ export async function deleteRecurringTransaction(id: number) {
     headers: {
       "Content-Type": "application/json",
     },
+  });
+  if (!res.ok) {
+    return null;
+  }
+  const result: RecurringTransaction = await res.json();
+  return result;
+}
+
+export async function updateRecurringTransaction(
+  id: number,
+  transaction: RecurringTransaction
+) {
+  const res = await fetch(`${base}/UpdateRecurringTransaction/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(transaction),
   });
   if (!res.ok) {
     return null;

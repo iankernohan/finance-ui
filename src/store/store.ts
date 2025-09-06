@@ -5,6 +5,7 @@ import type {
   RecurringTransaction,
   Transaction,
 } from "../Types/Transaction";
+import type { SettingOption } from "../Types/Settings";
 
 type Store = {
   darkMode: boolean;
@@ -21,6 +22,7 @@ type Store = {
   setRecurringTransactions: (
     RecurringTransactions: RecurringTransaction[]
   ) => void;
+  profileOptions: SettingOption[];
   loading: boolean;
   setLoading: (val: boolean) => void;
 };
@@ -45,6 +47,13 @@ export const useStore = create<Store>((set) => ({
   recurringTransactions: [],
   setRecurringTransactions: (recurringTransactions) =>
     set({ recurringTransactions }),
+  profileOptions: [
+    { name: "Settings", path: "settings" },
+    {
+      name: "Recurring Transactions",
+      path: "recurring-transactions",
+    },
+  ],
   loading: false,
   setLoading: (val) => set({ loading: val }),
 }));

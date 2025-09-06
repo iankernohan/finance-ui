@@ -3,6 +3,7 @@
   padding: 0;
   /* transition: all 0.3s; */
   box-sizing: border-box;
+  font-family: Montserrat;
 }
 
 html,
@@ -38,4 +39,17 @@ hr {
   margin: 1rem 0;
   background-color: var(--palette-divider);
   width: 80dvw;
+}
+
+.outlet {
+  height: calc(100dvh - var(--navbar-height));
+  overflow: auto;
+  position: relative;
+}
+
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

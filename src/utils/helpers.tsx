@@ -13,7 +13,7 @@ import type {
   FilterConditions,
   Transaction,
 } from "../Types/Transaction";
-import HappyLittleGuy from "../assets/happy-little-guy.png";
+import HappyLittleGuy from "../assets/happy-little-guy2.png";
 import LittleGuyBigMoney from "../assets/little-guy-big-money.png";
 import LittleGuyLittleMoney from "../assets/little-guy-little-money.png";
 import LittleGuyMoney from "../assets/little-guy-money.png";
