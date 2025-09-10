@@ -1,7 +1,7 @@
 import { Box, Switch } from "@mui/material";
 import FadeIn from "../UI/FadeIn";
 // import SettingTab from "./SettingTab";
-import type { SettingOption } from "../../Types/Settings";
+// import type { SettingOption } from "../../Types/Settings";
 import BackButton from "../UI/BackButton";
 import { useStore } from "../../store/store";
 
@@ -20,7 +20,14 @@ export default function Settings() {
     <Box sx={{ position: "relative" }}>
       <FadeIn>
         <BackButton top={8} />
-        <h2 style={{ textAlign: "center", fontWeight: 300, fontSize: "2rem" }}>
+        <h2
+          style={{
+            textAlign: "center",
+            fontWeight: 300,
+            fontSize: "2rem",
+            margin: 0,
+          }}
+        >
           Settings
         </h2>
       </FadeIn>
@@ -33,7 +40,8 @@ export default function Settings() {
           margin: "2rem auto",
         }}
       >
-        <Box
+        <FadeIn
+          transitionDelay="0.1"
           sx={{
             display: "flex",
             justifyContent: "space-between",
@@ -42,7 +50,7 @@ export default function Settings() {
         >
           <p>{`Toggle ${darkMode ? "Light" : "Dark"} Mode`}</p>
           <Switch onChange={toggleDarkMode} />
-        </Box>
+        </FadeIn>
         {/* {settingsOptions.map((setting, i) => (
           <FadeIn
             transitionDelay={`0.${i + 1}`}

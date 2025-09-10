@@ -1,0 +1,65 @@
+.CIT-loader svg {
+  margin: 0 auto;
+  display: block;
+}
+
+.CIT-loader {
+  padding: 50px;
+  background: #f0f0f0;
+}
+.CIT-loader__asset {
+  overflow: visible;
+}
+.CIT-loader__pig {
+  fill: #00b3be;
+  animation: fat-pig 1.6s ease-in-out infinite;
+}
+.CIT-loader__coin {
+  fill: #ffcb4f;
+  animation: coin-drop 1.6s ease-in-out infinite;
+  z-index: 1000;
+}
+.CIT-loader__label {
+  text-align: center;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: #00b3be;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+@keyframes coin-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  60% {
+    opacity: 1;
+  }
+  70% {
+    transform: translateY(250px);
+  }
+  100% {
+    transform: translateY(250px);
+  }
+}
+@keyframes fat-pig {
+  0% {
+    transform: scale(1, 1) translateX(0) translateY(0);
+  }
+  60% {
+    transform: scale(1, 1) translateX(0) translateY(0);
+  }
+  70% {
+    transform: scale(1.05, 1.05) translateX(-16px) translateY(-16px);
+  }
+  80% {
+    transform: scale(1, 1) translateX(0) translateY(0);
+  }
+  90% {
+    transform: scale(1.05, 1.05) translateX(-16px) translateY(-16px);
+  }
+  100% {
+    transform: scale(1, 1) translateX(0) translateY(0);
+  }
+}

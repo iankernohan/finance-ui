@@ -4,6 +4,7 @@ import { getLittleGuy } from "../../utils/helpers";
 import { Outlet, useLocation } from "react-router";
 import FadeIn from "../UI/FadeIn";
 import SettingTab from "../Settings/SettingTab";
+import Loader from "../UI/Loader";
 
 export default function Profile() {
   const location = useLocation();
@@ -21,39 +22,13 @@ export default function Profile() {
     <Box
       sx={{
         padding: "1rem",
+        paddingTop: "5rem",
         height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
       }}
     >
-      <FadeIn
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h1
-          style={{
-            fontWeight: 200,
-            margin: "1rem 2rem",
-            marginBottom: "3rem",
-            fontSize: "2.5rem",
-            fontStyle: "italic",
-          }}
-        >
-          {`${getGreeting()}, Ian.`}
-        </h1>
-        <img
-          style={{
-            width: 100,
-            // margin: "auto",
-            // position: "absolute",
-            // right: 40,
-            // top: 60,
-          }}
-          src={getLittleGuy(1)}
-        />
-      </FadeIn>
-
       {location.pathname.endsWith("profile") ? (
         <>
           <Box
@@ -79,10 +54,42 @@ export default function Profile() {
           </Box>
         </>
       ) : (
-        <Box>
+        <Box sx={{ overflow: "auto" }}>
           <Outlet />
         </Box>
       )}
+      <FadeIn
+        transitionDelay="0.5"
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          boxShadow: "0 0 10px 10px var(--mui-palette-background-default)",
+          width: "100dvw",
+          translate: "-1rem 0",
+          padding: "1rem",
+        }}
+      >
+        <h1
+          style={{
+            fontWeight: 200,
+            fontSize: "2.5rem",
+            fontStyle: "italic",
+          }}
+        >
+          {`${getGreeting()}, Ian.`}
+        </h1>
+        <img
+          style={{
+            width: 100,
+            // margin: "auto",
+            // position: "absolute",
+            // right: 40,
+            // top: 60,
+          }}
+          src={getLittleGuy(1)}
+        />
+      </FadeIn>
     </Box>
   );
 }

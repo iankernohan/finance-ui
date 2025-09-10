@@ -7,6 +7,7 @@ import FadeIn from "../UI/FadeIn";
 import BackButton from "../UI/BackButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import RecurringTransactionDetails from "../Profile/RecurringTransactionsDetails";
+import Loader from "../UI/Loader";
 
 export default function RecurringTransactions() {
   const theme = useTheme();
@@ -16,6 +17,8 @@ export default function RecurringTransactions() {
   const setRecurringTransactions = useStore(
     (state) => state.setRecurringTransactions
   );
+  const loading = useStore((state) => state.loading);
+  const setLoading = useStore((state) => state.setLoading);
   const [openDetails, setOpenDetails] = useState(false);
 
   function handleClick() {
@@ -28,12 +31,13 @@ export default function RecurringTransactions() {
 
   useEffect(() => {
     async function fetchRecurringTransactions() {
+      setLoading(true);
       const res = await getRecurringTransactions();
-      console.log(res);
+      setLoading(false);
       setRecurringTransactions(res);
     }
     if (recurringTransactions.length === 0) fetchRecurringTransactions();
-  }, [setRecurringTransactions, recurringTransactions.length]);
+  }, [setRecurringTransactions, recurringTransactions.length, setLoading]);
 
   return (
     <Box
@@ -41,55 +45,66 @@ export default function RecurringTransactions() {
         display: "flex",
         flexDirection: "column",
         gap: "2rem",
-        padding: "1rem",
-        width: "90%",
-        margin: "0 auto",
         position: "relative",
       }}
     >
       <FadeIn>
         <BackButton top={22} />
-        <h2 style={{ textAlign: "center", fontWeight: 300, fontSize: "2rem" }}>
+        <h2
+          style={{
+            textAlign: "center",
+            fontWeight: 300,
+            fontSize: "2rem",
+            width: "80%",
+            margin: "auto",
+          }}
+        >
           Recurring Transactions
         </h2>
       </FadeIn>
-      {recurringTransactions.map((rt, i) => {
-        return (
-          <FadeIn
-            key={rt.id}
-            sx={{
-              display: "grid",
-              alignItems: "center",
-              gridTemplateColumns: "30% 30% auto",
-              gap: "1rem",
-              transitionDelay: `0.${i + 1}s`,
-            }}
-          >
-            <p>{formatMoney(rt.amount)}</p>
-            <p>{rt.intervalDays} days</p>
-            <Box
-              onClick={handleClick}
+      {loading ? (
+        <Loader width="100px" height="100px" style={{ margin: "auto" }} />
+      ) : (
+        recurringTransactions.map((rt, i) => {
+          return (
+            <FadeIn
+              key={rt.id}
               sx={{
                 display: "grid",
-                placeItems: "center",
-                borderRadius: "5px",
-                justifySelf: "end",
-                background: theme.palette.background.paper,
-                padding: "0.25rem",
+                alignItems: "center",
+                gridTemplateColumns: "30% 30% auto",
+                gap: "1rem",
+                transitionDelay: `0.${i + 1}s`,
+                width: "90%",
+                margin: "auto",
               }}
             >
-              <MoreVertIcon />
-            </Box>
-            {openDetails && (
-              <RecurringTransactionDetails
-                transaction={rt}
-                handleClose={handleClose}
-                open={openDetails}
-              />
-            )}
-          </FadeIn>
-        );
-      })}
+              <p>{formatMoney(rt.amount)}</p>
+              <p>{rt.intervalDays} days</p>
+              <Box
+                onClick={handleClick}
+                sx={{
+                  display: "grid",
+                  placeItems: "center",
+                  borderRadius: "5px",
+                  justifySelf: "end",
+                  background: theme.palette.background.paper,
+                  padding: "0.25rem",
+                }}
+              >
+                <MoreVertIcon />
+              </Box>
+              {openDetails && (
+                <RecurringTransactionDetails
+                  transaction={rt}
+                  handleClose={handleClose}
+                  open={openDetails}
+                />
+              )}
+            </FadeIn>
+          );
+        })
+      )}
     </Box>
   );
 }
