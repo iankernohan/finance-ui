@@ -4,7 +4,6 @@ import { getLittleGuy } from "../../utils/helpers";
 import { Outlet, useLocation } from "react-router";
 import FadeIn from "../UI/FadeIn";
 import SettingTab from "../Settings/SettingTab";
-import Loader from "../UI/Loader";
 
 export default function Profile() {
   const location = useLocation();

@@ -18,6 +18,7 @@ type Store = {
   setCategories: (categories: Category[]) => void;
   budgets: Budget[];
   setBudgets: (budgets: Budget[]) => void;
+  updateBudget: (budget: Budget) => void;
   recurringTransactions: RecurringTransaction[];
   setRecurringTransactions: (
     RecurringTransactions: RecurringTransaction[]
@@ -44,6 +45,10 @@ export const useStore = create<Store>((set) => ({
   setCategories: (categories: Category[]) => set({ categories }),
   budgets: [],
   setBudgets: (budgets: Budget[]) => set({ budgets }),
+  updateBudget: (budget: Budget) =>
+    set((state) => ({
+      budgets: state.budgets.map((b) => (b.id === budget.id ? budget : b)),
+    })),
   recurringTransactions: [],
   setRecurringTransactions: (recurringTransactions) =>
     set({ recurringTransactions }),

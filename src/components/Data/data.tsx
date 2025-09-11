@@ -1,4 +1,5 @@
 import type {
+  Budget,
   RecurringTransaction,
   Transaction,
 } from "../../Types/Transaction";
@@ -80,6 +81,22 @@ export async function getBudgets() {
   const res = await fetch(`${base}/GetAllBudgets`);
   const data = await res.json();
   return data;
+}
+
+export async function updateBudget(id: number, limit: number) {
+  const res = await fetch(`${base}/UpdateBudget`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id, limit }),
+  });
+  if (!res.ok) {
+    return null;
+  }
+  console.log(res);
+  const result: Budget = await res.json();
+  return result;
 }
 
 export async function addRecurringTransaction(data: RecurringTransaction) {

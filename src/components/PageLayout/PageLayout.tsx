@@ -20,7 +20,6 @@ export default function PageLayout() {
       const transactions = await getTransactions();
       const categories = await getCategories();
       const budgets = await getBudgets();
-      console.log(budgets);
       setTransactions(transactions);
       setCategories(categories);
       setBudgets(budgets);
