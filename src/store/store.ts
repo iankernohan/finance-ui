@@ -26,6 +26,7 @@ type Store = {
   profileOptions: SettingOption[];
   loading: boolean;
   setLoading: (val: boolean) => void;
+  incomeIds: number[];
 };
 
 export const useStore = create<Store>((set) => ({
@@ -62,4 +63,5 @@ export const useStore = create<Store>((set) => ({
   ],
   loading: false,
   setLoading: (val) => set({ loading: val }),
+  incomeIds: [6, 7],
 }));

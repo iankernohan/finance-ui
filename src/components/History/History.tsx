@@ -47,8 +47,8 @@ export default function History() {
     return transactions.length ? (
       <>
         {reversedTransactions.map((t, i) => (
-          <FadeIn transitionDelay={`${i < numToDelay ? i / 20 : 0}`}>
-            <Transaction key={t.id} transaction={t} />
+          <FadeIn key={t.id} transitionDelay={`${i < numToDelay ? i / 20 : 0}`}>
+            <Transaction transaction={t} />
           </FadeIn>
         ))}
       </>
