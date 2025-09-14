@@ -45,8 +45,11 @@ export default function BudgetBuilder() {
         alignItems: "center",
       }}
     >
-      <h1 style={{ fontWeight: 200 }}>Monthly Budget</h1>
-      <Box
+      <FadeIn>
+        <h1 style={{ fontWeight: 200 }}>Monthly Budget</h1>
+      </FadeIn>
+      <FadeIn
+        transitionDelay="0.1"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -83,10 +86,10 @@ export default function BudgetBuilder() {
             </p>
           </>
         )}
-      </Box>
+      </FadeIn>
       <Box sx={{ width: "80%" }}>
         {budgets.map((b, i) => (
-          <FadeIn transitionDelay={`${i / 20}`} key={b.id}>
+          <FadeIn transitionDelay={`${i / 20 + 0.05}`} key={b.id}>
             <BudgetTile budget={b} />
           </FadeIn>
         ))}
