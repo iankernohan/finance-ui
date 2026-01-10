@@ -5,7 +5,13 @@ import { Box, useTheme } from "@mui/material";
 import Header from "../Header/Header";
 import { useEffect } from "react";
 import { useStore } from "../../store/store";
-import { getBudgets, getCategories, getTransactions } from "../Data/data";
+import {
+  getBankTransactions,
+  getBudgets,
+  getCategories,
+  getTransactions,
+} from "../Data/data";
+// import PlaidConnect from "../Data/plaidConnection";
 
 export default function PageLayout() {
   const theme = useTheme();
@@ -28,6 +34,10 @@ export default function PageLayout() {
     getStuff();
   }, [setTransactions, setCategories, setLoading, setBudgets]);
 
+  useEffect(() => {
+    getBankTransactions("test-prod");
+  }, []);
+
   return (
     <Box
       className="page-layout"
@@ -39,6 +49,7 @@ export default function PageLayout() {
       <Header />
       <Box className="outlet">
         <Outlet />
+        {/* <PlaidConnect userId="test-prod" /> */}
       </Box>
       {/* <NavbarMobile /> */}
     </Box>

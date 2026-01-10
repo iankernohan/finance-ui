@@ -4,8 +4,8 @@ import type {
   Transaction,
 } from "../../Types/Transaction";
 
-const base = "https://finance-api-0eu8.onrender.com";
-// const base = "http://localhost:5028";
+// const base = "https://finance-api-0eu8.onrender.com";
+const base = "http://localhost:5028";
 
 export async function getTransactions() {
   const res = await fetch(`${base}/getTransactions`);
@@ -151,3 +151,39 @@ export async function updateRecurringTransaction(
   const result: RecurringTransaction = await res.json();
   return result;
 }
+
+// --------------------------------------PLAID---------------------------------------- //
+
+export async function exchangePublicToken(
+  public_token: string,
+  userId: string
+) {
+  await fetch(`${base}/plaid/exchange_public_token`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ publicToken: public_token, userId }),
+  });
+}
+
+export async function fetchToken(userId: string) {
+  const res = await fetch(`${base}/plaid/create_link_token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ userId }),
+  });
+  const data = await res.json();
+  return data.link_token;
+}
+
+export async function getBankTransactions(userId: string) {
+  const res = await fetch(`${base}/plaid/transactions/${userId}`, {
+    method: "GET",
+  });
+  const data = await res.json();
+  console.log(data);
+  return data;
+}
+
+// --------------------------------------PLAID---------------------------------------- //
