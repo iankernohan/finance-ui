@@ -186,4 +186,39 @@ export async function getBankTransactions(userId: string) {
   return data;
 }
 
+export async function getCategorizedTransactions({
+  userId,
+  page = 1,
+  pageSize = 20,
+}: {
+  userId: string;
+  page?: number;
+  pageSize?: number;
+}) {
+  const transactions = await fetch(`${base}/plaid/categorizedTransactions`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ userId, page, pageSize }),
+  });
+  const data = await transactions.json();
+  return data;
+}
+
+export async function getTransactionsByCategory(
+  userId: string,
+  categoryNames?: string[]
+) {
+  const res = await fetch(`${base}/plaid/TransactionsByCategory`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ userId, categoryNames }),
+  });
+  const data = await res.json();
+  return data;
+}
+
 // --------------------------------------PLAID---------------------------------------- //

@@ -8,6 +8,7 @@ import MonthPicker from "../Graphs/MonthPicker";
 import { useState } from "react";
 import { getTransactionsForMonth } from "../../utils/helpers";
 import FadeIn from "../UI/FadeIn";
+import TransactionPieChart from "./Plaid/PieChart";
 
 export default function Home() {
   const [month, setMonth] = useState(new Date().getMonth());
@@ -45,7 +46,7 @@ export default function Home() {
 
   return (
     <Box
-      className="home page"
+      className="home-page"
       sx={{
         display: "flex",
         justifyContent: "center",
@@ -53,6 +54,7 @@ export default function Home() {
         alignItems: "center",
       }}
     >
+      <TransactionPieChart />
       <FadeIn>
         <MonthPicker
           month={month}

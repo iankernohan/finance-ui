@@ -34,9 +34,9 @@ export default function PageLayout() {
     getStuff();
   }, [setTransactions, setCategories, setLoading, setBudgets]);
 
-  useEffect(() => {
-    getBankTransactions("test-prod");
-  }, []);
+  // useEffect(() => {
+  //   getBankTransactions("test-prod");
+  // }, []);
 
   return (
     <Box
