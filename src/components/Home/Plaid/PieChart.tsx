@@ -1,25 +1,6 @@
 import { PieChart } from "@mui/x-charts/PieChart";
-import { useEffect, useState } from "react";
-import { getTransactionsByCategory } from "../../Data/data";
 
 export default function TransactionPieChart() {
-  const [transactionsByCategory, setTransactionsByCategory] =
-    useState<{ label: string; value: any }[]>();
-
-  async function handleGetTransactionsByCategory() {
-    const transactions = await getTransactionsByCategory("prod");
-    console.log(transactions);
-    const data = Object.keys(transactions).map((t) => ({
-      label: t,
-      value: transactions[t].length,
-    }));
-    setTransactionsByCategory(data);
-  }
-
-  useEffect(() => {
-    handleGetTransactionsByCategory();
-  }, []);
-
   return (
     <PieChart
       height={500}
@@ -33,13 +14,13 @@ export default function TransactionPieChart() {
       //   "#000c19",
       //   "#000",
       // ]}
-      series={[
-        {
-          startAngle: -90,
-          endAngle: 90,
-          data: transactionsByCategory ?? [],
-        },
-      ]}
+      // series={[
+      //   {
+      //     startAngle: -90,
+      //     endAngle: 90,
+      //     data: transactionsByCategory ?? [],
+      //   },
+      // ]}
       slotProps={{
         legend: {
           // https://mui.com/x/react-charts/legend/

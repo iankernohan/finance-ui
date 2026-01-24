@@ -3,6 +3,7 @@ import type {
   RecurringTransaction,
   Transaction,
 } from "../../Types/Transaction";
+import { supabase } from "./supabase";
 
 // const base = "https://finance-api-0eu8.onrender.com";
 const base = "http://localhost:5028";
@@ -47,7 +48,7 @@ export async function updateTransaction(
     dateCreated: Date;
     categoryId: number;
     subCategoryId: number | null;
-  }
+  },
 ) {
   const res = await fetch(`${base}/updateTransaction/${id}`, {
     method: "PUT",
@@ -136,7 +137,7 @@ export async function deleteRecurringTransaction(id: number) {
 
 export async function updateRecurringTransaction(
   id: number,
-  transaction: RecurringTransaction
+  transaction: RecurringTransaction,
 ) {
   const res = await fetch(`${base}/UpdateRecurringTransaction/${id}`, {
     method: "PUT",
@@ -156,7 +157,7 @@ export async function updateRecurringTransaction(
 
 export async function exchangePublicToken(
   public_token: string,
-  userId: string
+  userId: string,
 ) {
   await fetch(`${base}/plaid/exchange_public_token`, {
     method: "POST",
@@ -206,16 +207,17 @@ export async function getCategorizedTransactions({
   return data;
 }
 
-export async function getTransactionsByCategory(
-  userId: string,
-  categoryNames?: string[]
-) {
+export async function getTransactionsByCategory(categoryNames?: string[]) {
+  const session = await supabase.auth.getSession();
+  const token = session.data.session?.access_token;
+
   const res = await fetch(`${base}/plaid/TransactionsByCategory`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ userId, categoryNames }),
+    body: JSON.stringify({ categoryNames }),
   });
   const data = await res.json();
   return data;

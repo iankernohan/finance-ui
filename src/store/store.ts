@@ -6,6 +6,7 @@ import type {
   Transaction,
 } from "../Types/Transaction";
 import type { SettingOption } from "../Types/Settings";
+import type { User } from "@supabase/supabase-js";
 
 type Store = {
   darkMode: boolean;
@@ -21,12 +22,14 @@ type Store = {
   updateBudget: (budget: Budget) => void;
   recurringTransactions: RecurringTransaction[];
   setRecurringTransactions: (
-    RecurringTransactions: RecurringTransaction[]
+    RecurringTransactions: RecurringTransaction[],
   ) => void;
   profileOptions: SettingOption[];
   loading: boolean;
   setLoading: (val: boolean) => void;
   incomeIds: number[];
+  user: User | null;
+  setUser: (user: User | null) => void;
 };
 
 export const useStore = create<Store>((set) => ({
@@ -40,7 +43,7 @@ export const useStore = create<Store>((set) => ({
   updateTransaction: (transaction: Transaction) =>
     set((state) => ({
       transactions: state.transactions.map((t) =>
-        t.id === transaction.id ? transaction : t
+        t.id === transaction.id ? transaction : t,
       ),
     })),
   setCategories: (categories: Category[]) => set({ categories }),
@@ -64,4 +67,6 @@ export const useStore = create<Store>((set) => ({
   loading: false,
   setLoading: (val) => set({ loading: val }),
   incomeIds: [6, 7],
+  user: null,
+  setUser: (user) => set({ user }),
 }));
