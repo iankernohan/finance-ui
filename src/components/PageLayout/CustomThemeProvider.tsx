@@ -16,19 +16,20 @@ export const CustomThemeProvider = ({
   const darkMode = useStore((state) => state.darkMode);
   const toggleTheme = useStore((state) => state.toggleDarkMode);
 
+  // Slate Grey #404F68 · Silver Grey #C4C4C4 · Steel Grey #777777 · Charcoal Grey #333333 · Granite Grey #4A4A4A
   const getTheme = (mode: "light" | "dark") =>
     createTheme({
       palette: {
         mode,
         primary: {
-          main: mode === "dark" ? "#6B21A8" : "#2563EB",
+          main: mode === "dark" ? "#00ADB5" : "#2563EB",
         },
         secondary: {
-          main: mode === "dark" ? "#9333EA" : "#60A5FA",
+          main: mode === "dark" ? "#5c5b58" : "#60A5FA",
         },
         background: {
-          default: mode === "dark" ? "#0D0B1D" : "#F9FAFB",
-          paper: mode === "dark" ? "#1A132F" : "#FFFFFF",
+          default: mode === "dark" ? "#171614" : "#F9FAFB",
+          paper: mode === "dark" ? "#1f2224" : "#FFFFFF",
         },
         text: {
           primary: mode === "dark" ? "#EDE9FE" : "#1E293B",

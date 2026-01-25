@@ -3,8 +3,8 @@ import { PieChart } from "@mui/x-charts/PieChart";
 export default function TransactionPieChart() {
   return (
     <PieChart
-      height={500}
-      width={500}
+      height={200}
+      width={200}
       // colors={[
       //   "#006ee6",
       //   "#0055b3",

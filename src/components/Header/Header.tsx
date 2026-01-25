@@ -14,19 +14,15 @@ export default function Header() {
     <Box className="header">
       <NavLink className="link" to="/">
         <HomeIcon />
-        <Typography>Home</Typography>
       </NavLink>
       <NavLink className="link" to="/history">
         <HistoryIcon />
-        <Typography>History</Typography>
       </NavLink>
       <NavLink className="link" to="/budget/budgetBuilder">
         <SavingsIcon />
-        <Typography>Budget</Typography>
       </NavLink>
       <NavLink className="link" to="/profile">
         <AccountCircleIcon />
-        <Typography>Me</Typography>
       </NavLink>
     </Box>
   );

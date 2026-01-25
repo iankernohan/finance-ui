@@ -1,25 +1,38 @@
-import { Outlet } from "react-router";
+import { Link, Outlet, useNavigate } from "react-router";
 
-import { Box, useTheme } from "@mui/material";
+import { Alert, Box, Snackbar, useTheme } from "@mui/material";
 // import NavbarMobile from "../NavbarMobile/NavbarMobile";
 import Header from "../Header/Header";
 import { useEffect, useState } from "react";
 import { useStore } from "../../store/store";
 import {
+  getPlaidTransactions,
   getBudgets,
   getCategories,
   getTransactions,
+  getUncategorizedTransactions,
   getTransactionsByCategory,
 } from "../Data/data";
+import { ArrowRightIcon } from "@mui/x-date-pickers";
 import { supabase } from "../Data/supabase";
+import PageLoader from "../UI/PageLoader";
 // import PlaidConnect from "../Data/plaidConnection";
 
 export default function PageLayout() {
   const theme = useTheme();
+  const navigate = useNavigate();
   const setTransactions = useStore((state) => state.setTransactions);
   const setCategories = useStore((state) => state.setCategories);
   const setBudgets = useStore((state) => state.setBudgets);
+  const loading = useStore((state) => state.loading);
   const setLoading = useStore((state) => state.setLoading);
+  const setUncategorizedTransactions = useStore(
+    (state) => state.setUncategorizedTransactions,
+  );
+  const uncategorizedTransactions = useStore(
+    (state) => state.uncategorizedTransactions,
+  );
+  const [snackBar, setSnackBar] = useState(false);
   const user = useStore((state) => state.user);
   const setUser = useStore((state) => state.setUser);
 
@@ -33,7 +46,7 @@ export default function PageLayout() {
     gatherUser();
 
     const { data } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+      // setUser(session?.user ?? null);
     });
 
     return () => {
@@ -44,9 +57,15 @@ export default function PageLayout() {
 
   useEffect(() => {
     async function getStuff() {
-      if (!user) return;
+      if (!user) {
+        navigate("/login");
+        return;
+      }
+      navigate("/");
       setLoading(true);
-      const transactions = await getTransactions();
+      const transactions = await getPlaidTransactions("prod");
+      const uncategorizedTransactions =
+        await getUncategorizedTransactions("prod");
       const categories = await getCategories();
       const budgets = await getBudgets();
       const transactionsByCategory = await getTransactionsByCategory();
@@ -54,10 +73,33 @@ export default function PageLayout() {
       setTransactions(transactions);
       setCategories(categories);
       setBudgets(budgets);
-      setLoading(false);
+      setUncategorizedTransactions(uncategorizedTransactions);
+      // setLoading(false);
     }
     getStuff();
-  }, [setTransactions, setCategories, setLoading, setBudgets, user]);
+  }, [
+    setTransactions,
+    setCategories,
+    setLoading,
+    setBudgets,
+    setUncategorizedTransactions,
+    user,
+    navigate,
+  ]);
+
+  useEffect(() => {
+    if (uncategorizedTransactions.length > 0) {
+      setSnackBar(true);
+    }
+  }, [uncategorizedTransactions]);
+
+  function handleCloseSnackbar() {
+    setSnackBar(false);
+  }
+
+  // useEffect(() => {
+  //   getBankTransactions("test-prod");
+  // }, []);
 
   return (
     <Box
@@ -67,12 +109,40 @@ export default function PageLayout() {
       }}
       component={"main"}
     >
+      {loading && <PageLoader />}
       <Header />
       <Box className="outlet">
         <Outlet />
         {/* <PlaidConnect userId="test-prod" /> */}
       </Box>
       {/* <NavbarMobile /> */}
+      <Snackbar
+        open={snackBar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          variant="filled"
+          sx={{
+            width: "100%",
+            "& .MuiAlert-message": {
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            },
+          }}
+        >
+          <Box>
+            You have {uncategorizedTransactions.length} uncategorized
+            transactions!
+          </Box>
+          <Link to={"/"}>
+            <ArrowRightIcon />
+          </Link>
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

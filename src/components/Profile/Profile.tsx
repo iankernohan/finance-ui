@@ -1,12 +1,14 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useStore } from "../../store/store";
 import { getLittleGuy } from "../../utils/helpers";
-import { Outlet, useLocation } from "react-router";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import FadeIn from "../UI/FadeIn";
 import SettingTab from "../Settings/SettingTab";
+import { supabase } from "../Data/supabase";
 
 export default function Profile() {
   const location = useLocation();
+  const navigate = useNavigate();
   function getGreeting() {
     const now = new Date();
     const hour = now.getHours();
@@ -16,6 +18,18 @@ export default function Profile() {
   }
 
   const options = useStore((state) => state.profileOptions);
+  const setLoading = useStore((state) => state.setLoading);
+
+  async function handleSignout() {
+    setLoading(true);
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Error logging out: ", error);
+    } else {
+      navigate("/login");
+    }
+    setLoading(false);
+  }
 
   return (
     <Box
@@ -50,6 +64,20 @@ export default function Profile() {
                 <SettingTab setting={option} key={option.name} />
               </FadeIn>
             ))}
+            <Button
+              sx={{ marginTop: "1rem" }}
+              variant="outlined"
+              onClick={handleSignout}
+            >
+              sign out
+            </Button>
+            {/* <button
+              onClick={() =>
+                supabase.auth.refreshSession().then((d) => console.log(d))
+              }
+            >
+              refresh
+            </button> */}
           </Box>
         </>
       ) : (

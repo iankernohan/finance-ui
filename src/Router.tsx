@@ -8,6 +8,8 @@ import BudgetBuilder from "./components/Budget/BudgetBuilder";
 import Settings from "./components/Settings/Settings";
 import RecurringTransactions from "./components/Settings/RecurringTransactions";
 import Statistics from "./components/Settings/Statistics";
+import { Login } from "./components/Auth/Login";
+import SignUp from "./components/Auth/SignUp";
 
 export const router = createBrowserRouter(
   [
@@ -18,6 +20,14 @@ export const router = createBrowserRouter(
         {
           index: true,
           element: <Home />,
+        },
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "register",
+          element: <SignUp />,
         },
         {
           path: "history",
@@ -58,5 +68,5 @@ export const router = createBrowserRouter(
       ],
     },
   ],
-  { basename: "/finance-ui/" }
+  { basename: "/finance-ui/" },
 );

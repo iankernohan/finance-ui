@@ -13,11 +13,25 @@ body,
   padding: 0;
   height: 100dvh;
   overflow: hidden;
-  --navbar-height: 65px;
+  --navbar-height: 40px;
 }
 
 a {
   color: inherit;
+}
+
+input {
+  width: 100%;
+  padding: 10px 19px;
+  font-size: 1rem;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 100px;
+}
+
+input:focus {
+  border: none;
+  outline: 1px solid #00adb5;
 }
 
 .page-layout {

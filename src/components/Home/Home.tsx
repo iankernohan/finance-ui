@@ -8,17 +8,15 @@ import MonthPicker from "../Graphs/MonthPicker";
 import { useState } from "react";
 import { getTransactionsForMonth } from "../../utils/helpers";
 import FadeIn from "../UI/FadeIn";
-import TransactionPieChart from "./Plaid/PieChart";
-import { supabase } from "../Data/supabase";
-import { Login } from "../Auth/Login";
+import LittleGuy from "../../assets/limbless-guy.png";
+import Parcel from "../UI/Parcel";
 
 export default function Home() {
   const [month, setMonth] = useState(new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear());
-  const user = useStore((state) => state.user);
 
-  const allransactions = useStore((state) => state.transactions);
-  const transactions = getTransactionsForMonth(allransactions, month, year);
+  const allTransactions = useStore((state) => state.transactions);
+  const transactions = getTransactionsForMonth(allTransactions, month, year);
   const expenses = transactions.filter(
     (t) => t.category.transactionType === "Expense",
   );
@@ -57,41 +55,45 @@ export default function Home() {
         alignItems: "center",
       }}
     >
-      {!user ? (
-        <Login />
-      ) : (
-        <>
-          <button onClick={() => supabase.auth.signOut()}>sign out</button>
-          <button
-            onClick={() =>
-              supabase.auth.refreshSession().then((d) => console.log(d))
-            }
-          >
-            refresh
-          </button>
-
-          {/* <TransactionPieChart /> */}
-          <FadeIn>
-            <MonthPicker
-              month={month}
-              year={year}
-              increment={handleIncrementMonth}
-              decrement={handleDecrementMonth}
-            />
-          </FadeIn>
-          <FadeIn>
-            <TotalAmount month={month} year={year} difference={difference} />
-          </FadeIn>
-          <FadeIn>
-            <hr />
-          </FadeIn>
-          <Income income={income} incomeTotal={incomeTotal} />
-          <FadeIn>
-            <hr style={{ margin: "2rem 0" }} />
-          </FadeIn>
-          <Expenses expenses={expenses} expenseTotal={expenseTotal} />
-        </>
-      )}
+      {/* <TransactionPieChart /> */}
+      <Parcel
+        sx={{
+          margin: "3rem",
+          width: "300px",
+          height: "150px",
+        }}
+      >
+        <img
+          style={{
+            width: "80px",
+            height: "80px",
+            position: "absolute",
+            bottom: "-10px",
+            left: "0px",
+            zIndex: 0,
+          }}
+          src={LittleGuy}
+        />
+      </Parcel>
+      <FadeIn>
+        <MonthPicker
+          month={month}
+          year={year}
+          increment={handleIncrementMonth}
+          decrement={handleDecrementMonth}
+        />
+      </FadeIn>
+      <FadeIn>
+        <TotalAmount month={month} year={year} difference={difference} />
+      </FadeIn>
+      <FadeIn>
+        <hr />
+      </FadeIn>
+      <Income income={income} incomeTotal={incomeTotal} />
+      <FadeIn>
+        <hr style={{ margin: "2rem 0" }} />
+      </FadeIn>
+      <Expenses expenses={expenses} expenseTotal={expenseTotal} />\
     </Box>
   );
 }

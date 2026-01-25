@@ -6,6 +6,7 @@ import type {
   Transaction,
 } from "../Types/Transaction";
 import type { SettingOption } from "../Types/Settings";
+import type { PlaidTransaction } from "../Types/PlaidTransactions";
 import type { User } from "@supabase/supabase-js";
 
 type Store = {
@@ -28,6 +29,8 @@ type Store = {
   loading: boolean;
   setLoading: (val: boolean) => void;
   incomeIds: number[];
+  uncategorizedTransactions: PlaidTransaction[]
+  setUncategorizedTransactions: (transactions: PlaidTransaction[]) => void;
   user: User | null;
   setUser: (user: User | null) => void;
 };
@@ -67,6 +70,9 @@ export const useStore = create<Store>((set) => ({
   loading: false,
   setLoading: (val) => set({ loading: val }),
   incomeIds: [6, 7],
+  uncategorizedTransactions: [],
+  setUncategorizedTransactions: (transactions: PlaidTransaction[]) =>
+    set({ uncategorizedTransactions: transactions }),
   user: null,
   setUser: (user) => set({ user }),
 }));
