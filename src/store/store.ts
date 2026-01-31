@@ -62,6 +62,7 @@ export const useStore = create<Store>((set) => ({
     set({ recurringTransactions }),
   profileOptions: [
     { name: "Settings", path: "settings" },
+    { name: "Category Rules", path: "categoryRules" },
     {
       name: "Recurring Transactions",
       path: "recurring-transactions",

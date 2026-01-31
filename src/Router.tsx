@@ -8,6 +8,7 @@ import BudgetBuilder from "./components/Budget/BudgetBuilder";
 import Settings from "./components/Settings/Settings";
 import RecurringTransactions from "./components/Settings/RecurringTransactions";
 import Statistics from "./components/Settings/Statistics";
+import CategoryRules from "./components/Settings/CategoryRules";
 import { Login } from "./components/Auth/Login";
 import SignUp from "./components/Auth/SignUp";
 import ProtectedRoute from "./components/UI/ProtectedRoute";
@@ -48,6 +49,10 @@ export const router = createBrowserRouter(
                 {
                   path: "settings",
                   element: <Settings />,
+                },
+                {
+                  path: "categoryRules",
+                  element: <CategoryRules />,
                 },
                 {
                   path: "recurring-transactions",

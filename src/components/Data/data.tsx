@@ -1,3 +1,4 @@
+import type { CategoryRules } from "../../Types/PlaidTransactions";
 import type {
   Budget,
   Filters,
@@ -59,9 +60,21 @@ export async function getUncategorizedTransactions(userId: string) {
   return data;
 }
 
-export async function getCategoryRules() {
+export async function getCategoryRules(): Promise<CategoryRules[]> {
   const rules = await summon(`${base}/Transactions/GetCategoryRules`);
   const data = await rules.json();
+  return data;
+}
+
+export async function updateCategoryRule(
+  id: number,
+  name: string,
+  categoryId: number,
+) {
+  const rule = await summon(`${base}/Transactions/UpdateCategoryRule`, {
+    body: JSON.stringify({ id, name, categoryId }),
+  });
+  const data = await rule.json();
   return data;
 }
 

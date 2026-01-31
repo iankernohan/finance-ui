@@ -35,7 +35,7 @@ export default function Profile() {
     <Box
       sx={{
         padding: "1rem",
-        paddingTop: "5rem",
+        paddingTop: "2rem",
         height: "100%",
         display: "flex",
         flexDirection: "column",
@@ -50,7 +50,7 @@ export default function Profile() {
               display: "flex",
               placeItems: "center",
               flexDirection: "column",
-              gap: "1rem",
+              gap: "0.5rem",
               justifyContent: "center",
               width: "75%",
             }}
@@ -95,12 +95,13 @@ export default function Profile() {
           width: "100dvw",
           translate: "-1rem 0",
           padding: "1rem",
+          paddingBottom: "0",
         }}
       >
         <h1
           style={{
             fontWeight: 200,
-            fontSize: "2.5rem",
+            fontSize: "1.5rem",
             fontStyle: "italic",
           }}
         >
@@ -108,7 +109,7 @@ export default function Profile() {
         </h1>
         <img
           style={{
-            width: 100,
+            width: 80,
             // margin: "auto",
             // position: "absolute",
             // right: 40,

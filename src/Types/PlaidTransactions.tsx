@@ -16,7 +16,7 @@ export interface Category {
   id: number;
   name: string;
   subCategories?: unknown[];
-  transactionType?: string; 
+  transactionType?: string;
 }
 
 export interface PlaidTransaction {
@@ -35,5 +35,12 @@ export interface PlaidTransaction {
   categoryIconUrl?: string | null;
   merchantEntityId?: string | null;
   categoryId?: number | null;
+  category?: Category | null;
+}
+
+export interface CategoryRules {
+  id: number;
+  name: string;
+  categoryId: number;
   category?: Category | null;
 }
