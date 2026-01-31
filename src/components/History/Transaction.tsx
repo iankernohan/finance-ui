@@ -3,8 +3,11 @@ import type { Transaction } from "../../Types/Transaction";
 import { useState } from "react";
 import TransactionDetails from "./TransactionDetails";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import LoopIcon from "@mui/icons-material/Loop";
 import { useStore } from "../../store/store";
+import CategorySetter from "./CategorySetter";
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+
+import { formatMoney, iconMap } from "../../utils/helpers";
 interface TransactionProps {
   transaction: Transaction;
 }
@@ -12,7 +15,10 @@ interface TransactionProps {
 export default function Transaction({ transaction }: TransactionProps) {
   const theme = useTheme();
   const [openDetails, setOpenDetails] = useState(false);
+  const [openCategorySetter, setOpenCategorySetter] = useState(false);
   const loading = useStore((state) => state.loading);
+
+  const NAME_LENGTH = 13;
 
   function handleClick() {
     setOpenDetails(true);
@@ -20,97 +26,93 @@ export default function Transaction({ transaction }: TransactionProps) {
 
   function handleClose() {
     setOpenDetails(false);
+    setOpenCategorySetter(false);
+  }
+
+  function getName(transaction: Transaction) {
+    let name: string;
+    if (!transaction?.merchantName) {
+      name = transaction.name;
+    } else {
+      name = transaction.merchantName;
+    }
+
+    return name.length > NAME_LENGTH ? name.slice(0, 13) + "..." : name;
+  }
+
+  function handleOpenCategorySetter() {
+    if (transaction?.category) return;
+    setOpenCategorySetter(true);
+  }
+
+  function getIcon(category?: string) {
+    if (category) return iconMap[category];
+    return <QuestionMarkIcon />;
   }
 
   return (
     <Box
       key={transaction.id}
       sx={{
-        display: "grid",
-        gridTemplateColumns: "15% 25% 45% 15%",
-        borderBottom: "1px solid gray",
+        display: "flex",
         padding: "1.5rem 1rem",
+        justifyContent: "space-between",
         alignItems: "center",
       }}
+      onClick={handleOpenCategorySetter}
     >
-      {loading ? (
-        <>
-          <Skeleton width={"80%"} sx={{ transform: "none" }} />
-          <Skeleton width={"80%"} sx={{ transform: "none" }} />
-          <Skeleton width={"80%"} sx={{ transform: "none" }} />
-          <Skeleton width={"80%"} sx={{ transform: "none" }} />
-        </>
-      ) : (
-        <>
-          <Box>
-            <Typography
-              sx={{ textDecoration: "underline" }}
-              fontSize={"0.75rem"}
-              color="text.primary"
-            >
-              {new Date(transaction.dateCreated).getMonth() + 1}/
-              {new Date(transaction.dateCreated).getDate()}
-            </Typography>
-          </Box>
-          <Typography
-            color={
-              transaction.category.transactionType === "Expense"
-                ? "error"
-                : "success"
-            }
-          >
-            {transaction.category.transactionType === "Expense" ? "-" : "+"}$
-            {(transaction.amount as number).toFixed(2)}
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              gap: "0.5rem",
-              // justifyContent: "flex-start",
-              width: "100%",
-            }}
-          >
-            <Chip label={transaction.category.name} />
-            {transaction.subCategory && (
-              <Chip label={transaction.subCategory.name} />
-            )}
-          </Box>
-          <Box
-            onClick={handleClick}
-            sx={{
-              display: "grid",
-              placeItems: "center",
-              borderRadius: "5px",
-              justifySelf: "end",
-              background: theme.palette.background.paper,
-              padding: "0.25rem",
-            }}
-          >
-            <MoreVertIcon />
-          </Box>
-          {openDetails && (
-            <TransactionDetails
-              transaction={transaction}
-              open={openDetails}
-              handleClose={handleClose}
-            />
-          )}
-          {transaction.isRecurring && (
-            <Box
-              sx={{
-                position: "absolute",
-                left: "45px",
-                display: "grid",
-                placeItems: "center",
+      <Box sx={{ display: "flex", gap: "1rem" }}>
+        <Box
+          sx={{
+            width: "50px",
+            height: "50px",
+            overflow: "hidden",
+            borderRadius: "12px",
+            background: theme.palette.background.paper,
+            "& svg": {
+              color: theme.palette.primary.main,
+              width: "40px",
+              height: "40px",
+            },
+            display: "grid",
+            placeItems: "center",
+          }}
+        >
+          {transaction.logoUrl ? (
+            <img
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "center",
               }}
-            >
-              <LoopIcon
-                sx={{ width: "1rem", color: theme.palette.grey[500] }}
-              />
-            </Box>
+              src={transaction.logoUrl}
+            />
+          ) : (
+            getIcon(transaction.category?.name)
           )}
-        </>
-      )}
+        </Box>
+        <Box>
+          <Typography>{getName(transaction)}</Typography>
+          <Typography sx={{ color: "rgb(179, 179, 179)" }}>
+            {transaction.category?.name ?? "¯\\_(ツ)_/¯"}
+          </Typography>
+        </Box>
+      </Box>
+      <Box
+        sx={
+          transaction.amount.toString().startsWith("-")
+            ? { color: theme.palette.success.main }
+            : {}
+        }
+      >
+        {formatMoney(parseInt(transaction.amount.toString().replace("-", "")))}
+      </Box>
+      <CategorySetter
+        transaction={transaction}
+        open={openCategorySetter}
+        handleClose={handleClose}
+      />
     </Box>
   );
 }

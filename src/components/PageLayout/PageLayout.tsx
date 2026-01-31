@@ -58,23 +58,23 @@ export default function PageLayout() {
   useEffect(() => {
     async function getStuff() {
       if (!user) {
-        navigate("/login");
         return;
       }
-      navigate("/");
       setLoading(true);
       const transactions = await getPlaidTransactions("prod");
+      const threeMonths = await getPlaidTransactions("prod", {
+        numberOfMonths: 1,
+      });
       const uncategorizedTransactions =
         await getUncategorizedTransactions("prod");
       const categories = await getCategories();
       const budgets = await getBudgets();
       const transactionsByCategory = await getTransactionsByCategory();
-      console.log(transactionsByCategory);
       setTransactions(transactions);
       setCategories(categories);
       setBudgets(budgets);
       setUncategorizedTransactions(uncategorizedTransactions);
-      // setLoading(false);
+      setLoading(false);
     }
     getStuff();
   }, [
@@ -97,11 +97,7 @@ export default function PageLayout() {
     setSnackBar(false);
   }
 
-  // useEffect(() => {
-  //   getBankTransactions("test-prod");
-  // }, []);
-
-  return (
+  return user ? (
     <Box
       className="page-layout"
       sx={{
@@ -143,6 +139,21 @@ export default function PageLayout() {
           </Link>
         </Alert>
       </Snackbar>
+    </Box>
+  ) : (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100dvw",
+        height: "100dvh",
+        background: theme.palette.background.default,
+        fontSize: "2rem",
+      }}
+    >
+      Not signed in.
     </Box>
   );
 }

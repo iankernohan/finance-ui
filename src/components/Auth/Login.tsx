@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../Data/supabase";
 import { Box, useTheme } from "@mui/material";
 import LittleGuy from "../../assets/limbless-guy.png";
@@ -12,6 +12,11 @@ export function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const setLoading = useStore((state) => state.setLoading);
+  const user = useStore((state) => state.user);
+
+  useEffect(() => {
+    if (user) navigate(-1);
+  }, [user, navigate]);
 
   async function handleLogin(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -25,13 +30,14 @@ export function Login() {
 
     if (error) {
       console.error(error);
-      return;
     } else {
       navigate("/");
       console.log("Logged in:", data);
+      setLoading(false);
     }
     setLoading(false);
   }
+
   return (
     <Box
       component={"form"}

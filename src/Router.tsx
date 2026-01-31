@@ -10,6 +10,7 @@ import RecurringTransactions from "./components/Settings/RecurringTransactions";
 import Statistics from "./components/Settings/Statistics";
 import { Login } from "./components/Auth/Login";
 import SignUp from "./components/Auth/SignUp";
+import ProtectedRoute from "./components/UI/ProtectedRoute";
 
 export const router = createBrowserRouter(
   [
@@ -18,50 +19,55 @@ export const router = createBrowserRouter(
       element: <PageLayout />,
       children: [
         {
-          index: true,
-          element: <Home />,
-        },
-        {
           path: "login",
           element: <Login />,
         },
         {
-          path: "register",
-          element: <SignUp />,
-        },
-        {
-          path: "history",
-          element: <History />,
-        },
-        {
-          path: "addTransaction/:categoryId",
-          element: <AddTransaction />,
-        },
-        {
-          path: "profile",
-          element: <Profile />,
+          element: <ProtectedRoute />,
           children: [
             {
-              path: "settings",
-              element: <Settings />,
+              index: true,
+              element: <Home />,
             },
             {
-              path: "recurring-transactions",
-              element: <RecurringTransactions />,
+              path: "register",
+              element: <SignUp />,
             },
             {
-              path: "statistics",
-              element: <Statistics />,
+              path: "history",
+              element: <History />,
             },
-          ],
-        },
+            {
+              path: "addTransaction/:categoryId",
+              element: <AddTransaction />,
+            },
+            {
+              path: "profile",
+              element: <Profile />,
+              children: [
+                {
+                  path: "settings",
+                  element: <Settings />,
+                },
+                {
+                  path: "recurring-transactions",
+                  element: <RecurringTransactions />,
+                },
+                {
+                  path: "statistics",
+                  element: <Statistics />,
+                },
+              ],
+            },
 
-        {
-          path: "budget",
-          children: [
             {
-              path: "budgetBuilder",
-              element: <BudgetBuilder />,
+              path: "budget",
+              children: [
+                {
+                  path: "budgetBuilder",
+                  element: <BudgetBuilder />,
+                },
+              ],
             },
           ],
         },

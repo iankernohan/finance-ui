@@ -1,12 +1,99 @@
 import type {
   Budget,
+  Filters,
   RecurringTransaction,
   Transaction,
+  Transaction_Old,
 } from "../../Types/Transaction";
 import { summon } from "./utils";
 
 // const base = "https://finance-api-0eu8.onrender.com";
 const base = "http://localhost:5028";
+
+// --------------------------------------PLAID---------------------------------------- //
+
+export async function getPlaidTransactions(userId: string, filters?: Filters) {
+  const res = await summon(`${base}/Transactions/Transactions`, {
+    body: JSON.stringify({ userId, page: 1, pageSize: 500, filters }),
+  });
+  const data = await res.json();
+  return data;
+}
+
+export async function getCategorizedTransactions({
+  userId,
+  page = 1,
+  pageSize = 20,
+}: {
+  userId: string;
+  page?: number;
+  pageSize?: number;
+}) {
+  const transactions = await summon(
+    `${base}/Transactions/CategorizedTransactions`,
+    {
+      body: JSON.stringify({ userId, page, pageSize }),
+    },
+  );
+  const data = await transactions.json();
+  return data;
+}
+
+export async function getTransactionsByCategory(categoryNames?: string[]) {
+  const res = await summon(`${base}/Transactions/TransactionsByCategory`, {
+    body: JSON.stringify({ categoryNames }),
+  });
+
+  const data = await res.json();
+  return data;
+}
+
+export async function getUncategorizedTransactions(userId: string) {
+  const transactions = await summon(
+    `${base}/Transactions/UncategorizedTransactions`,
+    {
+      body: JSON.stringify({ userId, page: 1, pageSize: 500 }),
+    },
+  );
+  const data = await transactions.json();
+  return data;
+}
+
+export async function getCategoryRules() {
+  const rules = await summon(`${base}/Transactions/GetCategoryRules`);
+  const data = await rules.json();
+  return data;
+}
+
+export async function updateCategory(
+  transactionId: string,
+  categoryId: number,
+): Promise<Transaction> {
+  const transactions = await summon(`${base}/Transactions/UpdateCategory`, {
+    body: JSON.stringify({ transactionId, categoryId }),
+  });
+  const data = await transactions.json();
+  return data;
+}
+
+export async function exchangePublicToken(
+  public_token: string,
+  userId: string,
+) {
+  await summon(`${base}/Plaid/ExchangePublicToken`, {
+    body: JSON.stringify({ publicToken: public_token, userId }),
+  });
+}
+
+export async function fetchToken(userId: string) {
+  const res = await summon(`${base}/Plaid/CreateLinkToken`, {
+    body: JSON.stringify({ userId }),
+  });
+  const data = await res.json();
+  return data.link_token;
+}
+
+// --------------------------------------PLAID---------------------------------------- //
 
 export async function getTransactions() {
   const res = await fetch(`${base}/getTransactions`);
@@ -60,7 +147,7 @@ export async function updateTransaction(
   if (!res.ok) {
     return null;
   }
-  const result: Transaction = await res.json();
+  const result: Transaction_Old = await res.json();
   return result;
 }
 
@@ -74,7 +161,7 @@ export async function deleteTransaction(id: number) {
   if (!res.ok) {
     return null;
   }
-  const result: Transaction = await res.json();
+  const result: Transaction_Old = await res.json();
   return result;
 }
 
@@ -152,71 +239,3 @@ export async function updateRecurringTransaction(
   const result: RecurringTransaction = await res.json();
   return result;
 }
-
-// --------------------------------------PLAID---------------------------------------- //
-
-export async function exchangePublicToken(
-  public_token: string,
-  userId: string,
-) {
-  await summon(`${base}/Plaid/ExchangePublicToken`, {
-    body: JSON.stringify({ publicToken: public_token, userId }),
-  });
-}
-
-export async function fetchToken(userId: string) {
-  const res = await summon(`${base}/Plaid/CreateLinkToken`, {
-    body: JSON.stringify({ userId }),
-  });
-  const data = await res.json();
-  return data.link_token;
-}
-
-export async function getPlaidTransactions(userId: string) {
-  const res = await summon(`${base}/Transactions/Transactions`, {
-    body: JSON.stringify({ userId, page: 1, pageSize: 500 }),
-  });
-  const data = await res.json();
-  return data;
-}
-
-export async function getCategorizedTransactions({
-  userId,
-  page = 1,
-  pageSize = 20,
-}: {
-  userId: string;
-  page?: number;
-  pageSize?: number;
-}) {
-  const transactions = await summon(
-    `${base}/Transactions/CategorizedTransactions`,
-    {
-      body: JSON.stringify({ userId, page, pageSize }),
-    },
-  );
-  const data = await transactions.json();
-  return data;
-}
-
-export async function getTransactionsByCategory(categoryNames?: string[]) {
-  const res = await summon(`${base}/Transactions/TransactionsByCategory`, {
-    body: JSON.stringify({ categoryNames }),
-  });
-
-  const data = await res.json();
-  return data;
-}
-
-export async function getUncategorizedTransactions(userId: string) {
-  const transactions = await summon(
-    `${base}/Transactions/UncategorizedTransactions`,
-    {
-      body: JSON.stringify({ userId, page: 1, pageSize: 500 }),
-    },
-  );
-  const data = await transactions.json();
-  return data;
-}
-
-// --------------------------------------PLAID---------------------------------------- //

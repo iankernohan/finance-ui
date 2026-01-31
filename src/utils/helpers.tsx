@@ -10,8 +10,9 @@ import ShowChartIcon from "@mui/icons-material/ShowChart";
 import PetsIcon from "@mui/icons-material/Pets";
 import type {
   DataSet,
-  FilterConditions,
+  Filters,
   Transaction,
+  Transaction_Old,
 } from "../Types/Transaction";
 import HappyLittleGuy from "../assets/happy-little-guy2.png";
 import LittleGuyBigMoney from "../assets/little-guy-big-money.png";
@@ -34,7 +35,7 @@ export function formatMoney(amount: number) {
 
 export function getLittleGuy(
   amount: number = 0,
-  withMoney?: "sm" | "md" | "lg"
+  withMoney?: "sm" | "md" | "lg",
 ) {
   if (withMoney) {
     switch (withMoney) {
@@ -109,22 +110,22 @@ export function getSuffix(day: number) {
 
 export const defaultTransaction: Transaction = {
   amount: 0,
+  name: "default",
   category: {
     id: 0,
     name: "",
     transactionType: "Expense",
     subCategories: [],
   },
-  description: "",
-  dateCreated: new Date(),
-  id: 0,
+  date: new Date().toDateString(),
+  id: "0",
 };
 
 export function getTransactionsForMonth(
-  transactions: Transaction[],
+  transactions: Transaction_Old[],
   month: number,
-  year: number = 2025
-): Transaction[] {
+  year: number = 2025,
+): Transaction_Old[] {
   return transactions.filter((t) => {
     const date = new Date(t.dateCreated);
     return date.getFullYear() === year && date.getMonth() === month;
@@ -132,14 +133,14 @@ export function getTransactionsForMonth(
 }
 
 export function getTotalForMonth(
-  transactions: Transaction[],
+  transactions: Transaction_Old[],
   month: number,
-  year: number = 2025
+  year: number = 2025,
 ) {
   const monthlyTransactions = getTransactionsForMonth(
     transactions,
     month,
-    year
+    year,
   );
   return monthlyTransactions.reduce((sum, t) => {
     if (t.category.transactionType === "Expense") return sum - t.amount;
@@ -148,8 +149,8 @@ export function getTotalForMonth(
 }
 
 export function getMontlyTotalsForYear(
-  transactions: Transaction[],
-  year: number
+  transactions: Transaction_Old[],
+  year: number,
 ) {
   const totals = [];
   for (let i = 0; i < 12; i++) {
@@ -160,9 +161,9 @@ export function getMontlyTotalsForYear(
 }
 
 export function getStatsForMonth(
-  transactions: Transaction[],
+  transactions: Transaction_Old[],
   month: number = new Date().getMonth(),
-  year: number = new Date().getFullYear()
+  year: number = new Date().getFullYear(),
 ) {
   const stats = {
     expenses: 0,
@@ -186,8 +187,8 @@ export function getStatsForMonth(
 }
 
 export function getMonthlyStatsForYear(
-  transactions: Transaction[],
-  year: number = new Date().getFullYear()
+  transactions: Transaction_Old[],
+  year: number = new Date().getFullYear(),
 ) {
   const yearlyStats: DataSet[] = [
     {
@@ -263,7 +264,7 @@ export function getMonthlyStatsForYear(
       count: 0,
     },
   ];
-  function updateMonth(index: number, transaction: Transaction) {
+  function updateMonth(index: number, transaction: Transaction_Old) {
     yearlyStats[index].count += 1;
     if (transaction.category.transactionType == "Expense") {
       yearlyStats[index].expenses += transaction.amount;
@@ -280,7 +281,7 @@ export function getMonthlyStatsForYear(
   return yearlyStats;
 }
 
-export function getOldestTransaction(transactions: Transaction[]) {
+export function getOldestTransaction(transactions: Transaction_Old[]) {
   let oldest = transactions[0];
   let oldestDate = new Date();
   for (const t of transactions) {
@@ -293,7 +294,7 @@ export function getOldestTransaction(transactions: Transaction[]) {
   return oldest;
 }
 
-export function getAllTimeStats(transactions: Transaction[]) {
+export function getAllTimeStats(transactions: Transaction_Old[]) {
   const stats = {
     income: 0,
     expenses: 0,
@@ -315,9 +316,9 @@ export function getAllTimeStats(transactions: Transaction[]) {
 }
 
 export function filterTransactions(
-  transactions: Transaction[],
-  conditions: FilterConditions
-): Transaction[] {
+  transactions: Transaction_Old[],
+  conditions: Filters,
+): Transaction_Old[] {
   return transactions.filter((t) => {
     const {
       category,

@@ -1,31 +1,37 @@
 import { Box } from "@mui/material";
 import "./home.css";
 import { useStore } from "../../store/store";
-import TotalAmount from "./TotalAmount";
-import Income from "./Income";
-import Expenses from "./Expenses";
+// import TotalAmount from "./TotalAmount";
+// import Income from "./Income";
+// import Expenses from "./Expenses";
 import MonthPicker from "../Graphs/MonthPicker";
-import { useState } from "react";
-import { getTransactionsForMonth } from "../../utils/helpers";
+import { useEffect, useState } from "react";
 import FadeIn from "../UI/FadeIn";
 import LittleGuy from "../../assets/limbless-guy.png";
 import Parcel from "../UI/Parcel";
+import { formatMoney } from "../../utils/helpers";
 
 export default function Home() {
   const [month, setMonth] = useState(new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear());
+  const transactions = useStore((state) => state.transactions);
+  const [income, setIncome] = useState<number | null>(null);
+  const [expenses, setExpenses] = useState<number | null>(null);
 
-  const allTransactions = useStore((state) => state.transactions);
-  const transactions = getTransactionsForMonth(allTransactions, month, year);
-  const expenses = transactions.filter(
-    (t) => t.category.transactionType === "Expense",
-  );
-  const income = transactions.filter(
-    (t) => t.category.transactionType === "Income",
-  );
-  const expenseTotal = expenses.reduce((acc, curr) => acc + curr.amount, 0);
-  const incomeTotal = income.reduce((acc, curr) => acc + curr.amount, 0);
-  const difference = incomeTotal - expenseTotal;
+  useEffect(() => {
+    const _income = transactions.reduce(
+      (acc, curr) =>
+        curr.category?.transactionType === 1 ? acc + curr.amount : acc + 0,
+      0,
+    );
+    const _expenses = transactions.reduce(
+      (acc, curr) =>
+        curr.category?.transactionType === 0 ? acc + curr.amount : acc + 0,
+      0,
+    );
+    setIncome(_income);
+    setExpenses(_expenses);
+  }, [transactions]);
 
   function handleIncrementMonth() {
     if (month === 11) {
@@ -63,6 +69,8 @@ export default function Home() {
           height: "150px",
         }}
       >
+        {formatMoney(income ? income * -1 : 0)}
+        {formatMoney(expenses ? expenses * -1 : 0)}
         <img
           style={{
             width: "80px",
@@ -83,7 +91,7 @@ export default function Home() {
           decrement={handleDecrementMonth}
         />
       </FadeIn>
-      <FadeIn>
+      {/* <FadeIn>
         <TotalAmount month={month} year={year} difference={difference} />
       </FadeIn>
       <FadeIn>
@@ -93,7 +101,7 @@ export default function Home() {
       <FadeIn>
         <hr style={{ margin: "2rem 0" }} />
       </FadeIn>
-      <Expenses expenses={expenses} expenseTotal={expenseTotal} />\
+      <Expenses expenses={expenses} expenseTotal={expenseTotal} /> */}
     </Box>
   );
 }

@@ -20,6 +20,7 @@ export default function Parcel({
         alignItems: "center",
         backgroundColor: "background.paper",
         position: "relative",
+        flexWrap: "wrap",
         ...sx,
       }}
       className={className}

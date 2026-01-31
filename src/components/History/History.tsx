@@ -1,39 +1,30 @@
 import { Box, Button, Typography, useTheme } from "@mui/material";
 import Transaction from "./Transaction";
 import { useStore } from "../../store/store";
-import { defaultTransaction, filterTransactions } from "../../utils/helpers";
+import { defaultTransaction } from "../../utils/helpers";
 import TuneIcon from "@mui/icons-material/Tune";
 import Filter from "./Filter";
 import { useEffect, useState } from "react";
-import type { FilterConditions } from "../../Types/Transaction";
+import type { Filters } from "../../Types/Transaction";
 import ClearIcon from "@mui/icons-material/Clear";
 import FadeIn from "../UI/FadeIn";
+import CategoryIcon from "@mui/icons-material/Category";
 
 export default function History() {
   const theme = useTheme();
-
-  const [openFilter, setOpenFilter] = useState(false);
-  const [filterConitions, setFilterConditions] =
-    useState<FilterConditions | null>(null);
-  const [numToDelay, setNumToDelay] = useState(0);
-
-  const allTransactions = useStore((state) => state.transactions);
-  const transactions = filterConitions
-    ? filterTransactions(allTransactions, filterConitions)
-    : allTransactions;
-  const reversedTransactions = [...transactions].reverse();
+  const transactions = useStore((state) => state.transactions);
+  const uncategorizedTransactions = useStore(
+    (state) => state.uncategorizedTransactions,
+  );
   const loading = useStore((state) => state.loading);
-
+  const [openFilter, setOpenFilter] = useState(false);
+  const [filterConditions, setFilterConditions] = useState<Filters | null>(
+    null,
+  );
+  const [numToDelay, setNumToDelay] = useState(0);
+  const [uncategorized, setUncategorized] = useState(false);
   function handleCloseFilter() {
     setOpenFilter(false);
-  }
-
-  function updateFilterConditions(conditions: FilterConditions) {
-    setFilterConditions(conditions);
-  }
-
-  function clearFilters() {
-    setFilterConditions(null);
   }
 
   useEffect(() => {
@@ -43,14 +34,31 @@ export default function History() {
     setNumToDelay(windowHeight / transactionItemHeight);
   }, []);
 
+  function handleSetUncategorized() {
+    setUncategorized((curr) => !curr);
+  }
+
+  function updateFilterConditions(conditions: Filters) {
+    setFilterConditions(conditions);
+  }
+
+  function clearFilters() {
+    setFilterConditions(null);
+  }
+
   function RenderTransaction() {
     return transactions.length ? (
       <>
-        {reversedTransactions.map((t, i) => (
-          <FadeIn key={t.id} transitionDelay={`${i < numToDelay ? i / 20 : 0}`}>
-            <Transaction transaction={t} />
-          </FadeIn>
-        ))}
+        {(uncategorized ? uncategorizedTransactions : transactions).map(
+          (t, i) => (
+            <FadeIn
+              key={t.id}
+              transitionDelay={`${i < numToDelay ? i / 20 : 0}`}
+            >
+              <Transaction transaction={t} />
+            </FadeIn>
+          ),
+        )}
       </>
     ) : (
       <Box
@@ -68,7 +76,7 @@ export default function History() {
         <Box>
           <Typography variant="h4">No Transactions</Typography>
         </Box>
-        <img style={{ width: 200 }} src="/sad-little-guy.png" />
+        <img style={{ width: 200 }} src="sad-little-guy.png" />
         <Typography variant="body1">Go ahead and add some!</Typography>
       </Box>
     );
@@ -85,31 +93,33 @@ export default function History() {
           <RenderTransaction />
         )}
       </Box>
-      {filterConitions && (
-        <Button
-          onClick={() => clearFilters()}
-          sx={{
-            position: "absolute",
-            bottom: "5rem",
-            left: "1rem",
-            boxShadow: theme.shadows[10],
-            borderRadius: "50%",
-            width: "50px",
-            minWidth: 0,
-            height: "50px",
-            padding: 0,
-            background: "rgba(0,0,0,0.5)",
-          }}
-        >
-          <ClearIcon style={{ color: theme.palette.primary.main }} />
-        </Button>
-      )}
+      <Button
+        onClick={handleSetUncategorized}
+        sx={{
+          position: "absolute",
+          bottom: "5rem",
+          right: "1rem",
+          boxShadow: theme.shadows[10],
+          borderRadius: "50%",
+          width: "50px",
+          minWidth: 0,
+          height: "50px",
+          padding: 0,
+          background: uncategorized
+            ? "rgba(255,255,255,0.5)"
+            : "rgba(0,0,0,0.5)",
+          backdropFilter: "blur(3px)",
+          transition: "background 0.3s",
+        }}
+      >
+        <CategoryIcon />
+      </Button>
       <Button
         onClick={() => setOpenFilter(true)}
         sx={{
           position: "absolute",
           bottom: "1rem",
-          left: "1rem",
+          right: "1rem",
           boxShadow: theme.shadows[10],
           borderRadius: "50%",
           width: "50px",
@@ -121,10 +131,30 @@ export default function History() {
       >
         <TuneIcon style={{ color: theme.palette.primary.main }} />
       </Button>
+      {filterConditions && (
+        <Button
+          onClick={() => clearFilters()}
+          sx={{
+            position: "absolute",
+            bottom: "1rem",
+            right: "5rem",
+            boxShadow: theme.shadows[10],
+            borderRadius: "50%",
+            width: "50px",
+            minWidth: 0,
+            height: "50px",
+            padding: 0,
+            background: "rgba(0,0,0,0.5)",
+            backdropFilter: "blur(3px)",
+          }}
+        >
+          <ClearIcon style={{ color: theme.palette.primary.main }} />
+        </Button>
+      )}
       <Filter
         open={openFilter}
         handleClose={handleCloseFilter}
-        filterConitions={filterConitions}
+        filterConitions={filterConditions}
         updateFilterConditions={updateFilterConditions}
       />
     </Box>

@@ -2,12 +2,12 @@ import { Box, Skeleton, Typography, useTheme } from "@mui/material";
 import CategoryCard from "../CategoryCard/CategoryCard";
 import { formatMoney, iconMap } from "../../utils/helpers";
 import { useStore } from "../../store/store";
-import type { Transaction } from "../../Types/Transaction";
+import type { Transaction_Old } from "../../Types/Transaction";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import FadeIn from "../UI/FadeIn";
 
 interface IncomeProps {
-  expenses: Transaction[];
+  expenses: Transaction_Old[];
   expenseTotal: number;
 }
 
@@ -54,14 +54,14 @@ export default function Expenses({ expenses, expenseTotal }: IncomeProps) {
               .filter((c) => c.transactionType === "Expense")
               .map((category, i) => {
                 const categoryTransactions = expenses.filter(
-                  (t) => t.category.id === category.id
+                  (t) => t.category.id === category.id,
                 );
                 const totalAmount = categoryTransactions.reduce(
                   (acc, curr) => acc + curr.amount,
-                  0
+                  0,
                 );
                 const budgetLimit = budgets.find(
-                  (b) => b.category.id === category.id
+                  (b) => b.category.id === category.id,
                 )?.limit;
                 return (
                   <FadeIn transitionDelay={`${i / 20 + 0.4}`}>

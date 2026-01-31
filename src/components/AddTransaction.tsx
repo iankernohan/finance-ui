@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router";
 import { useStore } from "../store/store";
-import type { Category } from "../Types/Transaction";
+import type { Category_Old } from "../Types/Transaction";
 import { useState } from "react";
 import { getLittleGuy } from "../utils/helpers";
 
@@ -18,8 +18,8 @@ export default function AddTransaction() {
   const params = useParams();
   const categories = useStore((state) => state.categories);
   const category = categories.find(
-    (c) => c.id.toString() === params.categoryId
-  ) as Category;
+    (c) => c.id.toString() === params.categoryId,
+  ) as Category_Old;
   const [amount, setAmount] = useState<number>(0);
   const [subCategory, setSubCategory] = useState<number | null>(null);
 

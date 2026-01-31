@@ -13,7 +13,7 @@ import {
 import { useNavigate, useParams } from "react-router";
 import { useState } from "react";
 import { useStore } from "../../store/store";
-import type { Category } from "../../Types/Transaction";
+import type { Category_Old } from "../../Types/Transaction";
 import { getLittleGuy } from "../../utils/helpers";
 import {
   addRecurringTransaction,
@@ -29,11 +29,11 @@ export default function AddTransaction() {
   const updateTransactions = useStore((state) => state.addTransaction);
   const setTransactions = useStore((state) => state.setTransactions);
   const category = categories.find(
-    (c) => c.id.toString() === params.categoryId
-  ) as Category;
+    (c) => c.id.toString() === params.categoryId,
+  ) as Category_Old;
   const [amount, setAmount] = useState<string>("");
   const [subCategory, setSubCategory] = useState<number | null>(
-    category.subCategories?.length ? null : -1
+    category.subCategories?.length ? null : -1,
   );
   const [description, setDescription] = useState<string>("");
   const [isRecurring, setIsRecurring] = useState<boolean>(false);

@@ -1,9 +1,10 @@
 import { create } from "zustand";
 import type {
   Budget,
-  Category,
+  Category_Old,
   RecurringTransaction,
   Transaction,
+  Transaction_Old,
 } from "../Types/Transaction";
 import type { SettingOption } from "../Types/Settings";
 import type { PlaidTransaction } from "../Types/PlaidTransactions";
@@ -16,8 +17,8 @@ type Store = {
   setTransactions: (transactions: Transaction[]) => void;
   addTransaction: (transaction: Transaction) => void;
   updateTransaction: (transaction: Transaction) => void;
-  categories: Category[];
-  setCategories: (categories: Category[]) => void;
+  categories: Category_Old[];
+  setCategories: (categories: Category_Old[]) => void;
   budgets: Budget[];
   setBudgets: (budgets: Budget[]) => void;
   updateBudget: (budget: Budget) => void;
@@ -29,8 +30,8 @@ type Store = {
   loading: boolean;
   setLoading: (val: boolean) => void;
   incomeIds: number[];
-  uncategorizedTransactions: PlaidTransaction[]
-  setUncategorizedTransactions: (transactions: PlaidTransaction[]) => void;
+  uncategorizedTransactions: Transaction[];
+  setUncategorizedTransactions: (transactions: Transaction[]) => void;
   user: User | null;
   setUser: (user: User | null) => void;
 };
@@ -49,7 +50,7 @@ export const useStore = create<Store>((set) => ({
         t.id === transaction.id ? transaction : t,
       ),
     })),
-  setCategories: (categories: Category[]) => set({ categories }),
+  setCategories: (categories: Category_Old[]) => set({ categories }),
   budgets: [],
   setBudgets: (budgets: Budget[]) => set({ budgets }),
   updateBudget: (budget: Budget) =>
@@ -71,7 +72,7 @@ export const useStore = create<Store>((set) => ({
   setLoading: (val) => set({ loading: val }),
   incomeIds: [6, 7],
   uncategorizedTransactions: [],
-  setUncategorizedTransactions: (transactions: PlaidTransaction[]) =>
+  setUncategorizedTransactions: (transactions: Transaction[]) =>
     set({ uncategorizedTransactions: transactions }),
   user: null,
   setUser: (user) => set({ user }),
