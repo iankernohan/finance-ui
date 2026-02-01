@@ -29,6 +29,18 @@ input {
   border-radius: 100px;
 }
 
+button {
+  padding: 0.5rem;
+  border-radius: 100px;
+  border: none;
+  box-shadow: 0 1px 4px rgba(33, 33, 33, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+}
+
 input:focus {
   border: none;
   outline: 1px solid #00adb5;

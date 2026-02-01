@@ -16,25 +16,27 @@ import {
 import { ArrowRightIcon } from "@mui/x-date-pickers";
 import { supabase } from "../Data/supabase";
 import PageLoader from "../UI/PageLoader";
+import { useTransactions } from "../../hooks/queries/useTransactions";
+import { useCategories } from "../../hooks/queries/useCategories";
+import { useUncategorizedTransactions } from "../../hooks/queries/useUncategorizedTransactions";
 // import PlaidConnect from "../Data/plaidConnection";
 
 export default function PageLayout() {
   const theme = useTheme();
   const navigate = useNavigate();
-  const setTransactions = useStore((state) => state.setTransactions);
-  const setCategories = useStore((state) => state.setCategories);
   const setBudgets = useStore((state) => state.setBudgets);
   const loading = useStore((state) => state.loading);
   const setLoading = useStore((state) => state.setLoading);
-  const setUncategorizedTransactions = useStore(
-    (state) => state.setUncategorizedTransactions,
-  );
   const uncategorizedTransactions = useStore(
     (state) => state.uncategorizedTransactions,
   );
   const [snackBar, setSnackBar] = useState(false);
   const user = useStore((state) => state.user);
   const setUser = useStore((state) => state.setUser);
+
+  useTransactions();
+  useCategories();
+  useUncategorizedTransactions();
 
   useEffect(() => {
     let mounted = true;
@@ -61,31 +63,16 @@ export default function PageLayout() {
         return;
       }
       setLoading(true);
-      const transactions = await getPlaidTransactions("prod");
       const threeMonths = await getPlaidTransactions("prod", {
         numberOfMonths: 1,
       });
-      const uncategorizedTransactions =
-        await getUncategorizedTransactions("prod");
-      const categories = await getCategories();
       const budgets = await getBudgets();
       const transactionsByCategory = await getTransactionsByCategory();
-      setTransactions(transactions);
-      setCategories(categories);
       setBudgets(budgets);
-      setUncategorizedTransactions(uncategorizedTransactions);
       setLoading(false);
     }
     getStuff();
-  }, [
-    setTransactions,
-    setCategories,
-    setLoading,
-    setBudgets,
-    setUncategorizedTransactions,
-    user,
-    navigate,
-  ]);
+  }, [setLoading, setBudgets, user, navigate]);
 
   useEffect(() => {
     if (uncategorizedTransactions.length > 0) {
