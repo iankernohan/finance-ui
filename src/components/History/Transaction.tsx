@@ -1,13 +1,10 @@
-import { Box, Chip, Skeleton, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import type { Transaction } from "../../Types/Transaction";
 import { useState } from "react";
-import TransactionDetails from "./TransactionDetails";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useStore } from "../../store/store";
-import CategorySetter from "./CategorySetter";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 
 import { formatMoney, iconMap } from "../../utils/helpers";
+import TransactionDetails from "./TransactionDetails";
 interface TransactionProps {
   transaction: Transaction;
 }
@@ -15,18 +12,15 @@ interface TransactionProps {
 export default function Transaction({ transaction }: TransactionProps) {
   const theme = useTheme();
   const [openDetails, setOpenDetails] = useState(false);
-  const [openCategorySetter, setOpenCategorySetter] = useState(false);
-  const loading = useStore((state) => state.loading);
 
   const NAME_LENGTH = 13;
 
   function handleClick() {
-    setOpenDetails(true);
+    if (openDetails === false) setOpenDetails(true);
   }
 
   function handleClose() {
     setOpenDetails(false);
-    setOpenCategorySetter(false);
   }
 
   function getName(transaction: Transaction) {
@@ -38,11 +32,6 @@ export default function Transaction({ transaction }: TransactionProps) {
     }
 
     return name.length > NAME_LENGTH ? name.slice(0, 13) + "..." : name;
-  }
-
-  function handleOpenCategorySetter() {
-    if (transaction?.category) return;
-    setOpenCategorySetter(true);
   }
 
   function getIcon(category?: string) {
@@ -59,7 +48,7 @@ export default function Transaction({ transaction }: TransactionProps) {
         justifyContent: "space-between",
         alignItems: "center",
       }}
-      onClick={handleOpenCategorySetter}
+      onClick={handleClick}
     >
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Box
@@ -108,9 +97,9 @@ export default function Transaction({ transaction }: TransactionProps) {
       >
         {formatMoney(parseInt(transaction.amount.toString().replace("-", "")))}
       </Box>
-      <CategorySetter
+      <TransactionDetails
         transaction={transaction}
-        open={openCategorySetter}
+        open={openDetails}
         handleClose={handleClose}
       />
     </Box>

@@ -36,7 +36,7 @@ export default function AddRule({
     if (category && name !== "") {
       await addCategoryRule(name, category);
       queryClient.invalidateQueries({ queryKey: ["categoryRules"] });
-      setOpenAlert(false);
+      onClose();
     }
   }
 

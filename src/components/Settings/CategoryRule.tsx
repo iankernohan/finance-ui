@@ -20,6 +20,7 @@ export default function CategoryRule({ rule }: { rule: CategoryRules }) {
     if (name !== rule.name || category !== rule.category?.id?.toString()) {
       await updateCategoryRule(rule.id, name, parseInt(category) as number);
       queryClient.invalidateQueries({ queryKey: ["categoryRules"] });
+      setEdit(false);
     }
   }
 

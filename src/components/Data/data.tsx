@@ -79,11 +79,10 @@ export async function updateCategoryRule(
 }
 
 export async function addCategoryRule(name: string, categoryId: number) {
-  const res = await summon(`${base}/Transactions/AddCategoryRule`, {
+  await summon(`${base}/Transactions/AddCategoryRule`, {
     body: JSON.stringify({ name, categoryId }),
   });
-  const data = await res.json();
-  return data;
+  return;
 }
 
 export async function updateCategory(
