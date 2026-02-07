@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useStore } from "../../store/store.ts";
-import { getPlaidTransactions } from "../../components/Data/data.tsx";
 import { useQuery } from "@tanstack/react-query";
+import { getPlaidTransactions } from "../../components/Data/transactions.ts";
 
 export function useTransactions() {
   const setTransactions = useStore((state) => state.setTransactions);

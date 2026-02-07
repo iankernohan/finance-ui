@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useStore } from "../../store/store.ts";
-import { getUncategorizedTransactions } from "../../components/Data/data.tsx";
+import { getUncategorizedTransactions } from "../../components/Data/transactions";
 import { useQuery } from "@tanstack/react-query";
 
 export function useUncategorizedTransactions() {

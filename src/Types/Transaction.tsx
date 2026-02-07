@@ -7,7 +7,7 @@ export interface TransactionCategory {
 export interface Category {
   id: number;
   name: string;
-  subCategories?: unknown[];
+  subCategories?: SubCategory[];
   transactionType?: number;
 }
 export interface PlaidTransactionLocation {

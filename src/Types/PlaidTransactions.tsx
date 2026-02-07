@@ -1,3 +1,5 @@
+import type { SubCategory } from "./Transaction";
+
 export interface PlaidTransactionLocation {
   address?: string | null;
   city?: string | null;
@@ -43,4 +45,6 @@ export interface CategoryRules {
   name: string;
   categoryId: number;
   category?: Category | null;
+  subCategoryId?: number;
+  subCategory?: SubCategory;
 }

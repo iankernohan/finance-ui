@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useStore } from "../../store/store";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Parcel from "../UI/Parcel";
-import { updateCategory } from "../Data/data";
+import { updateCategory } from "../Data/transactions";
 
 interface TransactionDetailsProps {
   transaction: Transaction;

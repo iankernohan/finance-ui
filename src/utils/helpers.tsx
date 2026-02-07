@@ -8,6 +8,8 @@ import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
 import PetsIcon from "@mui/icons-material/Pets";
+import EngineeringIcon from "@mui/icons-material/Engineering";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import type {
   DataSet,
   Filters,
@@ -64,6 +66,8 @@ export const iconMap: Record<string, JSX.Element> = {
   Salary: <AddCardIcon color="primary" />,
   Investment: <ShowChartIcon color="primary" />,
   Pets: <PetsIcon color="primary" />,
+  Healthcare: <FavoriteIcon color="primary" />,
+  Unknown: <EngineeringIcon color="primary" />,
 };
 
 export function getDay(day: number) {
@@ -114,7 +118,7 @@ export const defaultTransaction: Transaction = {
   category: {
     id: 0,
     name: "",
-    transactionType: "Expense",
+    transactionType: 0,
     subCategories: [],
   },
   date: new Date().toDateString(),

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useStore } from "../../store/store.ts";
-import { getCategories } from "../../components/Data/data.tsx";
 import { useQuery } from "@tanstack/react-query";
+import { getCategories } from "../../components/Data/category.ts";
 
 export function useCategories() {
   const setCategories = useStore((state) => state.setCategories);

@@ -12,6 +12,7 @@ import CategoryRules from "./components/Settings/CategoryRules";
 import { Login } from "./components/Auth/Login";
 import SignUp from "./components/Auth/SignUp";
 import ProtectedRoute from "./components/UI/ProtectedRoute";
+import Categories from "./components/Settings/Categories";
 
 export const router = createBrowserRouter(
   [
@@ -61,6 +62,10 @@ export const router = createBrowserRouter(
                 {
                   path: "statistics",
                   element: <Statistics />,
+                },
+                {
+                  path: "categories",
+                  element: <Categories />,
                 },
               ],
             },

@@ -1,8 +1,8 @@
 import { useEffect, type SetStateAction } from "react";
 import { useStore } from "../../store/store.ts";
-import { getCategoryRules } from "../../components/Data/data.tsx";
 import { useQuery } from "@tanstack/react-query";
 import type { CategoryRules } from "../../Types/PlaidTransactions.tsx";
+import { getCategoryRules } from "../../components/Data/categoryRules.ts";
 
 export function useCategoryRules(
   setCategoryRules: React.Dispatch<SetStateAction<CategoryRules[]>>,

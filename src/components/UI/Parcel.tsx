@@ -4,13 +4,16 @@ export default function Parcel({
   children,
   sx,
   className,
+  onClick,
 }: {
   children: React.ReactNode;
   sx?: SxProps;
   className?: string;
+  onClick?: () => void;
 }) {
   return (
     <MuiBox
+      onClick={onClick}
       sx={{
         padding: "2rem 1rem",
         borderRadius: "15px",

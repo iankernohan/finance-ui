@@ -5,14 +5,12 @@ import { Alert, Box, Snackbar, useTheme } from "@mui/material";
 import Header from "../Header/Header";
 import { useEffect, useState } from "react";
 import { useStore } from "../../store/store";
+import { getBudgets, getTransactions } from "../Data/data";
 import {
   getPlaidTransactions,
-  getBudgets,
-  getCategories,
-  getTransactions,
   getUncategorizedTransactions,
   getTransactionsByCategory,
-} from "../Data/data";
+} from "../Data/transactions";
 import { ArrowRightIcon } from "@mui/x-date-pickers";
 import { supabase } from "../Data/supabase";
 import PageLoader from "../UI/PageLoader";

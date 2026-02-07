@@ -11,8 +11,8 @@ import { useState } from "react";
 import { useStore } from "../../store/store";
 import Parcel from "../UI/Parcel";
 import Alert from "../History/Alert";
-import { addCategoryRule } from "../Data/data";
 import { useQueryClient } from "@tanstack/react-query";
+import { addCategoryRule } from "../Data/categoryRules";
 
 export default function AddRule({
   open,
