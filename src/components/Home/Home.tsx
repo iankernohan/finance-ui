@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import "./home.css";
 import { useStore } from "../../store/store";
 // import TotalAmount from "./TotalAmount";
@@ -9,33 +9,56 @@ import { useEffect, useState } from "react";
 import FadeIn from "../UI/FadeIn";
 import LittleGuy from "../../assets/limbless-guy.png";
 import Parcel from "../UI/Parcel";
-import { formatMoney } from "../../utils/helpers";
+import { formatMoney, getMonth } from "../../utils/helpers";
+import { useMonthlySummaries } from "../../hooks/queries/useMonthlySummary";
+import type { MonthlySummary } from "../../Types/Transaction";
+import PieChart from "./PieChart";
 
 export default function Home() {
-  const [month, setMonth] = useState(new Date().getMonth());
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
-  const transactions = useStore((state) => state.transactions);
   const [income, setIncome] = useState<number | null>(null);
   const [expenses, setExpenses] = useState<number | null>(null);
+  const [currSummary, setCurrSummary] = useState<MonthlySummary>({
+    monthName: "",
+    categories: {},
+    expenseTotal: 0,
+    incomeTotal: 0,
+    year,
+  });
+
+  const transactions = useStore((state) => state.transactions);
+  const monthlySummaries = useStore((state) => state.monthlySummaries);
+
+  useMonthlySummaries(month, year);
 
   useEffect(() => {
-    const _income = transactions.reduce(
-      (acc, curr) =>
-        curr.category?.transactionType === 1 ? acc + curr.amount : acc + 0,
-      0,
-    );
-    const _expenses = transactions.reduce(
-      (acc, curr) =>
-        curr.category?.transactionType === 0 ? acc + curr.amount : acc + 0,
-      0,
-    );
-    setIncome(_income);
-    setExpenses(_expenses);
-  }, [transactions]);
+    if (monthlySummaries.length) {
+      const summary = monthlySummaries.find(
+        (s) => s.monthName === getMonth(month) && s.year === year,
+      );
+      if (summary) setCurrSummary(summary);
+    }
+  }, [monthlySummaries, month, year]);
+
+  // useEffect(() => {
+  //   const _income = transactions.reduce(
+  //     (acc, curr) =>
+  //       curr.category?.transactionType === 1 ? acc + curr.amount : acc + 0,
+  //     0,
+  //   );
+  //   const _expenses = transactions.reduce(
+  //     (acc, curr) =>
+  //       curr.category?.transactionType === 0 ? acc + curr.amount : acc + 0,
+  //     0,
+  //   );
+  //   setIncome(_income);
+  //   setExpenses(_expenses);
+  // }, [transactions]);
 
   function handleIncrementMonth() {
-    if (month === 11) {
-      setMonth(0);
+    if (month === 12) {
+      setMonth(1);
       setYear((curr) => (curr += 1));
     } else {
       setMonth((curr) => (curr += 1));
@@ -43,8 +66,8 @@ export default function Home() {
   }
 
   function handleDecrementMonth() {
-    if (month === 0) {
-      setMonth(11);
+    if (month === 1) {
+      setMonth(12);
       setYear((curr) => (curr -= 1));
     } else {
       setMonth((curr) => (curr -= 1));
@@ -59,18 +82,51 @@ export default function Home() {
         justifyContent: "center",
         flexDirection: "column",
         alignItems: "center",
+        gap: "2rem",
+        marginTop: "1rem",
       }}
     >
+      <FadeIn>
+        <MonthPicker
+          month={month}
+          year={year}
+          increment={handleIncrementMonth}
+          decrement={handleDecrementMonth}
+        />
+      </FadeIn>
       {/* <TransactionPieChart /> */}
       <Parcel
         sx={{
-          margin: "3rem",
+          padding: "1rem",
           width: "300px",
           height: "150px",
+          flexDirection: "column",
+          gap: "0.5rem",
         }}
       >
-        {formatMoney(income ? income * -1 : 0)}
-        {formatMoney(expenses ? expenses * -1 : 0)}
+        <Typography
+          sx={{
+            fontSize: "2rem",
+            fontWeight: 200,
+            color:
+              currSummary.incomeTotal * -1 - currSummary.expenseTotal > 0
+                ? "green"
+                : "red",
+          }}
+        >
+          {formatMoney(
+            Math.abs(currSummary.incomeTotal * -1 - currSummary.expenseTotal),
+          )}
+        </Typography>
+        <Box sx={{ display: "flex", gap: "1rem" }}>
+          <Typography sx={{ fontSize: "0.8rem", color: "rgb(136, 136, 136)" }}>
+            +{formatMoney(currSummary.incomeTotal * -1)}
+          </Typography>
+          <Typography sx={{ fontSize: "0.8rem", color: "rgb(136, 136, 136)" }}>
+            -{formatMoney(currSummary.expenseTotal)}
+          </Typography>
+        </Box>
+        {/* {formatMoney(expenses ? expenses * -1 : 0)} */}
         <img
           style={{
             width: "80px",
@@ -83,14 +139,8 @@ export default function Home() {
           src={LittleGuy}
         />
       </Parcel>
-      <FadeIn>
-        <MonthPicker
-          month={month}
-          year={year}
-          increment={handleIncrementMonth}
-          decrement={handleDecrementMonth}
-        />
-      </FadeIn>
+      <PieChart monthlySummary={currSummary} />
+
       {/* <FadeIn>
         <TotalAmount month={month} year={year} difference={difference} />
       </FadeIn>

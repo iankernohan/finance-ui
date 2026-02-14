@@ -2,6 +2,7 @@ import { create } from "zustand";
 import type {
   Budget,
   Category,
+  MonthlySummary,
   RecurringTransaction,
   Transaction,
 } from "../Types/Transaction";
@@ -32,6 +33,8 @@ type Store = {
   setUncategorizedTransactions: (transactions: Transaction[]) => void;
   user: User | null;
   setUser: (user: User | null) => void;
+  monthlySummaries: MonthlySummary[];
+  setMonthlySummaries: (summary: MonthlySummary) => void;
 };
 
 export const useStore = create<Store>((set) => ({
@@ -76,4 +79,16 @@ export const useStore = create<Store>((set) => ({
     set({ uncategorizedTransactions: transactions }),
   user: null,
   setUser: (user) => set({ user }),
+  monthlySummaries: [],
+  setMonthlySummaries: (summary: MonthlySummary) =>
+    set((state) => {
+      if (
+        state.monthlySummaries.find((s) => s.monthName === summary.monthName)
+      ) {
+        return {};
+      }
+      return {
+        monthlySummaries: [...state.monthlySummaries, summary],
+      };
+    }),
 }));

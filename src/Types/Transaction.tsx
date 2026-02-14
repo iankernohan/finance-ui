@@ -35,6 +35,8 @@ export interface Transaction {
   merchantEntityId?: string | null;
   categoryId?: number | null;
   category?: Category | null;
+  subCategoryId?: number;
+  subCategory?: SubCategory;
 }
 
 export type DataSet = {
@@ -95,4 +97,12 @@ export type RecurringTransaction = {
   intervalDays: number;
   categoryId: number;
   subCategoryId?: number | null;
+};
+
+export type MonthlySummary = {
+  monthName: string;
+  year: number;
+  incomeTotal: number;
+  expenseTotal: number;
+  categories: Record<string, Transaction[]>;
 };

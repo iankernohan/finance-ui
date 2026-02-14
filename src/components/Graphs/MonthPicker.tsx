@@ -19,7 +19,7 @@ export default function MonthPicker({
   disableDecrement,
 }: MonthPicketProps) {
   const disableIncrement =
-    month === new Date().getMonth() && year === new Date().getFullYear();
+    month === new Date().getMonth() + 1 && year === new Date().getFullYear();
 
   return (
     <Box

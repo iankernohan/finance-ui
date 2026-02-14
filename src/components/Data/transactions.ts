@@ -1,5 +1,11 @@
-import type { Filters, Transaction } from "../../Types/Transaction";
+import type {
+  Filters,
+  MonthlySummary,
+  Transaction,
+} from "../../Types/Transaction";
 import { summon } from "./utils";
+import * as fs from "fs";
+import * as path from "path";
 
 const base = import.meta.env.VITE_BASE;
 
@@ -27,6 +33,13 @@ export async function getCategorizedTransactions({
     },
   );
   const data = await transactions.json();
+
+  console.log("here");
+  // Write data to seed.json file
+  const filePath = path.join(__dirname, "seed.json");
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  console.log("and here");
+
   return data;
 }
 
@@ -58,5 +71,16 @@ export async function updateCategory(
     body: JSON.stringify({ transactionId, categoryId }),
   });
   const data = await transactions.json();
+  return data;
+}
+
+export async function getMonthlySummary(
+  month: number,
+  year: number,
+): Promise<MonthlySummary> {
+  const res = await summon(`${base}/Transactions/MonthlySummary`, {
+    body: JSON.stringify({ month, year }),
+  });
+  const data = await res.json();
   return data;
 }

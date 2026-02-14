@@ -2,6 +2,7 @@ import {
   Box,
   Dialog,
   FormControl,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -23,6 +24,7 @@ export default function AddRule({
 }) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState<number | null>(null);
+  const [amount, setAmount] = useState(0);
   const [openAlert, setOpenAlert] = useState(false);
   const categories = useStore((state) => state.categories);
   const queryClient = useQueryClient();
@@ -34,7 +36,7 @@ export default function AddRule({
 
   async function handleAddRule() {
     if (category && name !== "") {
-      await addCategoryRule(name, category);
+      await addCategoryRule(name, category, amount > 0 ? amount : null);
       queryClient.invalidateQueries({ queryKey: ["categoryRules"] });
       onClose();
     }
@@ -67,6 +69,28 @@ export default function AddRule({
             ))}
           </Select>
         </FormControl>
+        <TextField
+          sx={{
+            input: {
+              borderRadius: "0",
+            },
+          }}
+          value={amount}
+          type="number"
+          onChange={(e) => setAmount(parseInt(e.target.value))}
+          label="Amount"
+          variant="filled"
+          placeholder="0.00"
+          fullWidth
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">$</InputAdornment>
+              ),
+              inputMode: "decimal",
+            },
+          }}
+        />
         <Box
           sx={{
             display: "flex",

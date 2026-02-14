@@ -1,10 +1,23 @@
-import { Box, Button, Chip, Dialog, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  Dialog,
+  Menu,
+  MenuItem,
+  Select,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import type { Transaction } from "../../Types/Transaction";
 import LittleGuy from "../../assets/limbless-guy.png";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useStore } from "../../store/store";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { formatMoney } from "../../utils/helpers";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { updateCategory } from "../Data/transactions";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface TransactionDetailsProps {
   transaction: Transaction;
@@ -18,12 +31,38 @@ export default function TransactionDetails({
   handleClose,
 }: TransactionDetailsProps) {
   const theme = useTheme();
+  const queryClient = useQueryClient();
+  const categories = useStore((state) => state.categories);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [category, setCategory] = useState("");
+  const [selectCategory, setSelectCategory] = useState<
+    "manual" | "rule" | null
+  >(null);
+  const openMenu = Boolean(anchorEl);
+
+  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const menuAnchor = useRef(null);
   const NAME_LENGTH = 13;
   const date = new Date(transaction.date);
 
   function onClose() {
     console.log("close");
     handleClose();
+  }
+
+  async function handleAddCategory() {
+    const categoryId = parseInt(category);
+    if (!categoryId) return;
+    await updateCategory(transaction.id, categoryId);
+    setSelectCategory(null);
+    handleCloseMenu();
+    queryClient.invalidateQueries({ queryKey: ["transactions"] });
   }
 
   function getName() {
@@ -49,6 +88,69 @@ export default function TransactionDetails({
           minWidth: "70vw",
         }}
       >
+        {!transaction.category && (
+          <Button
+            sx={{
+              position: "absolute",
+              top: "10px",
+              right: "10px",
+              minWidth: 0,
+              width: "fit-content",
+            }}
+            ref={menuAnchor.current}
+            onClick={handleOpenMenu}
+          >
+            <MoreVertIcon />
+          </Button>
+        )}
+        <Menu
+          anchorEl={anchorEl}
+          open={openMenu}
+          onClose={handleCloseMenu}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          // transformOrigin={{
+          //   vertical: "top",
+          //   horizontal: "right",
+          // }}
+        >
+          <Box sx={{ display: "grid", padding: "0.5rem 1rem" }}>
+            {!selectCategory ? (
+              <>
+                <Button onClick={() => setSelectCategory("manual")}>
+                  Categorize
+                </Button>
+                <Button onClick={() => setSelectCategory("rule")}>
+                  Create Rule
+                </Button>
+              </>
+            ) : (
+              <>
+                <Select
+                  value={category ?? ""}
+                  onChange={(e) => setCategory(e.target.value)}
+                  sx={{
+                    ".MuiSelect-select": {
+                      padding: "0.25rem",
+                      paddingRight: "2rem",
+                    },
+                  }}
+                >
+                  {categories.map((c) => (
+                    <MenuItem value={c.id}>{c.name}</MenuItem>
+                  ))}
+                </Select>
+                <Button onClick={() => setSelectCategory(null)}>Cancel</Button>
+                {selectCategory === "manual" && (
+                  <Button onClick={handleAddCategory}>Add Category</Button>
+                )}
+                {selectCategory === "rule" && <Button>Add Rule</Button>}
+              </>
+            )}
+          </Box>
+        </Menu>
         <Box>
           <Typography
             sx={{ fontSize: "1.5rem", fontWeight: "300", textAlign: "center" }}
