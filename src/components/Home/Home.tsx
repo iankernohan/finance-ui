@@ -41,21 +41,6 @@ export default function Home() {
     }
   }, [monthlySummaries, month, year]);
 
-  // useEffect(() => {
-  //   const _income = transactions.reduce(
-  //     (acc, curr) =>
-  //       curr.category?.transactionType === 1 ? acc + curr.amount : acc + 0,
-  //     0,
-  //   );
-  //   const _expenses = transactions.reduce(
-  //     (acc, curr) =>
-  //       curr.category?.transactionType === 0 ? acc + curr.amount : acc + 0,
-  //     0,
-  //   );
-  //   setIncome(_income);
-  //   setExpenses(_expenses);
-  // }, [transactions]);
-
   function handleIncrementMonth() {
     if (month === 12) {
       setMonth(1);

@@ -1,3 +1,4 @@
+import type { TransactionType } from "../../Types/Transaction";
 import { summon } from "./utils";
 
 const base = import.meta.env.VITE_BASE;
@@ -8,7 +9,10 @@ export async function getCategories() {
   return data;
 }
 
-export async function addCategory(name: string, transactionType: number) {
+export async function addCategory(
+  name: string,
+  transactionType: TransactionType,
+) {
   const res = await summon(`${base}/Category/AddCategory`, {
     body: JSON.stringify({ name, transactionType }),
   });
@@ -19,10 +23,11 @@ export async function addCategory(name: string, transactionType: number) {
 export async function updateCategory(
   id: number,
   name: string,
-  transactionType: number,
+  transactionType: TransactionType,
+  budgetLimit?: number,
 ) {
   const res = await summon(`${base}/Category/UpdateCategory`, {
-    body: JSON.stringify({ id, name, transactionType }),
+    body: JSON.stringify({ id, name, budgetLimit, transactionType }),
   });
   const data = await res.json();
   return data;

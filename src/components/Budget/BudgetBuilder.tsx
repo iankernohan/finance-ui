@@ -2,38 +2,57 @@ import { Box, useTheme } from "@mui/material";
 import { useStore } from "../../store/store";
 import FadeIn from "../UI/FadeIn";
 import BudgetTile from "./BudgetTile";
-import { useEffect } from "react";
-import { getRecurringTransactions } from "../Data/data";
-import { formatMoney } from "../../utils/helpers";
+import { getMonth } from "../../utils/helpers";
 import Loader from "../UI/Loader";
+import MonthPicker from "../Graphs/MonthPicker";
+import { useEffect, useState } from "react";
+import type { MonthlySummary } from "../../Types/Transaction";
+import { useMonthlySummaries } from "../../hooks/queries/useMonthlySummary";
 
 export default function BudgetBuilder() {
   const theme = useTheme();
-  const budgets = useStore((state) => state.budgets);
+  const categories = useStore((state) => state.categories);
+  const monthlySummaries = useStore((state) => state.monthlySummaries);
   const loading = useStore((state) => state.loading);
-  const setLoading = useStore((state) => state.setLoading);
-  const totalBudgetAmount = budgets.reduce((acc, curr) => acc + curr.limit, 0);
-  const incomeIds = useStore((state) => state.incomeIds);
-  const recurringTransactions = useStore(
-    (state) => state.recurringTransactions
-  );
-  const setRecurringTransactions = useStore(
-    (state) => state.setRecurringTransactions
-  );
-  const recurringIncomeAmount = recurringTransactions
-    .filter((rt) => incomeIds.includes(rt.categoryId))
-    .reduce((a, b) => a + b.amount, 0);
-  const savings = recurringIncomeAmount - totalBudgetAmount;
+
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [currSummary, setCurrSummary] = useState<MonthlySummary>({
+    monthName: "",
+    categories: {},
+    expenseTotal: 0,
+    incomeTotal: 0,
+    year,
+  });
+
+  useMonthlySummaries(month, year);
 
   useEffect(() => {
-    async function fetchRecurringTransactions() {
-      setLoading(true);
-      const res = await getRecurringTransactions();
-      setLoading(false);
-      setRecurringTransactions(res);
+    if (monthlySummaries.length) {
+      const summary = monthlySummaries.find(
+        (s) => s.monthName === getMonth(month) && s.year === year,
+      );
+      if (summary) setCurrSummary(summary);
     }
-    if (recurringTransactions.length === 0) fetchRecurringTransactions();
-  }, [setRecurringTransactions, recurringTransactions.length, setLoading]);
+  }, [monthlySummaries, month, year]);
+
+  function handleIncrementMonth() {
+    if (month === 12) {
+      setMonth(1);
+      setYear((curr) => (curr += 1));
+    } else {
+      setMonth((curr) => (curr += 1));
+    }
+  }
+
+  function handleDecrementMonth() {
+    if (month === 1) {
+      setMonth(12);
+      setYear((curr) => (curr -= 1));
+    } else {
+      setMonth((curr) => (curr -= 1));
+    }
+  }
 
   return (
     <Box
@@ -61,38 +80,21 @@ export default function BudgetBuilder() {
           fontWeight: "300",
         }}
       >
-        {loading ? (
-          <Loader width="80" />
-        ) : (
-          <>
-            <p>
-              Projected Income:{" "}
-              <span style={{ color: theme.palette.success.main }}>
-                {formatMoney(recurringIncomeAmount)}
-              </span>
-            </p>
-            <p>
-              Savings:{" "}
-              <span
-                style={{
-                  color:
-                    savings > 0
-                      ? theme.palette.success.main
-                      : theme.palette.error.main,
-                }}
-              >
-                {formatMoney(savings)}
-              </span>
-            </p>
-          </>
-        )}
+        <>
+          <MonthPicker
+            month={month}
+            year={year}
+            increment={handleIncrementMonth}
+            decrement={handleDecrementMonth}
+          />
+        </>
       </FadeIn>
-      <Box sx={{ width: "80%" }}>
-        {budgets.map((b, i) => (
-          <FadeIn transitionDelay={`${i / 20 + 0.05}`} key={b.id}>
-            <BudgetTile budget={b} />
-          </FadeIn>
-        ))}
+      <Box sx={{ width: "90%", display: "grid", gap: "1rem" }}>
+        {categories
+          .filter((c) => c.transactionType === "Expense")
+          .map((c) => (
+            <BudgetTile key={c.id} category={c} monthlySummary={currSummary} />
+          ))}
       </Box>
     </Box>
   );

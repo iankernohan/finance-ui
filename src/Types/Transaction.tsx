@@ -1,3 +1,5 @@
+export type TransactionType = "Expense" | "Income";
+
 export interface TransactionCategory {
   primary?: string | null;
   detailed?: string | null;
@@ -7,8 +9,9 @@ export interface TransactionCategory {
 export interface Category {
   id: number;
   name: string;
+  budgetLimit?: number;
   subCategories?: SubCategory[];
-  transactionType?: number;
+  transactionType: TransactionType;
 }
 export interface PlaidTransactionLocation {
   address?: string | null;
@@ -54,7 +57,7 @@ export type Filters = {
   subCategory?: string[];
   minAmount?: number;
   maxAmount?: number;
-  transactionType?: "Income" | "Expense";
+  transactionType?: TransactionType;
   description?: string;
 };
 
@@ -72,7 +75,7 @@ export type Category_Old = {
   id: number;
   name: string;
   subCategories?: SubCategory[];
-  transactionType: "Expense" | "Income";
+  transactionType: TransactionType;
 };
 
 export type SubCategory = {
