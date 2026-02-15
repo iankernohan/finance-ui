@@ -51,12 +51,9 @@ export default function History() {
       <>
         {(uncategorized ? uncategorizedTransactions : transactions).map(
           (t, i) => (
-            <FadeIn
-              key={t.id}
-              transitionDelay={`${i < numToDelay ? i / 20 : 0}`}
-            >
+            <Box key={t.id}>
               <Transaction transaction={t} />
-            </FadeIn>
+            </Box>
           ),
         )}
       </>

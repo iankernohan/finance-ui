@@ -152,20 +152,24 @@ export default function TransactionDetails({
           </Box>
         </Menu>
         <Box>
-          <Typography
-            sx={{ fontSize: "1.5rem", fontWeight: "300", textAlign: "center" }}
+          <p
+            style={{
+              fontSize: "1.5rem",
+              fontWeight: "300",
+              textAlign: "center",
+            }}
           >
             {getName()}
-          </Typography>
-          <Typography
-            sx={{
+          </p>
+          <p
+            style={{
               fontSize: "0.8rem",
               color: "rgb(179, 179, 179)",
               textAlign: "center",
             }}
           >
             {date.toLocaleDateString()}
-          </Typography>
+          </p>
         </Box>
         <Box
           sx={{
@@ -188,13 +192,13 @@ export default function TransactionDetails({
           />
         </Box>
 
-        <Typography sx={{ fontSize: "2rem", fontWeight: "100" }}>
+        <p style={{ fontSize: "2rem", fontWeight: "100" }}>
           {formatMoney(
             transaction.amount.toString().startsWith("-")
               ? parseInt(transaction.amount.toString().slice(1))
               : transaction.amount,
           )}
-        </Typography>
+        </p>
         <Chip
           label={
             transaction.category ? transaction.category.name : "No Category"
@@ -210,13 +214,12 @@ export default function TransactionDetails({
               fontSize: "0.8rem",
             }}
           >
-            <Typography sx={{ margin: "0", fontSize: "inherit" }}>
+            <p style={{ margin: "0", fontSize: "inherit", fontWeight: "300" }}>
               {transaction?.location.address}
-            </Typography>
-            <Typography
-              sx={{ fontSize: "inherit" }}
-            >{`${transaction?.location.city ?? ""} ${transaction?.location.country ?? ""} ${transaction?.location.region ?? ""} ${transaction?.location.postalCode ?? ""} `}</Typography>
-            <Typography></Typography>
+            </p>
+            <p
+              style={{ fontSize: "inherit", fontWeight: "300" }}
+            >{`${transaction?.location.city ?? ""} ${transaction?.location.country ?? ""} ${transaction?.location.region ?? ""} ${transaction?.location.postalCode ?? ""} `}</p>
           </Box>
         )}
         {transaction.website && (

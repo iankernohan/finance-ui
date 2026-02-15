@@ -82,30 +82,29 @@ export default function Transaction({ transaction }: TransactionProps) {
           )}
         </Box>
         <Box>
-          <Typography>{getName(transaction)}</Typography>
+          <p>{getName(transaction)}</p>
           <Box sx={{ display: "flex", gap: "0.5rem", alignItems: "end" }}>
-            <Typography sx={{ color: "rgb(179, 179, 179)" }}>
+            <p style={{ color: "rgb(179, 179, 179)" }}>
               {transaction.category?.name ?? "¯\\_(ツ)_/¯"}
-            </Typography>
+            </p>
             {transaction.subCategory && (
               <>
-                <Typography sx={{ color: "rgb(179, 179, 179)" }}>-</Typography>
-                <Typography
-                  sx={{ color: "rgb(179, 179, 179)", fontSize: "0.9rem" }}
-                >
+                <p style={{ color: "rgb(179, 179, 179)" }}>-</p>
+                <p style={{ color: "rgb(179, 179, 179)", fontSize: "0.9rem" }}>
                   {transaction.subCategory.name}
-                </Typography>
+                </p>
               </>
             )}
           </Box>
         </Box>
       </Box>
       <Box
-        sx={
-          transaction.amount.toString().startsWith("-")
+        sx={{
+          fontWeight: "300",
+          ...(transaction.amount.toString().startsWith("-")
             ? { color: theme.palette.success.main }
-            : {}
-        }
+            : {}),
+        }}
       >
         {formatMoney(
           parseFloat(transaction.amount.toString().replace("-", "")),

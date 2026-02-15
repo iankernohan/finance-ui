@@ -73,7 +73,7 @@ export default function CategoryRule({ rule }: { rule: CategoryRules }) {
             onChange={(e) => setName(e.target.value)}
           />
         ) : (
-          <Typography sx={{ fontWeight: "300" }}>{rule.name}</Typography>
+          <p style={{ fontWeight: "200", fontSize: "1.2rem" }}>{rule.name}</p>
         )}
       </Box>
       <Box
@@ -84,7 +84,7 @@ export default function CategoryRule({ rule }: { rule: CategoryRules }) {
           justifyContent: "space-between",
         }}
       >
-        <Box sx={{ display: "flex", gap: "1rem" }}>
+        <Box sx={{ display: "flex", gap: "1rem", alignItems: "end" }}>
           {edit ? (
             <>
               <Select
@@ -118,10 +118,16 @@ export default function CategoryRule({ rule }: { rule: CategoryRules }) {
             </>
           ) : (
             <>
-              <Typography>{rule.category?.name}</Typography>
-              <Typography sx={{ color: "rgb(137, 137, 137)" }}>
+              <p style={{ fontWeight: 300 }}>{rule.category?.name}</p>
+              <p
+                style={{
+                  color: "rgb(137, 137, 137)",
+                  fontWeight: "200",
+                  fontSize: "0.8rem",
+                }}
+              >
                 {rule.subCategory?.name ?? "No sub-category"}
-              </Typography>
+              </p>
             </>
           )}
         </Box>

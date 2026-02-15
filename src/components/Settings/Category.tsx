@@ -69,15 +69,15 @@ export default function Category({ category }: { category: Category }) {
         }}
       >
         {iconMap[category.name] ?? iconMap["Unknown"]}
-        <Typography
-          sx={{
+        <p
+          style={{
             fontSize: "1.5rem",
             fontWeight: "200",
             transform: "translateY(10px)",
           }}
         >
           {category.name}
-        </Typography>
+        </p>
       </Box>
       <Box ref={hiddenRef} sx={{ display: "grid" }}>
         <Box
@@ -95,7 +95,7 @@ export default function Category({ category }: { category: Category }) {
               <SubCategoryChip subCategory={subcategory} />
             ))
           ) : (
-            <Typography>No Sub-Categories</Typography>
+            <p style={{ fontWeight: "200" }}>No Sub-Categories</p>
           )}
           <Chip
             onClick={() => setAdd((curr) => !curr)}

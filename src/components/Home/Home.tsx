@@ -89,8 +89,8 @@ export default function Home() {
           gap: "0.5rem",
         }}
       >
-        <Typography
-          sx={{
+        <p
+          style={{
             fontSize: "2rem",
             fontWeight: 200,
             color:
@@ -102,14 +102,26 @@ export default function Home() {
           {formatMoney(
             Math.abs(currSummary.incomeTotal * -1 - currSummary.expenseTotal),
           )}
-        </Typography>
+        </p>
         <Box sx={{ display: "flex", gap: "1rem" }}>
-          <Typography sx={{ fontSize: "0.8rem", color: "rgb(136, 136, 136)" }}>
+          <p
+            style={{
+              fontWeight: "200",
+              fontSize: "0.8rem",
+              color: "rgb(136, 136, 136)",
+            }}
+          >
             +{formatMoney(currSummary.incomeTotal * -1)}
-          </Typography>
-          <Typography sx={{ fontSize: "0.8rem", color: "rgb(136, 136, 136)" }}>
+          </p>
+          <p
+            style={{
+              fontWeight: "200",
+              fontSize: "0.8rem",
+              color: "rgb(136, 136, 136)",
+            }}
+          >
             -{formatMoney(currSummary.expenseTotal)}
-          </Typography>
+          </p>
         </Box>
         {/* {formatMoney(expenses ? expenses * -1 : 0)} */}
         <img
