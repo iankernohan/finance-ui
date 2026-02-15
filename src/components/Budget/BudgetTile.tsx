@@ -37,6 +37,11 @@ export default function BudgetTile({
     0,
   );
 
+  function getValue() {
+    if (!totalAmount) return 0;
+    return (totalAmount / category.budgetLimit!) * 100;
+  }
+
   async function handleAddBudget() {
     const updated = await updateCategory(
       category.id,
@@ -83,10 +88,9 @@ export default function BudgetTile({
               <p>{formatMoney(category.budgetLimit)}</p>
             </Box>
             <LinearProgress
+              color={getValue() >= 100 ? "error" : "primary"}
               variant="determinate"
-              value={
-                totalAmount ? (totalAmount / category.budgetLimit) * 100 : 0
-              }
+              value={getValue() > 100 ? 100 : getValue()}
             />
           </>
         ) : (
