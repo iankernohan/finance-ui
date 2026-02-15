@@ -140,7 +140,7 @@ export default function History() {
       <Filter
         open={openFilter}
         handleClose={handleCloseFilter}
-        filterConitions={filterConditions}
+        filterConditions={filterConditions}
         updateFilterConditions={updateFilterConditions}
       />
     </Box>

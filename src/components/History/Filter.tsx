@@ -1,5 +1,5 @@
 import { Box, Button, Chip, Dialog, TextField, useTheme } from "@mui/material";
-import type { FilterConditions } from "../../Types/Transaction";
+import type { Filters } from "../../Types/Transaction";
 import { useStore } from "../../store/store";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -8,33 +8,33 @@ import dayjs from "dayjs";
 type FilterProps = {
   open: boolean;
   handleClose: () => void;
-  updateFilterConditions: (conditions: FilterConditions) => void;
-  filterConitions: FilterConditions | null;
+  updateFilterConditions: (conditions: Filters) => void;
+  filterConditions: Filters | null;
 };
 
 export default function Filter({
   open,
   handleClose,
   updateFilterConditions,
-  filterConitions,
+  filterConditions: filterConditions,
 }: FilterProps) {
   const theme = useTheme();
 
   const allCategories = useStore((state) => state.categories);
 
   let categories;
-  if (filterConitions?.transactionType === "Expense") {
+  if (filterConditions?.transactionType === "Expense") {
     categories = allCategories.filter((c) => c.transactionType === "Expense");
-  } else if (filterConitions?.transactionType === "Income") {
+  } else if (filterConditions?.transactionType === "Income") {
     categories = allCategories.filter((c) => c.transactionType === "Income");
   } else {
     categories = allCategories;
   }
 
   const subCategories: string[] = [];
-  if (filterConitions?.category) {
+  if (filterConditions?.category) {
     categories.map((c) => {
-      if (filterConitions.category?.includes(c.name)) {
+      if (filterConditions.category?.includes(c.name)) {
         c.subCategories?.forEach((s) => {
           subCategories.push(s.name);
         });
@@ -49,61 +49,61 @@ export default function Filter({
 
   function handleTransactionType(type: "Income" | "Expense" | undefined) {
     if (type)
-      updateFilterConditions({ ...filterConitions, transactionType: type });
+      updateFilterConditions({ ...filterConditions, transactionType: type });
     else
       updateFilterConditions({
-        ...filterConitions,
+        ...filterConditions,
         transactionType: undefined,
       });
   }
 
   function handleCategory(name: string) {
-    if (filterConitions?.category?.includes(name)) {
-      if (filterConitions.category.length === 1) {
-        updateFilterConditions({ ...filterConitions, category: undefined });
+    if (filterConditions?.category?.includes(name)) {
+      if (filterConditions.category.length === 1) {
+        updateFilterConditions({ ...filterConditions, category: undefined });
       } else {
         updateFilterConditions({
-          ...filterConitions,
-          category: filterConitions.category?.filter((c) => c !== name),
+          ...filterConditions,
+          category: filterConditions.category?.filter((c) => c !== name),
         });
       }
     } else {
-      const updated = filterConitions?.category
-        ? [...filterConitions.category, name]
+      const updated = filterConditions?.category
+        ? [...filterConditions.category, name]
         : [name];
       updateFilterConditions({
-        ...filterConitions,
+        ...filterConditions,
         category: updated,
       });
     }
   }
 
   function handleStartDate(date: Date | null) {
-    if (date) updateFilterConditions({ ...filterConitions, startDate: date });
-    else updateFilterConditions({ ...filterConitions, startDate: undefined });
+    if (date) updateFilterConditions({ ...filterConditions, startDate: date });
+    else updateFilterConditions({ ...filterConditions, startDate: undefined });
   }
 
   function handleEndDate(date: Date | null) {
-    if (date) updateFilterConditions({ ...filterConitions, endDate: date });
-    else updateFilterConditions({ ...filterConitions, endDate: undefined });
+    if (date) updateFilterConditions({ ...filterConditions, endDate: date });
+    else updateFilterConditions({ ...filterConditions, endDate: undefined });
   }
 
   function handleSubCategory(name: string) {
-    if (filterConitions?.subCategory?.includes(name)) {
-      if (filterConitions.subCategory.length === 1) {
-        updateFilterConditions({ ...filterConitions, subCategory: undefined });
+    if (filterConditions?.subCategory?.includes(name)) {
+      if (filterConditions.subCategory.length === 1) {
+        updateFilterConditions({ ...filterConditions, subCategory: undefined });
       } else {
         updateFilterConditions({
-          ...filterConitions,
-          subCategory: filterConitions.subCategory?.filter((s) => s !== name),
+          ...filterConditions,
+          subCategory: filterConditions.subCategory?.filter((s) => s !== name),
         });
       }
     } else {
-      const updated = filterConitions?.subCategory
-        ? [...filterConitions.subCategory, name]
+      const updated = filterConditions?.subCategory
+        ? [...filterConditions.subCategory, name]
         : [name];
       updateFilterConditions({
-        ...filterConitions,
+        ...filterConditions,
         subCategory: updated,
       });
     }
@@ -112,7 +112,7 @@ export default function Filter({
   function handleMinAmount(e: React.ChangeEvent<HTMLInputElement>) {
     const amount = parseInt(e.target.value);
     updateFilterConditions({
-      ...filterConitions,
+      ...filterConditions,
       minAmount: amount > 0 ? amount : undefined,
     });
   }
@@ -120,7 +120,7 @@ export default function Filter({
   function handleMaxAmount(e: React.ChangeEvent<HTMLInputElement>) {
     const amount = parseInt(e.target.value);
     updateFilterConditions({
-      ...filterConitions,
+      ...filterConditions,
       maxAmount: amount > 0 ? amount : undefined,
     });
   }
@@ -128,7 +128,7 @@ export default function Filter({
   function handleDescription(e: React.ChangeEvent<HTMLInputElement>) {
     const input = e.target.value;
     updateFilterConditions({
-      ...filterConitions,
+      ...filterConditions,
       description: input ? input : undefined,
     });
   }
@@ -161,11 +161,11 @@ export default function Filter({
               label={i ?? "All"}
               sx={{
                 backgroundColor:
-                  filterConitions?.transactionType === i
+                  filterConditions?.transactionType === i
                     ? theme.palette.primary.dark
                     : undefined,
                 color:
-                  filterConitions?.transactionType === i
+                  filterConditions?.transactionType === i
                     ? theme.palette.text.disabled
                     : undefined,
               }}
@@ -188,10 +188,10 @@ export default function Filter({
               label={c.name}
               onClick={() => handleCategory(c.name)}
               sx={{
-                backgroundColor: filterConitions?.category?.includes(c.name)
+                backgroundColor: filterConditions?.category?.includes(c.name)
                   ? theme.palette.primary.dark
                   : undefined,
-                color: filterConitions?.category?.includes(c.name)
+                color: filterConditions?.category?.includes(c.name)
                   ? theme.palette.text.disabled
                   : undefined,
               }}
@@ -220,10 +220,10 @@ export default function Filter({
                 label={s}
                 onClick={() => handleSubCategory(s)}
                 sx={{
-                  backgroundColor: filterConitions?.subCategory?.includes(s)
+                  backgroundColor: filterConditions?.subCategory?.includes(s)
                     ? theme.palette.primary.dark
                     : undefined,
-                  color: filterConitions?.subCategory?.includes(s)
+                  color: filterConditions?.subCategory?.includes(s)
                     ? theme.palette.text.disabled
                     : undefined,
                 }}
@@ -238,14 +238,14 @@ export default function Filter({
           <MobileDatePicker
             onChange={(value) => handleStartDate(value?.toDate() as Date)}
             value={
-              filterConitions?.startDate
-                ? dayjs(filterConitions.startDate)
+              filterConditions?.startDate
+                ? dayjs(filterConditions.startDate)
                 : undefined
             }
           />
           <Button
             onClick={() => handleStartDate(null)}
-            disabled={filterConitions?.startDate === undefined}
+            disabled={filterConditions?.startDate === undefined}
           >
             <DeleteOutlineIcon />
           </Button>
@@ -257,14 +257,14 @@ export default function Filter({
           <MobileDatePicker
             onChange={(value) => handleEndDate(value?.toDate() as Date)}
             value={
-              filterConitions?.endDate
-                ? dayjs(filterConitions.endDate)
+              filterConditions?.endDate
+                ? dayjs(filterConditions.endDate)
                 : undefined
             }
           />
           <Button
             onClick={() => handleEndDate(null)}
-            disabled={filterConitions?.endDate === undefined}
+            disabled={filterConditions?.endDate === undefined}
           >
             <DeleteOutlineIcon />
           </Button>
@@ -274,7 +274,7 @@ export default function Filter({
         <p>Amount</p>
         <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <TextField
-            value={filterConitions?.minAmount}
+            value={filterConditions?.minAmount}
             type="number"
             onChange={handleMinAmount}
             label="Min"
@@ -283,7 +283,7 @@ export default function Filter({
           />
           <span>-</span>
           <TextField
-            value={filterConitions?.maxAmount}
+            value={filterConditions?.maxAmount}
             type="number"
             onChange={handleMaxAmount}
             label="Max"
@@ -294,7 +294,7 @@ export default function Filter({
         <hr style={{ width: "100%" }} />
 
         <TextField
-          value={filterConitions?.description}
+          value={filterConditions?.description}
           onChange={handleDescription}
           label="Description"
           fullWidth

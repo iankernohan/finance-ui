@@ -118,7 +118,7 @@ export const defaultTransaction: Transaction = {
   category: {
     id: 0,
     name: "",
-    transactionType: 0,
+    transactionType: "Expense",
     subCategories: [],
   },
   date: new Date().toDateString(),

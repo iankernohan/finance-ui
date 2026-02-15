@@ -1,5 +1,4 @@
-import { Box, Typography } from "@mui/material";
-// import { useStore } from "../../store/store";
+import { Box } from "@mui/material";
 import "./header.css";
 import { NavLink } from "react-router";
 import HomeIcon from "@mui/icons-material/Home";
@@ -8,8 +7,6 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SavingsIcon from "@mui/icons-material/Savings";
 
 export default function Header() {
-  // const toggleDarkMode = useStore((state) => state.toggleDarkMode);
-
   return (
     <Box className="header">
       <NavLink className="link" to="/">
