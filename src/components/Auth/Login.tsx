@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../Data/supabase";
-import { Box, useTheme } from "@mui/material";
+import { Alert, Box, Snackbar, useTheme } from "@mui/material";
 import LittleGuy from "../../assets/limbless-guy.png";
 import Parcel from "../UI/Parcel";
 import { useNavigate } from "react-router";
@@ -10,12 +10,15 @@ export function Login() {
   const theme = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [snackbar, setSnackbar] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
   const setLoading = useStore((state) => state.setLoading);
   const user = useStore((state) => state.user);
+  const setUser = useStore((state) => state.setUser);
 
   useEffect(() => {
-    if (user) navigate(-1);
+    if (user) navigate("/");
   }, [user, navigate]);
 
   async function handleLogin(
@@ -30,10 +33,11 @@ export function Login() {
 
     if (error) {
       console.error(error);
+      setSnackbar(true);
+      setErrorMessage(error.message);
     } else {
-      navigate("/");
       console.log("Logged in:", data);
-      setLoading(false);
+      setUser(data.user);
     }
     setLoading(false);
   }
@@ -99,6 +103,20 @@ export function Login() {
         }}
         src={LittleGuy}
       />
+      <Snackbar
+        open={snackbar}
+        autoHideDuration={6000}
+        onClose={() => {
+          setSnackbar(false);
+          setErrorMessage(null);
+        }}
+      >
+        <Alert severity="error">
+          <p
+            style={{ fontWeight: "300" }}
+          >{`There was an error logging in: ${errorMessage}`}</p>
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

@@ -6,14 +6,11 @@ import {
   Menu,
   MenuItem,
   Select,
-  Typography,
-  useTheme,
 } from "@mui/material";
 import type { Transaction } from "../../Types/Transaction";
 import LittleGuy from "../../assets/limbless-guy.png";
 import { useRef, useState } from "react";
 import { useStore } from "../../store/store";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { formatMoney } from "../../utils/helpers";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { updateCategory } from "../Data/transactions";
@@ -30,7 +27,6 @@ export default function TransactionDetails({
   open,
   handleClose,
 }: TransactionDetailsProps) {
-  const theme = useTheme();
   const queryClient = useQueryClient();
   const categories = useStore((state) => state.categories);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -52,7 +48,6 @@ export default function TransactionDetails({
   const date = new Date(transaction.date);
 
   function onClose() {
-    console.log("close");
     handleClose();
   }
 

@@ -1,12 +1,8 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import "./home.css";
 import { useStore } from "../../store/store";
-// import TotalAmount from "./TotalAmount";
-// import Income from "./Income";
-// import Expenses from "./Expenses";
 import MonthPicker from "../Graphs/MonthPicker";
 import { useEffect, useState } from "react";
-import FadeIn from "../UI/FadeIn";
 import LittleGuy from "../../assets/limbless-guy.png";
 import Parcel from "../UI/Parcel";
 import { formatMoney, getMonth } from "../../utils/helpers";
@@ -17,8 +13,6 @@ import PieChart from "./PieChart";
 export default function Home() {
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
-  const [income, setIncome] = useState<number | null>(null);
-  const [expenses, setExpenses] = useState<number | null>(null);
   const [currSummary, setCurrSummary] = useState<MonthlySummary>({
     monthName: "",
     categories: {},
@@ -27,7 +21,6 @@ export default function Home() {
     year,
   });
 
-  const transactions = useStore((state) => state.transactions);
   const monthlySummaries = useStore((state) => state.monthlySummaries);
 
   useMonthlySummaries(month, year);
@@ -71,15 +64,12 @@ export default function Home() {
         marginTop: "1rem",
       }}
     >
-      <FadeIn>
-        <MonthPicker
-          month={month}
-          year={year}
-          increment={handleIncrementMonth}
-          decrement={handleDecrementMonth}
-        />
-      </FadeIn>
-      {/* <TransactionPieChart /> */}
+      <MonthPicker
+        month={month}
+        year={year}
+        increment={handleIncrementMonth}
+        decrement={handleDecrementMonth}
+      />
       <Parcel
         sx={{
           padding: "1rem",

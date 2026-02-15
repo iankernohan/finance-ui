@@ -25,16 +25,17 @@ export const router = createBrowserRouter(
           element: <Login />,
         },
         {
+          path: "register",
+          element: <SignUp />,
+        },
+        {
           element: <ProtectedRoute />,
           children: [
             {
               index: true,
               element: <Home />,
             },
-            {
-              path: "register",
-              element: <SignUp />,
-            },
+
             {
               path: "history",
               element: <History />,

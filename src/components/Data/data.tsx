@@ -110,7 +110,6 @@ export async function updateBudget(id: number, limit: number) {
   if (!res.ok) {
     return null;
   }
-  console.log(res);
   const result: Budget = await res.json();
   return result;
 }

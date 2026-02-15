@@ -34,11 +34,8 @@ export async function getCategorizedTransactions({
   );
   const data = await transactions.json();
 
-  console.log("here");
-  // Write data to seed.json file
   const filePath = path.join(__dirname, "seed.json");
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-  console.log("and here");
 
   return data;
 }

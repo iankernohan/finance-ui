@@ -17,7 +17,6 @@ export function useMonthlySummaries(month: number, year: number) {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       setMonthlySummaries(data);
     }
   }, [data, setMonthlySummaries]);

@@ -34,22 +34,22 @@ export default function RecurringTransactionDetails({
   const [alertOpen, setAlertOpen] = useState(false);
   const [deleteAlertOpen, setDeleteAlertOpen] = useState(false);
   const recurringTransactions = useStore(
-    (state) => state.recurringTransactions
+    (state) => state.recurringTransactions,
   );
   const setRecurringTransactions = useStore(
-    (state) => state.setRecurringTransactions
+    (state) => state.setRecurringTransactions,
   );
   const categories = useStore((state) => state.categories);
   const categoryName = categories.find(
-    (c) => c.id === transaction.categoryId
+    (c) => c.id === transaction.categoryId,
   )?.name;
   const [amount, setAmount] = useState(transaction.amount.toFixed(2));
   const [description, setDescription] = useState<string>(
-    transaction.description ?? ""
+    transaction.description ?? "",
   );
   const [interval, setInterval] = useState(transaction.intervalDays);
   const [endDate, setEndDate] = useState<Date | null>(
-    transaction.endDate ?? null
+    transaction.endDate ?? null,
   );
 
   function hasChanged() {
@@ -100,10 +100,9 @@ export default function RecurringTransactionDetails({
 
   async function handleDelete() {
     const res = await deleteRecurringTransaction(transaction.id as number);
-    console.log(res);
     if (res) {
       setRecurringTransactions(
-        recurringTransactions.filter((rt) => rt.id !== transaction.id)
+        recurringTransactions.filter((rt) => rt.id !== transaction.id),
       );
     }
   }

@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Box,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, MenuItem, Select, TextField, useTheme } from "@mui/material";
 import Parcel from "../UI/Parcel";
 import EditIcon from "@mui/icons-material/Edit";
 import type { CategoryRules } from "../../Types/PlaidTransactions";
@@ -31,7 +24,6 @@ export default function CategoryRule({ rule }: { rule: CategoryRules }) {
     const cat = categories.find((c) => c.id.toString() === category);
     setSubCategories(cat?.subCategories ?? []);
   }, [category, categories]);
-  console.log(rule);
   async function handleUpdate() {
     if (
       name !== rule.name ||

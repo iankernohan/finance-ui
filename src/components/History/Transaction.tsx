@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import type { Transaction } from "../../Types/Transaction";
 import { useState } from "react";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";

@@ -1,9 +1,6 @@
-import { Box, Button, Chip, Dialog, Typography, useTheme } from "@mui/material";
+import { Box, Button, Chip, Dialog } from "@mui/material";
 import type { Transaction } from "../../Types/Transaction";
-import LittleGuy from "../../assets/limbless-guy.png";
-import { useState } from "react";
 import { useStore } from "../../store/store";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Parcel from "../UI/Parcel";
 import { updateCategory } from "../Data/transactions";
 
@@ -47,7 +44,6 @@ export default function CategorySetter({
           1,
         );
         setUncategorizedTransactions(tempUncategorizedTransactions);
-        console.log("category updated");
         handleClose();
       })
       .catch((e) => console.log(e));

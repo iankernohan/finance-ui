@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../Data/supabase";
+import { useStore } from "../../store/store";
+import { useNavigate } from "react-router";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const user = useStore((state) => state.user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) navigate(-1);
+  });
 
   async function handleSignUp() {
     const { data, error } = await supabase.auth.signUp({

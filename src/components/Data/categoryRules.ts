@@ -15,7 +15,6 @@ export async function updateCategoryRule(
   categoryId: number,
   subCategoryId?: number,
 ) {
-  console.log("hello: ", typeof subCategoryId);
   const rule = await summon(`${base}/CategoryRules/UpdateCategoryRule`, {
     body: JSON.stringify({ id, name, categoryId, subCategoryId }),
   });

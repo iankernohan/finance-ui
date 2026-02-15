@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Chip,
-  TextField,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, Button, Chip, TextField, useTheme } from "@mui/material";
 import { iconMap } from "../../utils/helpers";
 import Parcel from "../UI/Parcel";
 import type { Category } from "../../Types/Transaction";

@@ -4,10 +4,9 @@ import { useStore } from "../../store/store";
 import { defaultTransaction } from "../../utils/helpers";
 import TuneIcon from "@mui/icons-material/Tune";
 import Filter from "./Filter";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { Filters } from "../../Types/Transaction";
 import ClearIcon from "@mui/icons-material/Clear";
-import FadeIn from "../UI/FadeIn";
 import CategoryIcon from "@mui/icons-material/Category";
 
 export default function History() {
@@ -21,18 +20,10 @@ export default function History() {
   const [filterConditions, setFilterConditions] = useState<Filters | null>(
     null,
   );
-  const [numToDelay, setNumToDelay] = useState(0);
   const [uncategorized, setUncategorized] = useState(false);
   function handleCloseFilter() {
     setOpenFilter(false);
   }
-
-  useEffect(() => {
-    const navHeight = 84.4;
-    const windowHeight = window.innerHeight - navHeight * 2;
-    const transactionItemHeight = 82;
-    setNumToDelay(windowHeight / transactionItemHeight);
-  }, []);
 
   function handleSetUncategorized() {
     setUncategorized((curr) => !curr);
@@ -49,13 +40,11 @@ export default function History() {
   function RenderTransaction() {
     return transactions.length ? (
       <>
-        {(uncategorized ? uncategorizedTransactions : transactions).map(
-          (t, i) => (
-            <Box key={t.id}>
-              <Transaction transaction={t} />
-            </Box>
-          ),
-        )}
+        {(uncategorized ? uncategorizedTransactions : transactions).map((t) => (
+          <Box key={t.id}>
+            <Transaction transaction={t} />
+          </Box>
+        ))}
       </>
     ) : (
       <Box

@@ -1,24 +1,31 @@
-import { Box, Switch } from "@mui/material";
-import FadeIn from "../UI/FadeIn";
-// import SettingTab from "./SettingTab";
-// import type { SettingOption } from "../../Types/Settings";
+import { Box, Button, Switch } from "@mui/material";
 import BackButton from "../UI/BackButton";
 import { useStore } from "../../store/store";
+import { supabase } from "../Data/supabase";
+import { useNavigate } from "react-router";
 
 export default function Settings() {
-  // const settingsOptions: SettingOption[] = [
-  //   {
-  //     name: "View Recurring Transactions",
-  //     path: "recurring-transactions",
-  //   },
-  // ];
-
+  const navigate = useNavigate();
   const darkMode = useStore((state) => state.darkMode);
   const toggleDarkMode = useStore((state) => state.toggleDarkMode);
+  const setLoading = useStore((state) => state.setLoading);
+  const setUser = useStore((state) => state.setUser);
+
+  async function handleSignout() {
+    setLoading(true);
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Error logging out: ", error);
+    } else {
+      navigate("/login");
+      setUser(null);
+    }
+    setLoading(false);
+  }
 
   return (
     <Box sx={{ position: "relative" }}>
-      <FadeIn>
+      <Box>
         <BackButton top={8} />
         <h2
           style={{
@@ -30,7 +37,7 @@ export default function Settings() {
         >
           Settings
         </h2>
-      </FadeIn>
+      </Box>
       <Box
         sx={{
           display: "flex",
@@ -40,8 +47,7 @@ export default function Settings() {
           margin: "2rem auto",
         }}
       >
-        <FadeIn
-          transitionDelay="0.1"
+        <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
@@ -50,18 +56,14 @@ export default function Settings() {
         >
           <p>{`Toggle ${darkMode ? "Light" : "Dark"} Mode`}</p>
           <Switch onChange={toggleDarkMode} />
-        </FadeIn>
-        {/* {settingsOptions.map((setting, i) => (
-          <FadeIn
-            transitionDelay={`0.${i + 1}`}
-            sx={{
-              display: "flex",
-            }}
-            key={setting.name}
-          >
-            <SettingTab setting={setting} />
-          </FadeIn>
-        ))} */}
+        </Box>
+        <Button
+          sx={{ marginTop: "1rem" }}
+          variant="outlined"
+          onClick={handleSignout}
+        >
+          sign out
+        </Button>
       </Box>
     </Box>
   );

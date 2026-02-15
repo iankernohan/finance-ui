@@ -1,21 +1,14 @@
 import {
   Box,
-  Button,
   Dialog,
-  IconButton,
   InputAdornment,
   LinearProgress,
-  Menu,
   TextField,
-  Typography,
 } from "@mui/material";
 import { formatMoney, iconMap } from "../../utils/helpers";
 import type { Category, MonthlySummary } from "../../Types/Transaction";
 import { useState } from "react";
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
 import Parcel from "../UI/Parcel";
-import { useStore } from "../../store/store";
 import { updateCategory } from "../Data/category";
 import { useQueryClient } from "@tanstack/react-query";
 

@@ -1,21 +1,16 @@
 import { Box, LinearProgress, useTheme } from "@mui/material";
 import { useStore } from "../../store/store";
-import FadeIn from "../UI/FadeIn";
 import BudgetTile from "./BudgetTile";
 import { formatMoney, getMonth } from "../../utils/helpers";
-import Loader from "../UI/Loader";
 import MonthPicker from "../Graphs/MonthPicker";
 import { useEffect, useState } from "react";
 import type { MonthlySummary } from "../../Types/Transaction";
 import { useMonthlySummaries } from "../../hooks/queries/useMonthlySummary";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 export default function BudgetBuilder() {
   const theme = useTheme();
   const categories = useStore((state) => state.categories);
   const monthlySummaries = useStore((state) => state.monthlySummaries);
-  const loading = useStore((state) => state.loading);
 
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
