@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { useState } from "react";
 import { useStore } from "../../store/store";
 import LittleGuy from "../../assets/limbless-guy.png";
-import PlaidConnection from "./plaidConnection";
+import PlaidConnection from "./PlaidConnection";
 
 export default function NoPlaidConnection() {
   const [connect, setConnect] = useState(false);
