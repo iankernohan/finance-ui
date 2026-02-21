@@ -5,8 +5,7 @@ import type {
 } from "../../Types/Transaction";
 import { summon } from "./utils";
 
-// const base = "https://finance-api-0eu8.onrender.com";
-const base = "http://localhost:5028";
+const base = import.meta.env.VITE_BASE;
 
 // --------------------------------------PLAID---------------------------------------- //
 
@@ -14,9 +13,11 @@ export async function exchangePublicToken(
   public_token: string,
   userId: string,
 ) {
-  await summon(`${base}/Plaid/ExchangePublicToken`, {
+  const res = await summon(`${base}/Plaid/ExchangePublicToken`, {
     body: JSON.stringify({ publicToken: public_token, userId }),
   });
+  const data = await res.json();
+  return data;
 }
 
 export async function fetchToken(userId: string) {

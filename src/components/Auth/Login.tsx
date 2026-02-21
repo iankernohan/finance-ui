@@ -5,6 +5,7 @@ import LittleGuy from "../../assets/limbless-guy.png";
 import Parcel from "../UI/Parcel";
 import { useNavigate } from "react-router";
 import { useStore } from "../../store/store";
+import { userHasConnection } from "../Data/user";
 
 export function Login() {
   const theme = useTheme();
@@ -37,7 +38,8 @@ export function Login() {
       setErrorMessage(error.message);
     } else {
       console.log("Logged in:", data);
-      setUser(data.user);
+      const hasConnection = await userHasConnection(data.user.id ?? "");
+      setUser({ ...data.user, hasPlaidConnection: hasConnection });
     }
     setLoading(false);
   }

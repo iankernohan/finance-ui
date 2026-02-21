@@ -13,7 +13,7 @@ export function useUncategorizedTransactions() {
   const { data, isLoading } = useQuery({
     queryKey: ["uncategorizedTransactions", user?.id],
     queryFn: () => getUncategorizedTransactions(user?.id || ""),
-    enabled: !!user,
+    enabled: !!user && !!user.hasPlaidConnection,
   });
 
   useEffect(() => {

@@ -11,8 +11,9 @@ import Statistics from "./components/Settings/Statistics";
 import CategoryRules from "./components/Settings/CategoryRules";
 import { Login } from "./components/Auth/Login";
 import SignUp from "./components/Auth/SignUp";
-import ProtectedRoute from "./components/UI/ProtectedRoute";
+import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import Categories from "./components/Settings/Categories";
+import NoPlaidConnection from "./components/Auth/NoPlaidConnection";
 
 export const router = createBrowserRouter(
   [
@@ -35,7 +36,10 @@ export const router = createBrowserRouter(
               index: true,
               element: <Home />,
             },
-
+            {
+              path: "connect",
+              element: <NoPlaidConnection />,
+            },
             {
               path: "history",
               element: <History />,

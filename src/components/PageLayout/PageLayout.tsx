@@ -9,6 +9,7 @@ import PageLoader from "../UI/PageLoader";
 import { useTransactions } from "../../hooks/queries/useTransactions";
 import { useCategories } from "../../hooks/queries/useCategories";
 import { useUncategorizedTransactions } from "../../hooks/queries/useUncategorizedTransactions";
+import { userHasConnection } from "../Data/user";
 
 export default function PageLayout() {
   const theme = useTheme();
@@ -29,14 +30,19 @@ export default function PageLayout() {
     async function gatherUser() {
       setLoading(true);
       const user = await supabase.auth.getUser();
-      setUser(user.data.user);
+      if (user.data.user) {
+        const hasConnection = await userHasConnection(user.data.user.id);
+        setUser({ ...user.data.user, hasPlaidConnection: hasConnection });
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     }
     if (!user) gatherUser();
   }, [user, setUser, setLoading]);
 
   useEffect(() => {
-    if (uncategorizedTransactions.length > 0 && user) {
+    if (uncategorizedTransactions.length > 0 && user?.hasPlaidConnection) {
       setSnackBar(true);
     }
   }, [user, uncategorizedTransactions]);
@@ -57,7 +63,6 @@ export default function PageLayout() {
       <Header />
       <Box className="outlet">
         <Outlet />
-        {/* <PlaidConnect userId="test-prod" /> */}
       </Box>
       <Snackbar
         open={snackBar}

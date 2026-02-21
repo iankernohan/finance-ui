@@ -12,7 +12,7 @@ export function useCategories() {
     queryKey: ["categories", user?.id],
     // queryFn: () => getCategories(user?.id || ''),
     queryFn: () => getCategories(),
-    enabled: !!user,
+    enabled: !!user && !!user.hasPlaidConnection,
   });
 
   useEffect(() => {
