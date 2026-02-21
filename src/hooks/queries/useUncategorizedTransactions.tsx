@@ -12,8 +12,7 @@ export function useUncategorizedTransactions() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["uncategorizedTransactions", user?.id],
-    // queryFn: () => getUncategorizedTransactions(user?.id || ''),
-    queryFn: () => getUncategorizedTransactions("prod"),
+    queryFn: () => getUncategorizedTransactions(user?.id || ""),
     enabled: !!user,
   });
 
