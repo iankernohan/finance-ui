@@ -1,7 +1,7 @@
 import type { TransactionType } from "../../Types/Transaction";
 import { summon } from "./utils";
 
-const base = import.meta.env.VITE_BASE;
+const base = import.meta.env.VITE_API_BASE_URL;
 
 export async function getCategories() {
   const res = await summon(`${base}/Category/GetAllCategories`);

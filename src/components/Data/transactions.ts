@@ -7,7 +7,7 @@ import { summon } from "./utils";
 import * as fs from "fs";
 import * as path from "path";
 
-const base = import.meta.env.VITE_BASE;
+const base = import.meta.env.VITE_API_BASE_URL;
 
 export async function getPlaidTransactions(userId: string, filters?: Filters) {
   const res = await summon(`${base}/Transactions/Transactions`, {

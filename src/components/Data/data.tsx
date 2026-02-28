@@ -5,7 +5,7 @@ import type {
 } from "../../Types/Transaction";
 import { summon } from "./utils";
 
-const base = import.meta.env.VITE_BASE;
+const base = import.meta.env.VITE_API_BASE_URL;
 
 // --------------------------------------PLAID---------------------------------------- //
 

@@ -1,6 +1,6 @@
 import { summon } from "./utils";
 
-const base = import.meta.env.VITE_BASE;
+const base = import.meta.env.VITE_API_BASE_URL;
 
 export async function userHasConnection(userId: string): Promise<boolean> {
   const res = await summon(`${base}/User/UserHasConnection`, {
