@@ -5,8 +5,6 @@ import {
 import Box from "@mui/material/Box";
 import type { MonthlySummary } from "../../Types/Transaction";
 import { formatMoney } from "../../utils/helpers";
-import { styled, type Theme } from "@mui/material";
-import { useDrawingArea } from "@mui/x-charts";
 import LittleGuy from "../../assets/limbless-guy.png";
 
 const PERCENT_VISIBLE = 4;

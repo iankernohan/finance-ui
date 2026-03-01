@@ -3,7 +3,6 @@ import "./home.css";
 import { useStore } from "../../store/store";
 import MonthPicker from "../Graphs/MonthPicker";
 import { useEffect, useState } from "react";
-import LittleGuy from "../../assets/limbless-guy.png";
 import Parcel from "../UI/Parcel";
 import { formatMoney, getMonth } from "../../utils/helpers";
 import { useMonthlySummaries } from "../../hooks/queries/useMonthlySummary";
