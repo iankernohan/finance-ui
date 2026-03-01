@@ -18,9 +18,8 @@ export default function PieChart({
     Bills: "#4F8A8B",
     Transport: "#FF5959",
     Pleasure: "#ffca3a",
-    Food: "#1982C4",
+    Food: "#F3722C",
     Shopping: "#6A4C93",
-    Investment: "#F3722C",
     Pets: "#B5838D",
     Healthcare: "#22223B",
     Uncategorized: "#000000",
@@ -44,7 +43,7 @@ export default function PieChart({
   }
 
   const categoryData = Object.keys(monthlySummary.categories)
-    .filter((c) => c !== "Salary")
+    .filter((c) => c !== "Salary" && c !== "Investment")
     .map((c) => {
       const transactions = monthlySummary.categories[c];
       const totalAmount = transactions.reduce(
@@ -62,7 +61,7 @@ export default function PieChart({
     });
 
   const subCategoryData = Object.keys(monthlySummary.categories)
-    .filter((c) => c !== "Salary")
+    .filter((c) => c !== "Salary" && c !== "Investment")
     .flatMap((cat) => {
       const subCat: Record<string, number[]> = { General: [] };
       for (const tran of monthlySummary.categories[cat]) {
@@ -91,7 +90,7 @@ export default function PieChart({
             label: s,
             value: subCatTotal,
             percentage: (subCatTotal / catTotal) * 100,
-            color: `${baseColor}${getOpacity(i)}`,
+            color: s === "General" ? "black" : `${baseColor}${getOpacity(i)}`,
           };
         });
     });

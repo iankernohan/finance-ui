@@ -68,7 +68,8 @@ export default function TransactionDetails({
       name = transaction.merchantName;
     }
 
-    return name.length > NAME_LENGTH ? name.slice(0, 13) + "..." : name;
+    // return name.length > NAME_LENGTH ? name.slice(0, 13) + "..." : name;
+    return name;
   }
 
   return (

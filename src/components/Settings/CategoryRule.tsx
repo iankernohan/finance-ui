@@ -24,6 +24,7 @@ export default function CategoryRule({ rule }: { rule: CategoryRules }) {
     const cat = categories.find((c) => c.id.toString() === category);
     setSubCategories(cat?.subCategories ?? []);
   }, [category, categories]);
+
   async function handleUpdate() {
     if (
       name !== rule.name ||
@@ -38,6 +39,9 @@ export default function CategoryRule({ rule }: { rule: CategoryRules }) {
       );
       queryClient.invalidateQueries({ queryKey: ["categoryRules"] });
       setEdit(false);
+      setName("");
+      setCategory("");
+      setSubCategory("");
     }
   }
 
@@ -126,7 +130,9 @@ export default function CategoryRule({ rule }: { rule: CategoryRules }) {
         {edit ? (
           <Box sx={{ display: "flex", gap: "0.5rem" }}>
             <button
-              onClick={() => setEdit(false)}
+              onClick={() => {
+                setEdit(false);
+              }}
               style={{
                 width: 30,
                 height: 30,

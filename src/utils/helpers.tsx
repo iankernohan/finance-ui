@@ -10,6 +10,7 @@ import ShowChartIcon from "@mui/icons-material/ShowChart";
 import PetsIcon from "@mui/icons-material/Pets";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import type {
   DataSet,
   Filters,
@@ -67,6 +68,7 @@ export const iconMap: Record<string, JSX.Element> = {
   Investment: <ShowChartIcon color="primary" />,
   Pets: <PetsIcon color="primary" />,
   Healthcare: <FavoriteIcon color="primary" />,
+  Subscriptions: <SubscriptionsIcon color="primary" />,
   Unknown: <EngineeringIcon color="primary" />,
 };
 
