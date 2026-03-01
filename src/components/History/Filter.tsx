@@ -1,8 +1,17 @@
-import { Box, Button, Chip, Dialog, TextField, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  debounce,
+  Dialog,
+  TextField,
+  useTheme,
+} from "@mui/material";
 import { useStore } from "../../store/store";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import dayjs from "dayjs";
+import React, { useState } from "react";
 
 type FilterProps = {
   open: boolean;
@@ -11,6 +20,8 @@ type FilterProps = {
 
 export default function Filter({ open, handleClose }: FilterProps) {
   const theme = useTheme();
+
+  const [descriptionText, setDescriptionText] = useState("");
 
   const allCategories = useStore((state) => state.categories);
   const filters = useStore((state) => state.filters);
@@ -109,11 +120,21 @@ export default function Filter({ open, handleClose }: FilterProps) {
     });
   }
 
+  const handleDebouncedChange = React.useMemo(
+    () =>
+      debounce((input) => {
+        updateFilters({
+          description: input ? input : undefined,
+        });
+      }, 500),
+    [updateFilters],
+  );
+
   function handleDescription(e: React.ChangeEvent<HTMLInputElement>) {
     const input = e.target.value;
-    updateFilters({
-      description: input ? input : undefined,
-    });
+    setDescriptionText(input);
+
+    handleDebouncedChange(input);
   }
 
   return (
@@ -128,6 +149,19 @@ export default function Filter({ open, handleClose }: FilterProps) {
           },
         }}
       >
+        <TextField
+          color="primary"
+          value={descriptionText}
+          onChange={handleDescription}
+          label="Description"
+          fullWidth
+          InputLabelProps={{
+            sx: {
+              color: "white",
+            },
+          }}
+        />
+        <hr style={{ width: "100%" }} />
         <p>Transaction Type</p>
         <Box
           sx={{
@@ -266,14 +300,6 @@ export default function Filter({ open, handleClose }: FilterProps) {
             fullWidth
           />
         </Box>
-        <hr style={{ width: "100%" }} />
-
-        <TextField
-          value={filters?.description}
-          onChange={handleDescription}
-          label="Description"
-          fullWidth
-        />
       </Box>
     </Dialog>
   );

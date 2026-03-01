@@ -42,6 +42,8 @@ type Store = {
   setFilters: (filters: Filters | null) => void;
   page: number;
   incrementPage: () => void;
+  transactionsCount: number;
+  setTransactionsCount: (count: number) => void;
 };
 
 export const useStore = create<Store>((set) => ({
@@ -104,4 +106,6 @@ export const useStore = create<Store>((set) => ({
     set((state) => ({ filters: { ...state.filters, ...filters } })),
   page: 1,
   incrementPage: () => set((state) => ({ page: state.page + 1 })),
+  transactionsCount: 0,
+  setTransactionsCount: (count: number) => set({ transactionsCount: count }),
 }));

@@ -17,6 +17,7 @@ export default function History() {
   const uncategorizedTransactions = useStore(
     (state) => state.uncategorizedTransactions,
   );
+  const transactionsCount = useStore((state) => state.transactionsCount);
   const loading = useStore((state) => state.loading);
   const [openFilter, setOpenFilter] = useState(false);
   const [uncategorized, setUncategorized] = useState(false);
@@ -24,7 +25,8 @@ export default function History() {
 
   const handleScroll = () => {
     const OFFSET = 250;
-    if (!ref.current || loading) return;
+    if (!ref.current || loading || transactions.length >= transactionsCount)
+      return;
 
     if (
       ref.current.scrollHeight - OFFSET <=

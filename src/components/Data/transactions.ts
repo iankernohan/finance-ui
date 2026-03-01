@@ -22,6 +22,17 @@ export async function getPlaidTransactions(
   return data;
 }
 
+export async function getTransactionsCount(
+  userId: string,
+  filters: Filters | null,
+) {
+  const res = await summon(`${base}/Transactions/TransactionsCount`, {
+    body: JSON.stringify({ userId, filters }),
+  });
+  const data = await res.json();
+  return data;
+}
+
 export async function getCategorizedTransactions({
   userId,
   page = 1,

@@ -10,6 +10,7 @@ import { useTransactions } from "../../hooks/queries/useTransactions";
 import { useCategories } from "../../hooks/queries/useCategories";
 import { useUncategorizedTransactions } from "../../hooks/queries/useUncategorizedTransactions";
 import { userHasConnection } from "../Data/user";
+import { useTransactionsCount } from "../../hooks/queries/useTransactionsCount";
 
 export default function PageLayout() {
   const theme = useTheme();
@@ -23,6 +24,7 @@ export default function PageLayout() {
   const [snackBar, setSnackBar] = useState(false);
 
   useTransactions();
+  useTransactionsCount();
   useCategories();
   useUncategorizedTransactions();
 
