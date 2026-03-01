@@ -3,7 +3,7 @@ import Transaction from "./Transaction";
 import { useStore } from "../../store/store";
 import TuneIcon from "@mui/icons-material/Tune";
 import Filter from "./Filter";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import ClearIcon from "@mui/icons-material/Clear";
 import CategoryIcon from "@mui/icons-material/Category";
 
@@ -11,7 +11,6 @@ export default function History() {
   const theme = useTheme();
   const transactions = useStore((state) => state.transactions);
   const setTransactions = useStore((state) => state.setTransactions);
-  const page = useStore((state) => state.page);
   const filters = useStore((state) => state.filters);
   const setFilters = useStore((state) => state.setFilters);
   const incrementPage = useStore((state) => state.incrementPage);
@@ -22,8 +21,6 @@ export default function History() {
   const [openFilter, setOpenFilter] = useState(false);
   const [uncategorized, setUncategorized] = useState(false);
   const ref = useRef<HTMLElement | null>(null);
-
-  useEffect(() => console.log(page), [page]);
 
   const handleScroll = () => {
     const OFFSET = 250;
@@ -51,33 +48,77 @@ export default function History() {
   }
 
   function RenderTransaction() {
-    return transactions.length ? (
+    if (!transactions.length) {
+      return (
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "2rem",
+            textAlign: "center",
+          }}
+        >
+          <Box>
+            <Typography variant="h4">No Transactions</Typography>
+          </Box>
+          <img style={{ width: 200 }} src="sad-little-guy.png" />
+          <Typography variant="body1">Go ahead and add some!</Typography>
+        </Box>
+      );
+    }
+
+    const transactionsToRender = uncategorized
+      ? uncategorizedTransactions
+      : transactions;
+    const transactionsByDate = new Map<string, typeof transactionsToRender>();
+
+    transactionsToRender.forEach((t) => {
+      const dateKey = new Date(t.date).toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
+      if (!transactionsByDate.has(dateKey)) {
+        transactionsByDate.set(dateKey, []);
+      }
+      transactionsByDate.get(dateKey)!.push(t);
+    });
+
+    const sortedDates = Array.from(transactionsByDate.keys()).sort(
+      (a, b) => new Date(b).getTime() - new Date(a).getTime(),
+    );
+
+    return (
       <>
-        {(uncategorized ? uncategorizedTransactions : transactions).map((t) => (
-          <Box key={t.id}>
-            <Transaction transaction={t} />
+        {sortedDates.map((dateKey) => (
+          <Box key={dateKey}>
+            <p
+              style={{
+                fontWeight: 200,
+                textAlign: "end",
+                fontSize: "0.9rem",
+                width: "90%",
+                color: "text.secondary",
+                margin: "auto",
+                marginTop: "0.5rem",
+                borderBottom: "0.5px solid rgb(50, 50, 50)",
+              }}
+            >
+              {dateKey}
+            </p>
+            {transactionsByDate.get(dateKey)!.map((t) => (
+              <Box key={t.id}>
+                <Transaction transaction={t} />
+              </Box>
+            ))}
           </Box>
         ))}
       </>
-    ) : (
-      <Box
-        sx={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "2rem",
-          textAlign: "center",
-        }}
-      >
-        <Box>
-          <Typography variant="h4">No Transactions</Typography>
-        </Box>
-        <img style={{ width: 200 }} src="sad-little-guy.png" />
-        <Typography variant="body1">Go ahead and add some!</Typography>
-      </Box>
     );
   }
 
