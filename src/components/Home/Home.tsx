@@ -61,7 +61,7 @@ export default function Home() {
         flexDirection: "column",
         alignItems: "center",
         gap: "2rem",
-        marginTop: "1rem",
+        marginTop: "2rem",
       }}
     >
       <MonthPicker
@@ -114,7 +114,7 @@ export default function Home() {
           </p>
         </Box>
         {/* {formatMoney(expenses ? expenses * -1 : 0)} */}
-        <img
+        {/* <img
           style={{
             width: "80px",
             height: "80px",
@@ -124,7 +124,7 @@ export default function Home() {
             zIndex: 0,
           }}
           src={LittleGuy}
-        />
+        /> */}
       </Parcel>
       <PieChart monthlySummary={currSummary} />
 

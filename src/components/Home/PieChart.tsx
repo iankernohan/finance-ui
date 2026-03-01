@@ -5,6 +5,9 @@ import {
 import Box from "@mui/material/Box";
 import type { MonthlySummary } from "../../Types/Transaction";
 import { formatMoney } from "../../utils/helpers";
+import { styled, type Theme } from "@mui/material";
+import { useDrawingArea } from "@mui/x-charts";
+import LittleGuy from "../../assets/limbless-guy.png";
 
 const PERCENT_VISIBLE = 4;
 
@@ -16,14 +19,31 @@ export default function PieChart({
   const colorMap: Record<string, string> = {
     Bills: "#4F8A8B",
     Transport: "#FF5959",
-    Pleasure: "#FFCA3A",
+    Pleasure: "#ffca3a",
     Food: "#1982C4",
     Shopping: "#6A4C93",
     Investment: "#F3722C",
     Pets: "#B5838D",
     Healthcare: "#22223B",
-    Uncategorized: "#000",
+    Uncategorized: "#000000",
   };
+
+  function getOpacity(step: number) {
+    switch (step) {
+      case 0:
+        return "CC";
+      case 1:
+        return "99";
+      case 2:
+        return "66";
+      case 3:
+        return "4D";
+      case 4:
+        return "33";
+      case 5:
+        return "1A";
+    }
+  }
 
   const categoryData = Object.keys(monthlySummary.categories)
     .filter((c) => c !== "Salary")
@@ -63,22 +83,22 @@ export default function PieChart({
         (acc, curr) => acc + curr.amount,
         0,
       );
-      let baseColor = colorMap[cat];
-      return Object.keys(subCat).map((s, i) => {
-        if (i > 0) baseColor = baseColor + (100 - 10 * i);
-        const subCatTotal = subCat[s].reduce((acc, curr) => acc + curr, 0);
-
-        return {
-          id: cat + "+" + s,
-          label: s,
-          value: subCatTotal,
-          percentage: (subCatTotal / catTotal) * 100,
-          color: s === "General" ? "black" : baseColor,
-        };
-      });
+      const baseColor = colorMap[cat];
+      return Object.keys(subCat)
+        .filter((x) => subCat[x].length > 0)
+        .map((s, i) => {
+          const subCatTotal = subCat[s].reduce((acc, curr) => acc + curr, 0);
+          return {
+            id: cat + "+" + s,
+            label: s,
+            value: subCatTotal,
+            percentage: (subCatTotal / catTotal) * 100,
+            color: `${baseColor}${getOpacity(i)}`,
+          };
+        });
     });
 
-  const innerRadius = 50;
+  const innerRadius = 30;
   const middleRadius = 120;
 
   return (
@@ -87,10 +107,18 @@ export default function PieChart({
         width: "90%",
         textAlign: "center",
         transform: "translateY(-50px)",
+        position: "relative",
         svg: { overflow: "visible" },
       }}
     >
-      <Box sx={{ display: "flex", justifyContent: "center", height: 400 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          height: 400,
+          position: "relative",
+        }}
+      >
         <MuiPieChart
           series={[
             {
@@ -141,6 +169,27 @@ export default function PieChart({
           }}
           hideLegend
         />
+        <Box
+          sx={{
+            position: "absolute",
+            top: "52%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            pointerEvents: "none",
+            zIndex: 2,
+            width: "95px",
+            height: "95px",
+          }}
+        >
+          <img
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+            src={LittleGuy}
+            alt="center icon"
+          />
+        </Box>
       </Box>
     </Box>
   );
