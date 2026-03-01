@@ -9,9 +9,14 @@ import * as path from "path";
 
 const base = import.meta.env.VITE_API_BASE_URL;
 
-export async function getPlaidTransactions(userId: string, filters?: Filters) {
+export async function getPlaidTransactions(
+  userId: string,
+  page: number = 1,
+  pageSize: number = 25,
+  filters: Filters | null,
+) {
   const res = await summon(`${base}/Transactions/Transactions`, {
-    body: JSON.stringify({ userId, page: 1, pageSize: 500, filters }),
+    body: JSON.stringify({ userId, page, pageSize, filters }),
   });
   const data = await res.json();
   return data;

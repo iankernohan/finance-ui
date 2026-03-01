@@ -2,6 +2,7 @@ import { create } from "zustand";
 import type {
   Budget,
   Category,
+  Filters,
   MonthlySummary,
   RecurringTransaction,
   Transaction,
@@ -14,6 +15,7 @@ type Store = {
   toggleDarkMode: () => void;
   transactions: Transaction[];
   setTransactions: (transactions: Transaction[]) => void;
+  appendTransactions: (transactions: Transaction[]) => void;
   addTransaction: (transaction: Transaction) => void;
   updateTransaction: (transaction: Transaction) => void;
   categories: Category[];
@@ -35,6 +37,11 @@ type Store = {
   setUser: (user: User | null) => void;
   monthlySummaries: MonthlySummary[];
   setMonthlySummaries: (summary: MonthlySummary) => void;
+  filters: Filters | null;
+  updateFilters: (filters: Partial<Filters>) => void;
+  setFilters: (filters: Filters | null) => void;
+  page: number;
+  incrementPage: () => void;
 };
 
 export const useStore = create<Store>((set) => ({
@@ -42,6 +49,10 @@ export const useStore = create<Store>((set) => ({
   toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
   transactions: [],
   setTransactions: (transactions: Transaction[]) => set({ transactions }),
+  appendTransactions: (transactions: Transaction[]) =>
+    set((state) => ({
+      transactions: [...state.transactions, ...transactions],
+    })),
   addTransaction: (transaction: Transaction) =>
     set((state) => ({ transactions: [...state.transactions, transaction] })),
   categories: [],
@@ -91,4 +102,10 @@ export const useStore = create<Store>((set) => ({
         monthlySummaries: [...state.monthlySummaries, summary],
       };
     }),
+  filters: null,
+  setFilters: (filters) => set({ filters }),
+  updateFilters: (filters: Partial<Filters>) =>
+    set((state) => ({ filters: { ...state.filters, ...filters } })),
+  page: 1,
+  incrementPage: () => set((state) => ({ page: state.page + 1 })),
 }));

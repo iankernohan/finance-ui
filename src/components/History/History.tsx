@@ -1,26 +1,42 @@
 import { Box, Button, Typography, useTheme } from "@mui/material";
 import Transaction from "./Transaction";
 import { useStore } from "../../store/store";
-import { defaultTransaction } from "../../utils/helpers";
 import TuneIcon from "@mui/icons-material/Tune";
 import Filter from "./Filter";
-import { useState } from "react";
-import type { Filters } from "../../Types/Transaction";
+import { useEffect, useRef, useState } from "react";
 import ClearIcon from "@mui/icons-material/Clear";
 import CategoryIcon from "@mui/icons-material/Category";
 
 export default function History() {
   const theme = useTheme();
   const transactions = useStore((state) => state.transactions);
+  const setTransactions = useStore((state) => state.setTransactions);
+  const page = useStore((state) => state.page);
+  const filters = useStore((state) => state.filters);
+  const setFilters = useStore((state) => state.setFilters);
+  const incrementPage = useStore((state) => state.incrementPage);
   const uncategorizedTransactions = useStore(
     (state) => state.uncategorizedTransactions,
   );
   const loading = useStore((state) => state.loading);
   const [openFilter, setOpenFilter] = useState(false);
-  const [filterConditions, setFilterConditions] = useState<Filters | null>(
-    null,
-  );
   const [uncategorized, setUncategorized] = useState(false);
+  const ref = useRef<HTMLElement | null>(null);
+
+  useEffect(() => console.log(page), [page]);
+
+  const handleScroll = () => {
+    const OFFSET = 250;
+    if (!ref.current || loading) return;
+
+    if (
+      ref.current.scrollHeight - OFFSET <=
+      ref.current.scrollTop + ref.current.clientHeight
+    ) {
+      incrementPage();
+    }
+  };
+
   function handleCloseFilter() {
     setOpenFilter(false);
   }
@@ -29,12 +45,9 @@ export default function History() {
     setUncategorized((curr) => !curr);
   }
 
-  function updateFilterConditions(conditions: Filters) {
-    setFilterConditions(conditions);
-  }
-
-  function clearFilters() {
-    setFilterConditions(null);
+  function handleClearFilters() {
+    setTransactions([]);
+    setFilters(null);
   }
 
   function RenderTransaction() {
@@ -70,14 +83,12 @@ export default function History() {
 
   return (
     <Box sx={{ height: "100%", overflow: "hidden", position: "relative" }}>
-      <Box sx={{ height: "100%", overflowY: "scroll", paddingBottom: "2rem" }}>
-        {loading ? (
-          Array.from({ length: 10 }).map((_x, i) => (
-            <Transaction key={i} transaction={defaultTransaction} />
-          ))
-        ) : (
-          <RenderTransaction />
-        )}
+      <Box
+        ref={ref}
+        onScroll={handleScroll}
+        sx={{ height: "100%", overflowY: "scroll", paddingBottom: "2rem" }}
+      >
+        <RenderTransaction />
       </Box>
       <Button
         onClick={handleSetUncategorized}
@@ -117,9 +128,9 @@ export default function History() {
       >
         <TuneIcon style={{ color: theme.palette.primary.main }} />
       </Button>
-      {filterConditions && (
+      {filters && (
         <Button
-          onClick={() => clearFilters()}
+          onClick={handleClearFilters}
           sx={{
             position: "absolute",
             bottom: "1rem",
@@ -137,12 +148,7 @@ export default function History() {
           <ClearIcon style={{ color: theme.palette.primary.main }} />
         </Button>
       )}
-      <Filter
-        open={openFilter}
-        handleClose={handleCloseFilter}
-        filterConditions={filterConditions}
-        updateFilterConditions={updateFilterConditions}
-      />
+      <Filter open={openFilter} handleClose={handleCloseFilter} />
     </Box>
   );
 }

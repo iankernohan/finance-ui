@@ -44,7 +44,7 @@ export default function TransactionDetails({
   };
 
   const menuAnchor = useRef(null);
-  const NAME_LENGTH = 13;
+  // const NAME_LENGTH = 13;
   const date = new Date(transaction.date);
 
   function onClose() {
