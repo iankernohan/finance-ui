@@ -1,8 +1,19 @@
 import { Box } from "@mui/material";
-import { useStore } from "../../store/store";
 import { getLittleGuy } from "../../utils/helpers";
 import { Outlet, useLocation } from "react-router";
 import SettingTab from "../Settings/SettingTab";
+import SettingsIcon from "@mui/icons-material/Settings";
+import CategoryIcon from "@mui/icons-material/Category";
+import QueryStatsIcon from "@mui/icons-material/QueryStats";
+import GavelIcon from "@mui/icons-material/Gavel";
+import type { SettingOption } from "../../Types/Settings";
+
+const options: SettingOption[] = [
+  { name: "Category Rules", path: "categoryRules", icon: <GavelIcon /> },
+  { name: "Statistics", path: "statistics", icon: <QueryStatsIcon /> },
+  { name: "Categories", path: "categories", icon: <CategoryIcon /> },
+  { name: "Settings", path: "settings", icon: <SettingsIcon /> },
+];
 
 export default function Profile() {
   const location = useLocation();
@@ -14,8 +25,6 @@ export default function Profile() {
     if (hour < 18) return "Good Afternoon";
     return "Good Evening";
   }
-
-  const options = useStore((state) => state.profileOptions);
 
   return (
     <Box
@@ -38,7 +47,7 @@ export default function Profile() {
               flexDirection: "column",
               gap: "0.5rem",
               justifyContent: "center",
-              width: "75%",
+              width: "90%",
             }}
           >
             {options.map((option) => (

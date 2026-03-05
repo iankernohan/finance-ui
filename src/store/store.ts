@@ -7,7 +7,6 @@ import type {
   RecurringTransaction,
   Transaction,
 } from "../Types/Transaction";
-import type { SettingOption } from "../Types/Settings";
 import type { User } from "../Types/User";
 
 type Store = {
@@ -27,7 +26,6 @@ type Store = {
   setRecurringTransactions: (
     RecurringTransactions: RecurringTransaction[],
   ) => void;
-  profileOptions: SettingOption[];
   loading: boolean;
   setLoading: (val: boolean) => void;
   incomeIds: number[];
@@ -74,12 +72,6 @@ export const useStore = create<Store>((set) => ({
   recurringTransactions: [],
   setRecurringTransactions: (recurringTransactions) =>
     set({ recurringTransactions }),
-  profileOptions: [
-    { name: "Settings", path: "settings" },
-    { name: "Category Rules", path: "categoryRules" },
-    { name: "Statistics", path: "statistics" },
-    { name: "Categories", path: "categories" },
-  ],
   loading: false,
   setLoading: (val) => set({ loading: val }),
   incomeIds: [6, 7],

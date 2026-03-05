@@ -25,7 +25,10 @@ export default function SettingTab({ setting }: SettingTabProps) {
       }}
       onClick={() => navigate(setting.path)}
     >
-      <p>{setting.name}</p>
+      <Box sx={{ display: "flex", gap: "1rem" }}>
+        {setting.icon}
+        <p>{setting.name}</p>
+      </Box>
       <KeyboardArrowRightIcon />
     </Box>
   );
