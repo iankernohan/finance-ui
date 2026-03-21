@@ -32,7 +32,7 @@ export function useTransactions() {
     queryFn: () => {
       const shouldFetch = shouldFetchPlaidToday();
       recordPlaidFetch();
-      return getPlaidTransactions(user?.id || "", page, 25, filters, shouldFetch);
+      return getPlaidTransactions(page, 25, filters, shouldFetch);
     },
     enabled: !!user && !!user.hasPlaidConnection,
   });

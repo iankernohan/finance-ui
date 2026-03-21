@@ -10,43 +10,37 @@ import * as path from "path";
 const base = import.meta.env.VITE_API_BASE_URL;
 
 export async function getPlaidTransactions(
-  userId: string,
   page: number = 1,
   pageSize: number = 25,
   filters: Filters | null,
   shouldFetch: boolean,
 ) {
   const res = await summon(`${base}/Transactions/Transactions`, {
-    body: JSON.stringify({ userId, page, pageSize, filters, shouldFetch }),
+    body: JSON.stringify({ page, pageSize, filters, shouldFetch }),
   });
   const data = await res.json();
   return data;
 }
 
-export async function getTransactionsCount(
-  userId: string,
-  filters: Filters | null,
-) {
+export async function getTransactionsCount(filters: Filters | null) {
   const res = await summon(`${base}/Transactions/TransactionsCount`, {
-    body: JSON.stringify({ userId, filters }),
+    body: JSON.stringify({ filters }),
   });
   const data = await res.json();
   return data;
 }
 
 export async function getCategorizedTransactions({
-  userId,
   page = 1,
   pageSize = 20,
 }: {
-  userId: string;
   page?: number;
   pageSize?: number;
 }) {
   const transactions = await summon(
     `${base}/Transactions/CategorizedTransactions`,
     {
-      body: JSON.stringify({ userId, page, pageSize }),
+      body: JSON.stringify({ page, pageSize }),
     },
   );
   const data = await transactions.json();
@@ -66,11 +60,11 @@ export async function getTransactionsByCategory(categoryNames?: string[]) {
   return data;
 }
 
-export async function getUncategorizedTransactions(userId: string) {
+export async function getUncategorizedTransactions() {
   const transactions = await summon(
     `${base}/Transactions/UncategorizedTransactions`,
     {
-      body: JSON.stringify({ userId, page: 1, pageSize: 500 }),
+      body: JSON.stringify({ page: 1, pageSize: 500 }),
     },
   );
   const data = await transactions.json();
