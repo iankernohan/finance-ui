@@ -56,40 +56,40 @@ export default function Profile() {
               </Box>
             ))}
           </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              boxShadow: "0 0 10px 10px var(--mui-palette-background-default)",
+              width: "100dvw",
+              translate: "-1rem 0",
+              padding: "1rem",
+              paddingBottom: "0",
+            }}
+          >
+            <h1
+              style={{
+                fontWeight: 200,
+                fontSize: "1.5rem",
+                fontStyle: "italic",
+              }}
+            >
+              {`${getGreeting()}, Ian.`}
+            </h1>
+            <img
+              style={{
+                width: 80,
+              }}
+              src={getLittleGuy(1)}
+            />
+          </Box>
         </>
       ) : (
-        <Box sx={{ overflow: "auto" }}>
+        <Box sx={{ overflow: "auto", height: "100%" }}>
           <Outlet />
         </Box>
       )}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          boxShadow: "0 0 10px 10px var(--mui-palette-background-default)",
-          width: "100dvw",
-          translate: "-1rem 0",
-          padding: "1rem",
-          paddingBottom: "0",
-        }}
-      >
-        <h1
-          style={{
-            fontWeight: 200,
-            fontSize: "1.5rem",
-            fontStyle: "italic",
-          }}
-        >
-          {`${getGreeting()}, Ian.`}
-        </h1>
-        <img
-          style={{
-            width: 80,
-          }}
-          src={getLittleGuy(1)}
-        />
-      </Box>
     </Box>
   );
 }

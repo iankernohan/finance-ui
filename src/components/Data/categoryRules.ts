@@ -32,3 +32,8 @@ export async function addCategoryRule(
   });
   return;
 }
+
+export async function runRulesApplier() {
+  await summon(`${base}/CategoryRules/ApplyCategoryRules`);
+  return;
+}

@@ -14,9 +14,10 @@ export async function getPlaidTransactions(
   page: number = 1,
   pageSize: number = 25,
   filters: Filters | null,
+  shouldFetch: boolean,
 ) {
   const res = await summon(`${base}/Transactions/Transactions`, {
-    body: JSON.stringify({ userId, page, pageSize, filters }),
+    body: JSON.stringify({ userId, page, pageSize, filters, shouldFetch }),
   });
   const data = await res.json();
   return data;

@@ -1,8 +1,12 @@
-import { Box, Button, Switch } from "@mui/material";
+import { Box, Switch } from "@mui/material";
 import BackButton from "../UI/BackButton";
 import { useStore } from "../../store/store";
 import { supabase } from "../Data/supabase";
 import { useNavigate } from "react-router";
+import { useRef } from "react";
+import FancyButton from "../UI/FancyButton";
+import { runRulesApplier } from "../Data/categoryRules";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -10,6 +14,8 @@ export default function Settings() {
   const toggleDarkMode = useStore((state) => state.toggleDarkMode);
   const setLoading = useStore((state) => state.setLoading);
   const setUser = useStore((state) => state.setUser);
+  const headingRef = useRef<HTMLElement | null>(null);
+  const queryClient = useQueryClient();
 
   async function handleSignout() {
     setLoading(true);
@@ -23,9 +29,14 @@ export default function Settings() {
     setLoading(false);
   }
 
+  async function handleApplyCategoryRules() {
+    await runRulesApplier();
+    queryClient.invalidateQueries({ queryKey: ["transactions"] });
+  }
+
   return (
-    <Box sx={{ position: "relative" }}>
-      <Box>
+    <Box sx={{ height: "100%" }}>
+      <Box ref={headingRef}>
         <BackButton top={8} />
         <h2
           style={{
@@ -40,11 +51,14 @@ export default function Settings() {
       </Box>
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
+          display: "grid",
+          alignItems: "end",
+          justifyContent: "center",
+          gridTemplateRows: "50px 50px 1fr",
           gap: "1rem",
           width: "90%",
-          margin: "2rem auto",
+          height: `calc(100% - ${headingRef.current?.clientHeight ?? 0}px)`,
+          margin: " auto",
         }}
       >
         <Box
@@ -57,13 +71,12 @@ export default function Settings() {
           <p>{`Toggle ${darkMode ? "Light" : "Dark"} Mode`}</p>
           <Switch onChange={toggleDarkMode} />
         </Box>
-        <Button
-          sx={{ marginTop: "1rem" }}
-          variant="outlined"
-          onClick={handleSignout}
-        >
+        <FancyButton onClick={handleApplyCategoryRules}>
+          Run Rules Applier
+        </FancyButton>
+        <FancyButton variant="secondary" onClick={handleSignout}>
           sign out
-        </Button>
+        </FancyButton>
       </Box>
     </Box>
   );
