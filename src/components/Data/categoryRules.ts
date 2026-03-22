@@ -25,10 +25,11 @@ export async function updateCategoryRule(
 export async function addCategoryRule(
   name: string,
   categoryId: number,
+  subCategoryId: number | null,
   amount: number | null,
 ) {
   await summon(`${base}/CategoryRules/AddCategoryRule`, {
-    body: JSON.stringify({ name, categoryId, amount }),
+    body: JSON.stringify({ name, categoryId, subCategoryId, amount }),
   });
   return;
 }

@@ -15,6 +15,8 @@ import { formatMoney } from "../../utils/helpers";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { updateCategory } from "../Data/transactions";
 import { useQueryClient } from "@tanstack/react-query";
+import CreateRuleModal from "./CreateRuleModal";
+import EditTransactionModal from "./EditTransactionModal";
 
 interface TransactionDetailsProps {
   transaction: Transaction;
@@ -31,6 +33,8 @@ export default function TransactionDetails({
   const categories = useStore((state) => state.categories);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [category, setCategory] = useState("");
+  const [openCreateRule, setOpenCreateRule] = useState(false);
+  const [openEditCategory, setOpenEditCategory] = useState(false);
   const [selectCategory, setSelectCategory] = useState<
     "manual" | "rule" | null
   >(null);
@@ -39,6 +43,7 @@ export default function TransactionDetails({
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleCloseMenu = () => {
     setAnchorEl(null);
   };
@@ -84,21 +89,19 @@ export default function TransactionDetails({
           minWidth: "70vw",
         }}
       >
-        {!transaction.category && (
-          <Button
-            sx={{
-              position: "absolute",
-              top: "10px",
-              right: "10px",
-              minWidth: 0,
-              width: "fit-content",
-            }}
-            ref={menuAnchor.current}
-            onClick={handleOpenMenu}
-          >
-            <MoreVertIcon />
-          </Button>
-        )}
+        <Button
+          sx={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            minWidth: 0,
+            width: "fit-content",
+          }}
+          ref={menuAnchor.current}
+          onClick={handleOpenMenu}
+        >
+          <MoreVertIcon />
+        </Button>
         <Menu
           anchorEl={anchorEl}
           open={openMenu}
@@ -115,10 +118,10 @@ export default function TransactionDetails({
           <Box sx={{ display: "grid", padding: "0.5rem 1rem" }}>
             {!selectCategory ? (
               <>
-                <Button onClick={() => setSelectCategory("manual")}>
+                <Button onClick={() => setOpenEditCategory(true)}>
                   Categorize
                 </Button>
-                <Button onClick={() => setSelectCategory("rule")}>
+                <Button onClick={() => setOpenCreateRule(true)}>
                   Create Rule
                 </Button>
               </>
@@ -142,7 +145,11 @@ export default function TransactionDetails({
                 {selectCategory === "manual" && (
                   <Button onClick={handleAddCategory}>Add Category</Button>
                 )}
-                {selectCategory === "rule" && <Button>Add Rule</Button>}
+                {selectCategory === "rule" && (
+                  <Button onClick={() => setOpenCreateRule(true)}>
+                    Add Rule
+                  </Button>
+                )}
               </>
             )}
           </Box>
@@ -242,6 +249,22 @@ export default function TransactionDetails({
           Close
         </Button>
       </Box>
+
+      {openCreateRule && (
+        <CreateRuleModal
+          open={openCreateRule}
+          onClose={() => setOpenCreateRule(false)}
+          transaction={transaction}
+        />
+      )}
+
+      {openEditCategory && (
+        <EditTransactionModal
+          open={openEditCategory}
+          onClose={() => setOpenEditCategory(false)}
+          transaction={transaction}
+        />
+      )}
     </Dialog>
   );
 }

@@ -2,6 +2,7 @@ import type {
   Filters,
   MonthlySummary,
   Transaction,
+  UpdateTransactionRequest,
 } from "../../Types/Transaction";
 import { summon } from "./utils";
 import * as fs from "fs";
@@ -25,6 +26,14 @@ export async function getPlaidTransactions(
 export async function getTransactionsCount(filters: Filters | null) {
   const res = await summon(`${base}/Transactions/TransactionsCount`, {
     body: JSON.stringify({ filters }),
+  });
+  const data = await res.json();
+  return data;
+}
+
+export async function updateTransaction(req: UpdateTransactionRequest) {
+  const res = await summon(`${base}/Transactions/UpdateTransaction`, {
+    body: JSON.stringify(req),
   });
   const data = await res.json();
   return data;

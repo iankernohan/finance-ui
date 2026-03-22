@@ -23,10 +23,11 @@ export interface PlaidTransactionLocation {
 
 export interface Transaction {
   id: string;
+  userId: string;
   name: string;
   currencyCode?: string | null;
-  merchantName?: string;
-  accountId?: string;
+  merchantName?: string | null;
+  accountId?: string | null;
   amount: number;
   date: string;
   location?: PlaidTransactionLocation | null;
@@ -38,8 +39,17 @@ export interface Transaction {
   merchantEntityId?: string | null;
   categoryId?: number | null;
   category?: Category | null;
-  subCategoryId?: number;
-  subCategory?: SubCategory;
+  subCategoryId?: number | null;
+  subCategory?: SubCategory | null;
+}
+
+export interface UpdateTransactionRequest extends Omit<
+  Transaction,
+  "name" | "amount" | "date" | "userId"
+> {
+  name: string | null;
+  amount: string | null;
+  date: string | null;
 }
 
 export type DataSet = {

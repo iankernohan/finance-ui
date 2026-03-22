@@ -36,7 +36,7 @@ export default function AddRule({
 
   async function handleAddRule() {
     if (category && name !== "") {
-      await addCategoryRule(name, category, amount > 0 ? amount : null);
+      await addCategoryRule(name, category, null, amount > 0 ? amount : null);
       queryClient.invalidateQueries({ queryKey: ["categoryRules"] });
       onClose();
     }

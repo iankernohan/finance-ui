@@ -117,6 +117,7 @@ export function getSuffix(day: number) {
 export const defaultTransaction: Transaction = {
   amount: 0,
   name: "default",
+  userId: "1",
   category: {
     id: 0,
     name: "",

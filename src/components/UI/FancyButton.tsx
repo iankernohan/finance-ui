@@ -1,5 +1,4 @@
-import { Button, type SxProps, type Theme } from "@mui/material";
-import { type ReactNode } from "react";
+import type { ReactNode, CSSProperties } from "react";
 
 type ButtonVariant = "primary" | "secondary" | "outline" | "danger" | "success";
 
@@ -10,38 +9,32 @@ interface FancyButtonProps {
   disabled?: boolean;
   fullWidth?: boolean;
   type?: "button" | "submit" | "reset";
-  sx?: SxProps<Theme>;
 }
 
-const getVariantStyles = (variant: ButtonVariant): SxProps<Theme> => {
-  const baseStyles: SxProps<Theme> = {
+const getVariantStyles = (
+  variant: ButtonVariant,
+  disabled: boolean,
+): CSSProperties => {
+  const baseStyles: CSSProperties = {
     padding: "0.75rem 1.5rem",
     backdropFilter: "blur(10px)",
     borderRadius: "100px",
     fontSize: "1rem",
     fontWeight: 500,
-    cursor: "pointer",
+    cursor: disabled ? "not-allowed" : "pointer",
     transition: "all 0.3s ease",
     border: "1px solid",
-    "&:active": {
-      transform: "translateY(0)",
-    },
+    opacity: disabled ? 0.5 : 1,
+    outline: "none",
   };
 
-  const variants: Record<ButtonVariant, SxProps<Theme>> = {
+  const variants: Record<ButtonVariant, CSSProperties> = {
     primary: {
       ...baseStyles,
       background:
         "linear-gradient(135deg, rgba(0, 173, 181, 0.15) 0%, rgba(0, 173, 181, 0.05) 100%)",
       borderColor: "rgba(0, 173, 181, 0.2)",
       color: "#00ADB5",
-      "&:hover": {
-        background:
-          "linear-gradient(135deg, rgba(0, 173, 181, 0.25) 0%, rgba(0, 173, 181, 0.1) 100%)",
-        borderColor: "rgba(0, 173, 181, 0.4)",
-        boxShadow: "0 8px 16px rgba(0, 173, 181, 0.2)",
-        transform: "translateY(-2px)",
-      },
     },
     secondary: {
       ...baseStyles,
@@ -49,25 +42,12 @@ const getVariantStyles = (variant: ButtonVariant): SxProps<Theme> => {
         "linear-gradient(135deg, rgba(96, 165, 250, 0.15) 0%, rgba(96, 165, 250, 0.05) 100%)",
       borderColor: "rgba(96, 165, 250, 0.2)",
       color: "#60A5FA",
-      "&:hover": {
-        background:
-          "linear-gradient(135deg, rgba(96, 165, 250, 0.25) 0%, rgba(96, 165, 250, 0.1) 100%)",
-        borderColor: "rgba(96, 165, 250, 0.4)",
-        boxShadow: "0 8px 16px rgba(96, 165, 250, 0.2)",
-        transform: "translateY(-2px)",
-      },
     },
     outline: {
       ...baseStyles,
       background: "transparent",
       borderColor: "rgba(255, 255, 255, 0.2)",
       color: "#EDE9FE",
-      "&:hover": {
-        background: "rgba(255, 255, 255, 0.05)",
-        borderColor: "rgba(255, 255, 255, 0.4)",
-        boxShadow: "0 8px 16px rgba(255, 255, 255, 0.1)",
-        transform: "translateY(-2px)",
-      },
     },
     danger: {
       ...baseStyles,
@@ -75,13 +55,6 @@ const getVariantStyles = (variant: ButtonVariant): SxProps<Theme> => {
         "linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%)",
       borderColor: "rgba(239, 68, 68, 0.2)",
       color: "#EF4444",
-      "&:hover": {
-        background:
-          "linear-gradient(135deg, rgba(239, 68, 68, 0.25) 0%, rgba(239, 68, 68, 0.1) 100%)",
-        borderColor: "rgba(239, 68, 68, 0.4)",
-        boxShadow: "0 8px 16px rgba(239, 68, 68, 0.2)",
-        transform: "translateY(-2px)",
-      },
     },
     success: {
       ...baseStyles,
@@ -89,17 +62,51 @@ const getVariantStyles = (variant: ButtonVariant): SxProps<Theme> => {
         "linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 100%)",
       borderColor: "rgba(34, 197, 94, 0.2)",
       color: "#22C55E",
-      "&:hover": {
-        background:
-          "linear-gradient(135deg, rgba(34, 197, 94, 0.25) 0%, rgba(34, 197, 94, 0.1) 100%)",
-        borderColor: "rgba(34, 197, 94, 0.4)",
-        boxShadow: "0 8px 16px rgba(34, 197, 94, 0.2)",
-        transform: "translateY(-2px)",
-      },
     },
   };
 
   return variants[variant];
+};
+
+const getHoverStyles = (variant: ButtonVariant): CSSProperties => {
+  const hoverStyles: Record<ButtonVariant, CSSProperties> = {
+    primary: {
+      background:
+        "linear-gradient(135deg, rgba(0, 173, 181, 0.25) 0%, rgba(0, 173, 181, 0.1) 100%)",
+      borderColor: "rgba(0, 173, 181, 0.4)",
+      boxShadow: "0 8px 16px rgba(0, 173, 181, 0.2)",
+      transform: "translateY(-2px)",
+    },
+    secondary: {
+      background:
+        "linear-gradient(135deg, rgba(96, 165, 250, 0.25) 0%, rgba(96, 165, 250, 0.1) 100%)",
+      borderColor: "rgba(96, 165, 250, 0.4)",
+      boxShadow: "0 8px 16px rgba(96, 165, 250, 0.2)",
+      transform: "translateY(-2px)",
+    },
+    outline: {
+      background: "rgba(255, 255, 255, 0.05)",
+      borderColor: "rgba(255, 255, 255, 0.4)",
+      boxShadow: "0 8px 16px rgba(255, 255, 255, 0.1)",
+      transform: "translateY(-2px)",
+    },
+    danger: {
+      background:
+        "linear-gradient(135deg, rgba(239, 68, 68, 0.25) 0%, rgba(239, 68, 68, 0.1) 100%)",
+      borderColor: "rgba(239, 68, 68, 0.4)",
+      boxShadow: "0 8px 16px rgba(239, 68, 68, 0.2)",
+      transform: "translateY(-2px)",
+    },
+    success: {
+      background:
+        "linear-gradient(135deg, rgba(34, 197, 94, 0.25) 0%, rgba(34, 197, 94, 0.1) 100%)",
+      borderColor: "rgba(34, 197, 94, 0.4)",
+      boxShadow: "0 8px 16px rgba(34, 197, 94, 0.2)",
+      transform: "translateY(-2px)",
+    },
+  };
+
+  return hoverStyles[variant];
 };
 
 export default function FancyButton({
@@ -109,29 +116,31 @@ export default function FancyButton({
   disabled = false,
   fullWidth = false,
   type = "button",
-  sx,
 }: FancyButtonProps) {
-  const variantStyles = getVariantStyles(variant);
+  const variantStyles = getVariantStyles(variant, disabled);
+  const hoverStyles = getHoverStyles(variant);
 
   return (
-    <Button
+    <button
       type={type}
       onClick={onClick}
       disabled={disabled}
-      fullWidth={fullWidth}
-      sx={{
+      style={{
         ...variantStyles,
-        ...(disabled && {
-          opacity: 0.5,
-          cursor: "not-allowed",
-          "&:hover": {
-            transform: "none",
-          },
-        }),
-        ...sx,
+        width: fullWidth ? "100%" : "auto",
+      }}
+      onMouseEnter={(e) => {
+        if (!disabled) {
+          Object.assign(e.currentTarget.style, hoverStyles);
+        }
+      }}
+      onMouseLeave={(e) => {
+        const baseStyles = getVariantStyles(variant, disabled);
+        Object.assign(e.currentTarget.style, baseStyles);
+        e.currentTarget.style.width = fullWidth ? "100%" : "auto";
       }}
     >
       {children}
-    </Button>
+    </button>
   );
 }

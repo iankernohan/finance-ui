@@ -11,7 +11,7 @@ export function useTransactionsCount() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["transactionsCount", user?.id, filters],
-    queryFn: () => getTransactionsCount(user?.id || "", filters),
+    queryFn: () => getTransactionsCount(filters),
     enabled: !!user && !!user.hasPlaidConnection,
   });
 
